@@ -1,0 +1,3347 @@
+{
+  "database_name": "EEG-Navigator Artefakt-Datenbank",
+  "version": "0.3",
+  "date": "2026-06-02",
+  "schema_version": "1.0",
+  "schema_reference": "eeg_navigator_schema_v1.json",
+  "scope": "Routine-EEG ambulant/stationär; ICU/cEEG und Implantate als optionale Erweiterung markiert",
+  "design_principle": "Artefakte sind Signale nicht-kortikalen Ursprungs. Getrennt von EEG-Wellen-DB, aber bidirektional verlinkt via cross_references.eeg_mimics.",
+  "id_namespace": "ART_XXX – dreistellige Nummerierung",
+  "artifact_classes": [
+    "physiologisch",
+    "physiologisch_mechanisch",
+    "physiologisch_technisch",
+    "technisch",
+    "extern_technisch",
+    "extern_mechanisch",
+    "implantatbedingt"
+  ],
+  "subcategories": [
+    "okulär",
+    "myogen",
+    "oropharyngeal_myogen",
+    "glossokinetisch",
+    "bewegungsbedingt",
+    "kardial",
+    "vaskulär",
+    "Elektrodenkontakt",
+    "Elektrodenbewegung",
+    "Elektrodenbrücke",
+    "Schweiss_Elektrolyt",
+    "Netzeinstreuung",
+    "Erdung_Referenz",
+    "elektrische_Umgebung",
+    "Digitalisierung_Filter",
+    "stationaeres_Umfeld",
+    "Neurostimulation"
+  ],
+  "id_map_legacy": {
+    "ART_001": "artifact_ocular_blink",
+    "ART_002": "artifact_ocular_vertical",
+    "ART_003": "artifact_ocular_horizontal",
+    "ART_004": "artifact_ocular_lateral_rectus",
+    "ART_005": "artifact_ocular_eye_flutter",
+    "ART_006": "artifact_ocular_nystagmus",
+    "ART_007": "artifact_ocular_kappa",
+    "ART_008": "artifact_emg_general",
+    "ART_009": "artifact_emg_frontalis",
+    "ART_010": "artifact_emg_chewing",
+    "ART_011": "artifact_emg_speaking",
+    "ART_012": "artifact_oral_swallow",
+    "ART_013": "artifact_oral_glossokinetic",
+    "ART_014": "artifact_movement_tremor",
+    "ART_015": "artifact_movement_shivering",
+    "ART_016": "artifact_photic_photomyogenic",
+    "ART_017": "artifact_cardiac_ecg",
+    "ART_018": "artifact_cardiac_pulse",
+    "ART_019": "artifact_cardiac_ballisto",
+    "ART_020": "artifact_cardiac_arrhythmia",
+    "ART_021": "artifact_implant_pacemaker",
+    "ART_022": "artifact_electrode_pop",
+    "ART_023": "artifact_electrode_movement",
+    "ART_024": "artifact_electrode_high_impedance",
+    "ART_025": "artifact_electrode_open",
+    "ART_026": "artifact_electrode_salt_bridge",
+    "ART_027": "artifact_electrode_short",
+    "ART_028": "artifact_electrode_sweat",
+    "ART_029": "artifact_technical_50hz",
+    "ART_030": "artifact_technical_60hz",
+    "ART_031": "artifact_technical_ground",
+    "ART_032": "artifact_technical_static",
+    "ART_033": "artifact_technical_aliasing",
+    "ART_034": "artifact_environment_pump",
+    "ART_035": "artifact_environment_ventilator",
+    "ART_036": "artifact_environment_monitor",
+    "ART_037": "artifact_environment_dialysis",
+    "ART_038": "artifact_environment_ecmo_lvad",
+    "ART_039": "artifact_implant_vns",
+    "ART_040": "artifact_implant_dbs",
+    "ART_041": "artifact_implant_rns",
+    "ART_042": "artifact_implant_scs"
+  },
+  "artifact_count": 21,
+  "artifacts": [
+    {
+      "id": "ART_001",
+      "name": "Blinzelartefakt",
+      "aliases": [
+        "Eye blink artifact",
+        "Blink artifact"
+      ],
+      "artifact_class": "physiologisch",
+      "subcategory": "okulär",
+      "scope": "routine",
+      "source": "Korneoretinaler Dipol; Lidbewegung hebt Kornea (positiv) von der Retina (negativ) weg",
+      "frequency": {
+        "label": "nicht_anwendbar",
+        "min_hz": null,
+        "max_hz": null,
+        "typical_hz": null,
+        "note": "Einzelereignis, nicht frequenzstabil; Blinzelrate ca. 15-20/min"
+      },
+      "amplitude": {
+        "label": "gross",
+        "min_uv": 100,
+        "max_uv": 1000,
+        "typical_uv": 300
+      },
+      "duration": {
+        "label": "kurz",
+        "min_ms": 100,
+        "max_ms": 400,
+        "typical_ms": 200,
+        "note": "Langsame frontale Deflexion"
+      },
+      "localization": [
+        "frontopolar",
+        "frontal"
+      ],
+      "laterality": "bilateral_symmetrisch",
+      "morphology": "Große, langsame, bogen- oder dreieckförmige Welle; frontopolares Maximum; posteriore Elektroden zeigen Inversion (entgegengesetzte Richtung)",
+      "rhythmicity": "arrhythmisch",
+      "montage_behavior": {
+        "bipolar_longitudinal": "Frontopolares Maximum Fp1/Fp2; anteriore Kanäle dominiert; posteriore Kanäle zeigen Inversion durch Feldumkehr",
+        "bipolar_transverse": "Bilateral symmetrisch frontal",
+        "referential_cz": "Frontopolare Positivierung deutlich sichtbar",
+        "referential_average": "Breite frontale Verteilung; kann temporal leicht ausläufen",
+        "referential_mastoid": "Gut sichtbar frontopolar",
+        "best_montage": "Bipolare Längsreihe zeigt frontopolares Maximum klar; EOG-Kanal parallel zur Bestätigung",
+        "pitfalls": "In Referenzmontage kann der Blinzelartefakt frontal breiter erscheinen und FIRDA imitieren",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": true,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": false
+      },
+      "patient_context": [
+        "Augen offen",
+        "Müdigkeit",
+        "Unruhe",
+        "häufiges Blinzeln"
+      ],
+      "triggering_situation": [
+        "Blinzeln",
+        "Lidschlag"
+      ],
+      "vigilance_context": [
+        "wach",
+        "schlaefrig"
+      ],
+      "auxiliary_channels": [
+        "EOG (empfohlen)",
+        "Video"
+      ],
+      "cross_references": {
+        "eeg_mimics": [
+          "EEG_0054",
+          "EEG_0028"
+        ]
+      },
+      "dialog_logic": {
+        "key_features": [
+          "frontopolares Maximum",
+          "bilateral symmetrisch",
+          "zeitgleich mit Blinzeln",
+          "langsame Deflexion",
+          "kein kortikales Feld"
+        ],
+        "criteria_for": [
+          "Maximum Fp1/Fp2",
+          "Zeitbezug zu sichtbarem Blinzeln",
+          "EOG-Korrelation",
+          "Kein plausibles kortikales Feld",
+          "Posteriore Elektroden zeigen Inversion"
+        ],
+        "criteria_against": [
+          "Generalisierte Spike-Wave-Ausbreitung posterior (→ PPR)",
+          "Persistenz ohne Blinzeln",
+          "Okzipitale Dominanz"
+        ],
+        "discriminating_questions": [
+          "Blinzelt der Patient?",
+          "Gibt es eine posteriore Komponente (→ dann kein Artefakt)?",
+          "Korreliert es mit dem EOG-Kanal?"
+        ]
+      },
+      "provocation_or_check": [
+        "Patient ruhig liegen lassen, Augen schließen",
+        "EOG prüfen",
+        "Montagewechsel"
+      ],
+      "correction_intervention": [
+        "Patient instruieren (Augen geschlossen halten)",
+        "Blinzelphasen annotieren",
+        "EOG-Kanal obligat"
+      ],
+      "common_misinterpretations": [
+        "Frontale Delta-Aktivität",
+        "FIRDA",
+        "frontale Sharp Wave",
+        "frontale epileptiforme Entladung"
+      ],
+      "images": [
+        {
+          "file": "placeholder_blinzel_bipolar.png",
+          "montage": "bipolare Längsreihe",
+          "context": "wach, Augen offen",
+          "caption": "Blinzelartefakt: frontopolares Maximum, bilateral, langsame Deflexion",
+          "status": "placeholder"
+        }
+      ],
+      "teaching_pearl": "Blinzelartefakt = frontopolares Maximum + EOG-Synchronität. Posteriore Inversion ist das Schlüsselzeichen: kein kortikales Muster erzeugt das.",
+      "warning": "Verwechslung mit FIRDA ist klinisch relevant. Schlüssel: FIRDA tritt ohne Blinzeln auf und hat keine EOG-Korrelation.",
+      "clinical_relevance": "Häufigste Artefaktquelle bei Frontallappenfragestellung. Zentrale Fehlerquelle.",
+      "notes": "",
+      "data_status": "complete",
+      "priority_for_mvp": "hoch",
+      "source_notes": [
+        "Niedermeyer & da Silva, 6th ed., Kap. Artifacts"
+      ]
+    },
+    {
+      "id": "ART_002",
+      "name": "Vertikale Augenbewegungen",
+      "aliases": [
+        "Vertical eye movement artifact"
+      ],
+      "artifact_class": "physiologisch",
+      "subcategory": "okulär",
+      "scope": "routine",
+      "source": "Korneoretinaler Dipol bei vertikaler Blickbewegung",
+      "frequency": {
+        "label": "nicht_anwendbar",
+        "min_hz": null,
+        "max_hz": null,
+        "typical_hz": null,
+        "note": "Bewegungssynchron"
+      },
+      "amplitude": {
+        "label": "mittel",
+        "min_uv": 50,
+        "max_uv": 500,
+        "typical_uv": 150
+      },
+      "duration": {
+        "label": "ereignisabhaengig",
+        "min_ms": 200,
+        "max_ms": 1000,
+        "typical_ms": 400,
+        "note": "Abhängig von Blickbewegungsgeschwindigkeit"
+      },
+      "localization": [
+        "frontopolar",
+        "frontal"
+      ],
+      "laterality": "bilateral_symmetrisch",
+      "morphology": "Langsame frontale Deflexionen, bilateral symmetrisch",
+      "rhythmicity": "ereignisbezogen",
+      "montage_behavior": {
+        "bipolar_longitudinal": "Frontopolar dominiert",
+        "bipolar_transverse": "Bilateral symmetrisch",
+        "referential_cz": "Frontopolare Komponente sichtbar",
+        "referential_average": "Frontale Dominanz",
+        "referential_mastoid": "Standarddarstellung",
+        "best_montage": "EOG-Kanal + bipolare Längsreihe",
+        "pitfalls": "Kann frontale langsame Wellen imitieren",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": true,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": false
+      },
+      "patient_context": [
+        "Augen offen",
+        "Blickwechsel nach oben/unten"
+      ],
+      "triggering_situation": [
+        "Auf-/Abblick",
+        "Lidöffnung/Lidschluss"
+      ],
+      "vigilance_context": [
+        "wach"
+      ],
+      "auxiliary_channels": [
+        "EOG (vertikal)",
+        "Video"
+      ],
+      "cross_references": {
+        "eeg_mimics": [
+          "EEG_0054"
+        ]
+      },
+      "dialog_logic": {
+        "key_features": [
+          "frontopolar",
+          "bilateral symmetrisch",
+          "Blickbewegung nach oben/unten"
+        ],
+        "criteria_for": [
+          "Zeitbezug zur Blickbewegung",
+          "Frontopolares Maximum",
+          "EOG-Korrelation"
+        ],
+        "criteria_against": [
+          "Okzipitale Komponente",
+          "Keine Blickbewegung sichtbar"
+        ],
+        "discriminating_questions": [
+          "Bewegt der Patient die Augen vertikal?",
+          "EOG-Korrelation vorhanden?"
+        ]
+      },
+      "provocation_or_check": [
+        "Fixation anweisen",
+        "EOG prüfen"
+      ],
+      "correction_intervention": [
+        "Fixationsinstruktion",
+        "EOG nutzen"
+      ],
+      "common_misinterpretations": [
+        "Frontale langsame Wellen",
+        "FIRDA"
+      ],
+      "images": [
+        {
+          "file": "placeholder_vertikale_aug.png",
+          "montage": "bipolare Längsreihe",
+          "context": "wach",
+          "caption": "Vertikale Augenbewegungen: frontopolar, bilateral",
+          "status": "placeholder"
+        }
+      ],
+      "teaching_pearl": "Vertikale Augenbewegungen = Blinzelartefakt-Verwandter. EOG-Kanal klärt beide.",
+      "warning": null,
+      "clinical_relevance": "Häufig bei unruhigen Patienten; frontale Befunde immer mit EOG prüfen.",
+      "notes": "",
+      "data_status": "complete",
+      "priority_for_mvp": "mittel",
+      "source_notes": []
+    },
+    {
+      "id": "ART_003",
+      "name": "Horizontale Augenbewegungen",
+      "aliases": [
+        "Horizontal eye movement artifact"
+      ],
+      "artifact_class": "physiologisch",
+      "subcategory": "okulär",
+      "scope": "routine",
+      "source": "Korneoretinaler Dipol bei horizontaler Blickbewegung; F7/F8 sehen gegensinnige Dipol-Ausrichtung",
+      "frequency": {
+        "label": "nicht_anwendbar",
+        "min_hz": null,
+        "max_hz": null,
+        "typical_hz": null,
+        "note": "Bewegungssynchron"
+      },
+      "amplitude": {
+        "label": "mittel",
+        "min_uv": 50,
+        "max_uv": 400,
+        "typical_uv": 150
+      },
+      "duration": {
+        "label": "ereignisabhaengig",
+        "min_ms": 100,
+        "max_ms": 500,
+        "typical_ms": 250,
+        "note": "Sakkadendauer"
+      },
+      "localization": [
+        "frontotemporal",
+        "frontopolar"
+      ],
+      "laterality": "bilateral_asymmetrisch",
+      "morphology": "Gegenphasige Deflexionen F7/F8: wenn links positiv, rechts negativ (je nach Blickrichtung)",
+      "rhythmicity": "ereignisbezogen",
+      "montage_behavior": {
+        "bipolar_longitudinal": "F7/F8 gegenphasig – Schlüsselmerkmal",
+        "bipolar_transverse": "Frontale Querreihe zeigt gegenphasige Aktivität",
+        "referential_cz": "Lateralisiertes frontales Signal",
+        "referential_average": "Gut erkennbar gegenphasig",
+        "referential_mastoid": "Standarddarstellung",
+        "best_montage": "Bipolare Längsreihe + horizontaler EOG",
+        "pitfalls": "Gegenphasige F7/F8-Aktivität wird als temporale Sharp Waves fehlgedeutet",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": true,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": false
+      },
+      "patient_context": [
+        "Blickbewegungen seitlich",
+        "Unruhe"
+      ],
+      "triggering_situation": [
+        "Seitblick links/rechts"
+      ],
+      "vigilance_context": [
+        "wach"
+      ],
+      "auxiliary_channels": [
+        "EOG (horizontal)",
+        "Video"
+      ],
+      "cross_references": {
+        "eeg_mimics": [
+          "EEG_0043"
+        ]
+      },
+      "dialog_logic": {
+        "key_features": [
+          "gegenphasig F7/F8",
+          "bilateral aber gegensinnig",
+          "Blickbewegung seitlich",
+          "frontotemporal"
+        ],
+        "criteria_for": [
+          "Gegenphasigkeit F7 vs. F8",
+          "Zeitbezug zu seitlichem Blick",
+          "EOG-Korrelation"
+        ],
+        "criteria_against": [
+          "Gleiche Phase bilateral (→ kortikales Muster möglich)",
+          "Keine Blickbewegung"
+        ],
+        "discriminating_questions": [
+          "Sind F7 und F8 gegenphasig?",
+          "Bewegt der Patient die Augen seitlich?"
+        ]
+      },
+      "provocation_or_check": [
+        "Fixation anweisen",
+        "horizontalen EOG prüfen"
+      ],
+      "correction_intervention": [
+        "Blickfixation",
+        "EOG-Kanal obligat"
+      ],
+      "common_misinterpretations": [
+        "Temporale Sharp Waves",
+        "bilaterale temporale Verlangsamung"
+      ],
+      "images": [
+        {
+          "file": "placeholder_horizontal_aug.png",
+          "montage": "bipolare Längsreihe",
+          "context": "wach",
+          "caption": "Horizontale Augenbewegungen: gegenphasig F7/F8",
+          "status": "placeholder"
+        }
+      ],
+      "teaching_pearl": "Gegenphasige F7/F8 = Blickbewegung bis zum Beweis des Gegenteils. Ein kortikales Muster wäre gleichphasig.",
+      "warning": "Wird häufig als temporale Sharp Wave fehlgedeutet. F7/F8-Gegenphasigkeit ist pathognomonisch für horizontale Augenbewegung.",
+      "clinical_relevance": "Wichtige DD für temporale Sharp Waves.",
+      "notes": "",
+      "data_status": "complete",
+      "priority_for_mvp": "hoch",
+      "source_notes": []
+    },
+    {
+      "id": "ART_004",
+      "name": "Lateraler-Rectus-Spike",
+      "aliases": [
+        "Lateral rectus spike",
+        "Rectus-lateralis-Artefakt"
+      ],
+      "artifact_class": "physiologisch",
+      "subcategory": "okulär",
+      "scope": "routine",
+      "source": "Aktionspotentiale des M. rectus lateralis bei sakkadischen Augenbewegungen; sehr kurze hochamplitudige myogene Spikes",
+      "frequency": {
+        "label": "nicht_anwendbar",
+        "min_hz": null,
+        "max_hz": null,
+        "typical_hz": null,
+        "note": "Einzeltransient, sakkadengekoppelt"
+      },
+      "amplitude": {
+        "label": "variabel",
+        "min_uv": 30,
+        "max_uv": 200,
+        "typical_uv": 80
+      },
+      "duration": {
+        "label": "sehr_kurz",
+        "min_ms": 5,
+        "max_ms": 30,
+        "typical_ms": 15,
+        "note": "Sehr kurze Muskelpotentiale – kürzer als typische ETP"
+      },
+      "localization": [
+        "frontotemporal",
+        "temporal_anterior"
+      ],
+      "laterality": "wechselnd",
+      "morphology": "Sehr kurze, spitze Transienten; erscheinen epileptiform; ipsilateral zur Blickrichtung betont",
+      "rhythmicity": "ereignisbezogen",
+      "montage_behavior": {
+        "bipolar_longitudinal": "F7 oder F8 betont, je nach Blickrichtung; kein stabiles kortikales Feld über Nachbarelektroden",
+        "bipolar_transverse": "Frontotemporal lateralisiert",
+        "referential_cz": "Frontotemporal erkennbar",
+        "referential_average": "Fokal frontotemporal",
+        "referential_mastoid": "Standarddarstellung",
+        "best_montage": "Bipolare Längsreihe + EOG + Video",
+        "pitfalls": "Kurze Dauer und frontotemporal-Lokalisation können exakt einen temporalen Spike imitieren",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": true,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": false
+      },
+      "patient_context": [
+        "laterale Blickbewegungen",
+        "Augen offen",
+        "Unruhe"
+      ],
+      "triggering_situation": [
+        "Sakkaden seitlich"
+      ],
+      "vigilance_context": [
+        "wach"
+      ],
+      "auxiliary_channels": [
+        "EOG (horizontal)",
+        "Video"
+      ],
+      "cross_references": {
+        "eeg_mimics": [
+          "EEG_0042",
+          "EEG_0043",
+          "EEG_0030"
+        ]
+      },
+      "dialog_logic": {
+        "key_features": [
+          "sehr kurz (< 30 ms)",
+          "frontotemporal ipsilateral zur Blickrichtung",
+          "Sakkadenkoppelung",
+          "kein kortikales Feld",
+          "kein Slow Wave"
+        ],
+        "criteria_for": [
+          "Zeitbezug zur seitlichen Sakkade",
+          "Frontotemporal lateralisiert passend zur Blickrichtung",
+          "Kein Slow Wave",
+          "Kein plausibles kortikales Feld",
+          "EOG-Korrelation"
+        ],
+        "criteria_against": [
+          "Slow Wave vorhanden (→ eher ETP)",
+          "Plausibles kortikales Feld mit Ausbreitung",
+          "Kein Zeitbezug zu Blickbewegung",
+          "Auftritt mit Augen geschlossen"
+        ],
+        "discriminating_questions": [
+          "Tritt es zeitgleich mit einem Seitenblick auf?",
+          "Gibt es eine Slow Wave?",
+          "Ist ein kortikales Feld über Nachbarelektroden erkennbar?",
+          "EOG-Korrelat vorhanden?"
+        ]
+      },
+      "provocation_or_check": [
+        "Patient gerade nach vorne schauen lassen",
+        "EOG + Video synchron prüfen",
+        "Wiederholt bei gezieltem Seitenblick beobachten"
+      ],
+      "correction_intervention": [
+        "Fixationsinstruktion",
+        "EOG-Kanal obligat",
+        "Blickbewegungen annotieren"
+      ],
+      "common_misinterpretations": [
+        "Temporaler Spike (ETP)",
+        "SSS/BETS",
+        "Wicket Waves"
+      ],
+      "images": [
+        {
+          "file": "placeholder_rectus_spike.png",
+          "montage": "bipolare Längsreihe",
+          "context": "wach, Seitenblick",
+          "caption": "Lateraler-Rectus-Spike: frontotemporal, sehr kurz, sakkadengekoppelt",
+          "status": "placeholder"
+        }
+      ],
+      "teaching_pearl": "Lateraler-Rectus-Spike sieht aus wie ein temporaler Spike – aber er ist sakkadengekoppelt, hat keinen Slow Wave und kein kortikales Feld. EOG und Video lösen die Frage.",
+      "warning": "Wichtigstes okulomotorisches Spike-Mimic. Ohne EOG wird er regelmäßig als ETP fehlklassifiziert.",
+      "clinical_relevance": "Häufige Ursache für falsch-positive Temporallappenepilepsie-Diagnosen.",
+      "notes": "",
+      "data_status": "complete",
+      "priority_for_mvp": "hoch",
+      "source_notes": [
+        "Gibbs & Gibbs 1952; Klass & Daly 1979"
+      ]
+    },
+    {
+      "id": "ART_006",
+      "name": "Nystagmusartefakt",
+      "aliases": [
+        "Nystagmus artifact"
+      ],
+      "artifact_class": "physiologisch",
+      "subcategory": "okulär",
+      "scope": "ICU_optional",
+      "source": "rhythmische Augenbewegungen",
+      "frequency": {
+        "label": "variabel",
+        "min_hz": null,
+        "max_hz": null,
+        "typical_hz": null,
+        "note": "nystagmussynchron"
+      },
+      "amplitude": {
+        "label": "variabel",
+        "min_uv": null,
+        "max_uv": null,
+        "typical_uv": null
+      },
+      "duration": {
+        "label": "variabel",
+        "min_ms": null,
+        "max_ms": null,
+        "typical_ms": null,
+        "note": "Sequenzen entsprechend Nystagmus"
+      },
+      "localization": [
+        "frontal",
+        "frontotemporal"
+      ],
+      "laterality": "nicht_anwendbar",
+      "morphology": "rhythmische langsame oder gezackte okuläre Deflexionen",
+      "rhythmicity": "rhythmisch",
+      "montage_behavior": {
+        "bipolar_longitudinal": "",
+        "bipolar_transverse": "",
+        "referential_cz": "",
+        "referential_average": "",
+        "referential_mastoid": "",
+        "best_montage": "",
+        "pitfalls": "",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": true,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": false
+      },
+      "patient_context": [
+        "Nystagmus",
+        "Schwindel",
+        "Blickrichtungsnystagmus"
+      ],
+      "triggering_situation": [],
+      "vigilance_context": [],
+      "auxiliary_channels": [
+        "EOG",
+        "Video"
+      ],
+      "cross_references": {
+        "eeg_mimics": []
+      },
+      "dialog_logic": {
+        "key_features": [
+          "klinisch sichtbarer Nystagmus",
+          "okulaere Topographie",
+          "Korrelation mit Blickrichtung"
+        ],
+        "criteria_for": [],
+        "criteria_against": [],
+        "discriminating_questions": []
+      },
+      "provocation_or_check": [],
+      "correction_intervention": [
+        "Video/EOG nutzen",
+        "Augenstatus dokumentieren"
+      ],
+      "common_misinterpretations": [
+        "rhythmische frontale Aktivitaet",
+        "Anfallsmuster"
+      ],
+      "images": [
+        {
+          "file": "placeholder_art_006.png",
+          "montage": "bipolare Längsreihe",
+          "context": "",
+          "caption": "Nystagmusartefakt",
+          "status": "placeholder"
+        }
+      ],
+      "teaching_pearl": "",
+      "warning": null,
+      "clinical_relevance": "",
+      "notes": "",
+      "data_status": "partial",
+      "priority_for_mvp": "mittel",
+      "source_notes": []
+    },
+    {
+      "id": "ART_007",
+      "name": "Kappa-Phänomen",
+      "aliases": [
+        "Kappa-Rhythmus",
+        "Kappa waves",
+        "Kappa rhythm",
+        "Augenflattern-Artefakt (historisch: Kappa)",
+        "Augenflattern-Artefakt",
+        "Eye flutter artifact",
+        "Lidflattern-Artefakt"
+      ],
+      "artifact_class": "physiologisch",
+      "subcategory": "okulär",
+      "scope": "routine",
+      "source": "Rapiddes Lidflattern – minimale, oft mit bloßem Auge kaum sichtbare Lidzuckungen erzeugen elektrische Felder, die von frontopolaren Elektroden registriert werden; kein kortikaler Ursprung",
+      "frequency": {
+        "label": "Theta/Alpha",
+        "min_hz": 4,
+        "max_hz": 13,
+        "typical_hz": 8,
+        "note": "Theta (4–7 Hz) oder Alpha (8–13 Hz); bei sequenziellem Blinzeln typisch 5–8 Hz; bei vertikalem Nystagmus bis 6–13 Hz"
+      },
+      "amplitude": {
+        "label": "klein bis mittel",
+        "min_uv": 10,
+        "max_uv": 80,
+        "typical_uv": 30
+      },
+      "duration": {
+        "label": "kurze Serien",
+        "min_ms": 500,
+        "max_ms": 3000,
+        "typical_ms": 1000,
+        "note": "Kurze repetitive Salven; eng zeitlich an Lidschluss/Lidflattern gekoppelt"
+      },
+      "localization": [
+        "frontopolar"
+      ],
+      "laterality": "bilateral_symmetrisch",
+      "morphology": "Schnelle repetitive Deflexionen über Fp1/Fp2; wechselnde Polarität bei vertikalem Nystagmus (Abwärtsphase: negative Deflektion Fp1/Fp2; Aufwärtsphase: positive Deflektion); bei Blinzeln/Flattern: rhythmische kurze Transienten",
+      "rhythmicity": "rhythmisch oder semirhythmisch",
+      "montage_behavior": {
+        "bipolar_longitudinal": "Maximum strikt auf Fp1/Fp2 beschränkt; kein weiteres frontales Feld; kein Propagationsmuster in posteriore Ableitungen",
+        "bipolar_transverse": "Symmetrisches frontopolares Signal",
+        "referential_cz": "Gut zur Feldanalyse geeignet – zeigt klares Frontopolarmuster ohne temporale/parietale Ausbreitung",
+        "referential_average": "Gut geeignet; frontopolares Maximum klar abgrenzbar",
+        "referential_mastoid": "Gut geeignet",
+        "best_montage": "Bipolare Längsreihe + EOG-Kanal; Feldanalyse mit Average-Referenz zur Abgrenzung kortikaler Aktivität",
+        "pitfalls": "Kann bei Theta-Frequenz mit frontalen Theta-Rhythmen verwechselt werden; bei Alpha-Frequenz mit echtem Alpha-Rückfluss; entscheidend ist die strikte Frontopolar-Beschränkung",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": true,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": false
+      },
+      "patient_context": [
+        "Lidschluss",
+        "Lidflattern",
+        "sequenzielles Blinzeln",
+        "mentale Aktivität / Konzentration",
+        "Vigilanzminderung"
+      ],
+      "triggering_situation": [
+        "Lidschluss mit Lidflattern",
+        "Augenbewegungen (vertikal/Nystagmus)",
+        "sequenzielles Blinzeln"
+      ],
+      "vigilance_context": [
+        "wach",
+        "schlaefrig"
+      ],
+      "auxiliary_channels": [
+        "EOG",
+        "Video"
+      ],
+      "cross_references": {
+        "eeg_mimics": [
+          "EEG_0001",
+          "EEG_0002"
+        ]
+      },
+      "dialog_logic": {
+        "key_features": [
+          "strikt frontopolar (Fp1/Fp2)",
+          "Theta- oder Alpha-Frequenz",
+          "zeitlich an Lidschluss/Lidflattern gekoppelt",
+          "kein posteriores Feld",
+          "immer physiologisch"
+        ],
+        "criteria_for": [
+          "Maximum ausschließlich Fp1/Fp2",
+          "Theta (4–7 Hz) oder Alpha (8–13 Hz)",
+          "Verschwinden bei ruhigen Augen / Augenöffnung",
+          "EOG zeigt Lidbewegung synchron",
+          "Kein propagierendes Feld in posteriore Elektroden"
+        ],
+        "criteria_against": [
+          "Ausbreitung über F3/F4, C3/C4 (→ kortikale Aktivität?)",
+          "Persistenz bei geschlossenen, ruhigen Augen (→ echtes frontales EEG-Muster)",
+          "Amplitudenüberwiegendes posteriores Signal (→ kein Kappa)"
+        ],
+        "discriminating_questions": [
+          "Liegt das Maximum strikt über Fp1/Fp2?",
+          "Gibt es ein Video oder EOG, das Lidflattern zeigt?",
+          "Verschwindet das Muster bei ruhigen, geschlossenen Augen?",
+          "Reagiert es auf Augenöffnen (→ Artefakt verschwindet oder ändert sich)?"
+        ]
+      },
+      "provocation_or_check": [
+        "Patient auffordern, Augen ruhig zu halten → Verschwinden des Musters",
+        "Augenöffnen lassen → Reaktion prüfen",
+        "EOG-Kanal und Video synchron analysieren"
+      ],
+      "correction_intervention": [
+        "Videoüberwachung und EOG zur Korrelation",
+        "Patient instruieren, Lidflattern zu vermeiden",
+        "Kein therapeutischer Handlungsbedarf – rein physiologisch"
+      ],
+      "common_misinterpretations": [
+        "Verwechslung mit frontalen Theta-Rhythmen oder pathologischer frontaler Verlangsamung",
+        "Verwechslung mit Alpha-Aktivität (bei Alpha-Frequenz-Variante)",
+        "Historisch als echter Hirnrhythmus ('Kappa-Rhythmus') fehlgedeutet – heute eindeutig Artefakt",
+        "Seltene hochfrequente Variante (bis 13 Hz) kann an Spike-ähnliche frontale Aktivität erinnern"
+      ],
+      "images": [
+        {
+          "file": "placeholder_art_007.png",
+          "montage": "bipolare Längsreihe + EOG",
+          "context": "Wachzustand, Lidflattern",
+          "caption": "Kappa-Phänomen: frontopolare rhythmische Theta-/Alpha-Aktivität bei Lidflattern",
+          "status": "placeholder"
+        }
+      ],
+      "teaching_pearl": "Das Kappa-Phänomen ist kein Hirnrhythmus – es ist ein Lidflattern-Artefakt, das historisch fälschlicherweise als 'Kappa-Rhythmus' bezeichnet wurde. Entscheidend: strikte Begrenzung auf Fp1/Fp2, zeitliche Kopplung an Lidbewegungen, kein posteriores Feld. Immer physiologisch, nie behandlungsbedürftig.",
+      "warning": null,
+      "clinical_relevance": "Kein Krankheitswert. Wichtig zur Vermeidung von Fehldiagnosen (z. B. frontale Epilepsie, pathologische Verlangsamung).",
+      "notes": "Historisch als kortikale Aktivität bei mentaler Aktivität beschrieben. Heute eindeutig als Lidflattern-Artefakt klassifiziert. Verwandtes Phänomen: sequenzielles Blinzeln → 5–8 Hz bei Fp1/Fp2 mit gleicher Feldcharakteristik.",
+      "data_status": "complete",
+      "priority_for_mvp": "hoch",
+      "source_notes": [
+        "Fisch 1999",
+        "Blume et al. 2002",
+        "Silber et al. 2007 (AASM)",
+        "Rama et al. 2009"
+      ]
+    },
+    {
+      "id": "ART_008",
+      "name": "EMG-Artefakt",
+      "aliases": [
+        "Muskelartefakt",
+        "Skelettmuskelartefakt",
+        "Myogenic artifact"
+      ],
+      "artifact_class": "physiologisch_muskulaer_bewegung",
+      "subcategory": "Muskelartefakte",
+      "scope": "routine",
+      "source": "Summen-EMG willkürlicher oder unwillkürlicher Skelettmuskelaktivität; häufigste Quellen: Temporalis (beim Kauen/Anspannen), Frontalis (Stirnrunzeln), Nacken- und Schultermuskulatur",
+      "frequency": {
+        "label": "hoch",
+        "min_hz": 20,
+        "max_hz": 200,
+        "typical_hz": 50,
+        "note": "Breitbandiges Spektrum >20 Hz; Hauptenergie 30–100 Hz"
+      },
+      "amplitude": {
+        "label": "variabel",
+        "min_uv": 10,
+        "max_uv": 500,
+        "typical_uv": 50
+      },
+      "duration": {
+        "label": "variabel",
+        "min_ms": null,
+        "max_ms": null,
+        "typical_ms": null,
+        "note": "Anhaltend während Muskelaktivität"
+      },
+      "localization": [
+        "temporal",
+        "frontal",
+        "frontozentral",
+        "diffus"
+      ],
+      "laterality": "unilateral_oder_bilateral",
+      "morphology": "Hochfrequente, unregelmäßige Zacken; 'raues' Aussehen der Kurve; kein kortikales Feld; temporal betont bei M. temporalis (Kauen, Anspannen); frontal bei Stirnrunzeln (M. frontalis)",
+      "rhythmicity": "arrhythmisch",
+      "montage_behavior": {
+        "bipolar_longitudinal": "Temporal betont: F8-T4, T4-T6 bzw. F7-T3, T3-T5 bei Kaumuskelanspannung; Frontal: Fp1-F3, Fp2-F4 bei Stirnrunzeln",
+        "bipolar_transverse": "Lateralisierung gut sichtbar bei einseitiger Anspannung",
+        "referential_cz": "Maximum an der Quelle; Cz kaum betroffen wenn Quelle temporal oder frontal",
+        "referential_average": "Breite Verteilung; kann in entfernte Elektroden einstreuen",
+        "referential_mastoid": "Mastoid als Referenz kann selbst vom EMG betroffen sein",
+        "best_montage": "Bipolare Längsreihe zeigt Lokalisation am besten",
+        "pitfalls": "Hochfrequente EMG-Artefakte können Spikes und HFOs imitieren; bei lateralisiertem EMG Verwechslung mit fokaler Aktivität",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": true,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": false
+      },
+      "patient_context": [
+        "Anspannung",
+        "Aufregung",
+        "Schmerzen",
+        "Unruhe"
+      ],
+      "triggering_situation": [
+        "Muskelanspannung",
+        "Kauen",
+        "Stirnrunzeln",
+        "Zähnepressen (Bruxismus)",
+        "Nackenstress"
+      ],
+      "vigilance_context": [
+        "wach",
+        "schlaefrig"
+      ],
+      "auxiliary_channels": [
+        "Video (Beobachtung der Muskelaktivität)"
+      ],
+      "cross_references": {
+        "eeg_mimics": [
+          "Hochfrequente Oszillationen (HFOs)",
+          "Spikes temporal"
+        ]
+      },
+      "dialog_logic": {
+        "key_features": [
+          ">20 Hz",
+          "'raues' Kurvenbild",
+          "temporale oder frontale Betonung",
+          "zeitbezogen zu Muskelaktivität",
+          "kein plausibles kortikales Feld"
+        ],
+        "criteria_for": [
+          "Hochfrequentes Signal >20 Hz",
+          "Korrelation mit sichtbarer Muskelaktivität",
+          "Verschwinden in Entspannung"
+        ],
+        "criteria_against": [
+          "Niedrigfrequente Komponente (kein EMG)",
+          "Persistenz in vollständiger Entspannung"
+        ],
+        "discriminating_questions": [
+          "Spannt der Patient die Kaumuskulatur an?",
+          "Runzelt er die Stirn?",
+          "Verschwindet das Signal beim Entspannen?"
+        ]
+      },
+      "provocation_or_check": [
+        "Patient zur Entspannung auffordern",
+        "Kiefer locker lassen"
+      ],
+      "correction_intervention": [
+        "Entspannungsanweisung",
+        "Kissen unter Nacken",
+        "Gelegentlich Sedierung nötig (ICU)"
+      ],
+      "common_misinterpretations": [
+        "Fokale Spikes temporal",
+        "Hochfrequente Oszillationen",
+        "Beta-Aktivität"
+      ],
+      "images": [
+        {
+          "file": "placeholder_emg.png",
+          "montage": "bipolare Längsreihe",
+          "context": "wach, angespannt",
+          "caption": "EMG-Artefakt: hochfrequente Überlagerung temporal/frontal",
+          "status": "placeholder"
+        }
+      ],
+      "teaching_pearl": "EMG-Artefakte sind das häufigste Artefakt im EEG. Immer >20 Hz, kein kortikales Feld, verschwindet bei Entspannung. Den Patienten bitten, den Kiefer zu öffnen — Artefakt sistiert sofort.",
+      "warning": "Bei lateralisiertem temporal betontem EMG Verwechslung mit epileptiformer Temporalaktivität möglich.",
+      "clinical_relevance": "Häufigste Störquelle im ambulanten EEG und bei unkooperativen Patienten.",
+      "notes": "",
+      "data_status": "complete",
+      "priority_for_mvp": "hoch",
+      "source_notes": [
+        "Niedermeyer & da Silva, 6th ed."
+      ],
+      "eeg_signature": "Hochfrequente (>20 Hz), oft irreguläre Aktivität durch Muskelkontraktionen. Charakteristisch: breites Frequenzspektrum 20–300 Hz, überlagert den Hintergrund. Fünf Haupttypen:\n(1) Allgemeines EMG: diffuse hochfrequente Aktivität bei Anspannung, Schmerz, Unruhe.\n(2) Stirnmuskel (M. frontalis): frontopolare Betonung (Fp1/Fp2, Fz), typisch bei Anspannung.\n(3) Kaumuskel (M. temporalis/masseter): direkt unter T3/T4, höchste Amplitude temporal; durch Kauen, Zähneknirschen, Schmerz.\n(4) Oropharyngeal (Sprechen, Schlucken): EMG der Gesichts-, Zungen-, Kehlkopfmuskulatur; korreliert mit Sprechpausen.\n(5) Glossokinetisch (Zunge): Zunge = galvanischer Dipol (Spitze –70 mV, Rücken positiv); Zungenbewegung erzeugt langsame Potentialverschiebungen frontal/temporal.",
+      "identification_keys": [
+        "Hochfrequent (>20 Hz), breitbandig",
+        "Korreliert mit Muskelaktivität (Kauen, Sprechen, Anspannung)",
+        "Supra-Gamma-Frequenzen im Rohsignal sichtbar",
+        "Stirnmuskel: frontopolar (Fp1/Fp2)",
+        "Kaumuskel: temporal (T3/T4), höchste Amplitude",
+        "Glossokinetisch: langsame Auslenkungen, korreliert mit Zungenbewegung",
+        "Sistiert mit Entspannung oder Stillhalten"
+      ]
+    },
+    {
+      "id": "ART_014",
+      "name": "Körperbewegungsartefakt",
+      "aliases": [
+        "Bewegungsartefakt",
+        "Movement artifact",
+        "Motion artifact"
+      ],
+      "artifact_class": "physiologisch_muskulaer_bewegung",
+      "subcategory": "Bewegungsartefakte",
+      "scope": "routine",
+      "source": "Mechanische Bewegung von Elektroden relativ zur Haut: Impedanzänderung, Hautpotenzialverschiebung, Kabelzug; bei Lagewechsel, Umlagerung, willkürlichen Bewegungen (Kratzen, Armheben, Kopfdrehen) und nicht-rhythmischem Zittern",
+      "frequency": {
+        "label": "niedrig_bis_mittel",
+        "min_hz": 0.1,
+        "max_hz": 10,
+        "typical_hz": 2,
+        "note": "Meist Delta/Theta; transiente Potenzialverschiebungen; abhängig von Bewegungsgeschwindigkeit"
+      },
+      "amplitude": {
+        "label": "variabel",
+        "min_uv": 50,
+        "max_uv": 5000,
+        "typical_uv": 300
+      },
+      "duration": {
+        "label": "variabel",
+        "min_ms": 100,
+        "max_ms": 10000,
+        "typical_ms": 1000,
+        "note": "Einzelbewegung: Millisekunden; Lagewechsel: mehrere Sekunden"
+      },
+      "localization": [
+        "variabel",
+        "diffus",
+        "lokal_bei_betroffener_elektrode"
+      ],
+      "laterality": "variabel",
+      "morphology": "Unregelmäßige, oft großamplitudige Potenzialverschiebungen; transiente Spikes durch Elektrodenbewegung; langsame Drifts; kein kortikales Feld; Verteilung folgt der bewegten Region; kann auch EMG-Anteile enthalten",
+      "rhythmicity": "arrhythmisch",
+      "montage_behavior": {
+        "bipolar_longitudinal": "Maximum an der bewegten Elektrode; benachbarte Kanäle mitbetroffen durch gemeinsame Elektrode",
+        "bipolar_transverse": "Lateralisiert wenn Bewegung einseitig",
+        "referential_cz": "Betroffene Elektrode zeigt Maximum; Cz nur wenn Kopf bewegt",
+        "referential_average": "Breite Verteilung möglich",
+        "referential_mastoid": "Mastoid-Elektrode kann direkt betroffen sein",
+        "best_montage": "Bipolar longitudinal zeigt am besten welche Elektrode betroffen ist",
+        "pitfalls": "Große Bewegungsartefakte können alle Kanäle überlagern und Anfallsaktivität maskieren oder imitieren",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": true,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": false
+      },
+      "patient_context": [
+        "Unruhe",
+        "Agitation",
+        "Juckreiz",
+        "Schmerzen",
+        "Umlagerung",
+        "Pflege",
+        "Transport"
+      ],
+      "triggering_situation": [
+        "Kratzen",
+        "Umlagerung",
+        "Lagewechsel",
+        "Kopfdrehen",
+        "Armheben",
+        "willkürliche Körperbewegungen",
+        "nicht-rhythmisches Zittern"
+      ],
+      "vigilance_context": [
+        "wach",
+        "schlaefrig",
+        "koma"
+      ],
+      "auxiliary_channels": [
+        "Video obligat",
+        "Akzelerometer (Langzeit-EEG)"
+      ],
+      "cross_references": {
+        "eeg_mimics": [
+          "Anfallsaktivität bei Agitation",
+          "Elektrodenfehler"
+        ]
+      },
+      "dialog_logic": {
+        "key_features": [
+          "zeitgebunden an sichtbare Bewegung",
+          "kein kortikales Feld",
+          "variabel lokalisiert",
+          "arrhythmisch",
+          "verschwindet in Ruhe"
+        ],
+        "criteria_for": [
+          "Zeitkorrelation mit Bewegung im Video",
+          "Lokalisiert an der bewegten Region",
+          "Kein kortikales Feld",
+          "Kein typisches Anfallsmuster",
+          "Arrhythmisch — kein stabiler Rhythmus"
+        ],
+        "criteria_against": [
+          "Persistenz ohne Bewegung",
+          "Rhythmisches Muster mit Evolution (Anfallsverdacht)"
+        ],
+        "discriminating_questions": [
+          "Bewegt sich der Patient im Video?",
+          "Folgt das Artefakt einer Elektrode?",
+          "Gibt es eine ictal evolution?"
+        ]
+      },
+      "provocation_or_check": [
+        "Patient zur Ruhe bringen",
+        "Video prüfen"
+      ],
+      "correction_intervention": [
+        "Gute Elektrodenfixierung (Kollodium im Langzeit-EEG)",
+        "Kabel fixieren"
+      ],
+      "common_misinterpretations": [
+        "Anfallsaktivität",
+        "Elektrodenfehler"
+      ],
+      "images": [
+        {
+          "file": "placeholder_art_014.png",
+          "montage": "bipolare Längsreihe",
+          "context": "",
+          "caption": "Tremorartefakt",
+          "status": "placeholder"
+        }
+      ],
+      "teaching_pearl": "Bewegungsartefakte sind das ärgerlichste Artefakt im Langzeit-EEG. Goldstandard: Video. Artefakt nur bei Bewegung, kein kortikales Feld, kein stabiler Rhythmus — kein Anfall.",
+      "warning": "Bei agitiertem Patienten: Bewegungsartefakte können Anfallsaktivität maskieren — besonders kritisch im ICU-EEG.",
+      "clinical_relevance": "Omnipräsent im Langzeit- und ICU-EEG. Wichtigste Differenzialdiagnose zu epileptischer Aktivität bei motorisch unruhigen Patienten.",
+      "notes": "",
+      "data_status": "complete",
+      "priority_for_mvp": "hoch",
+      "source_notes": [
+        "Niedermeyer & da Silva, 6th ed."
+      ],
+      "eeg_signature": "Rhythmische oder irreguläre Auslenkungen durch Körperbewegung. Tremorartefakt: regelmäßige Frequenz (4–12 Hz), korrespondiert mit klinischem Tremor; betrifft vor allem temporale und frontale Elektroden je nach Tremortyp. Schüttel-/Fröstelartefakt: hochfrequent (10–18 Hz), irregulär, diffus oder muskelgruppenabhängig; typisch bei Schüttelfrost, Rigor, Shivering. Beide Typen: Amplitude und Frequenz ändern sich mit Körperzustand; bewegungskorreliert."
+    },
+    {
+      "id": "ART_016",
+      "name": "Photomyogene/photomyoklonische Reaktion",
+      "aliases": [
+        "Photomyogenic response",
+        "Photomyoclonic response",
+        "photomyoklonische Reaktion"
+      ],
+      "artifact_class": "physiologisch",
+      "subcategory": "okulär",
+      "scope": "ICU_optional",
+      "source": "reflektorische Muskelantwort, v. a. periorbital/frontal, auf Lichtblitze",
+      "frequency": {
+        "label": "variabel",
+        "min_hz": null,
+        "max_hz": null,
+        "typical_hz": null,
+        "note": "stimulusfrequenz-synchron"
+      },
+      "amplitude": {
+        "label": "variabel",
+        "min_uv": null,
+        "max_uv": null,
+        "typical_uv": null
+      },
+      "duration": {
+        "label": "variabel",
+        "min_ms": null,
+        "max_ms": null,
+        "typical_ms": null,
+        "note": "waehrend Fotostimulation"
+      },
+      "localization": [
+        "frontal",
+        "frontopolar",
+        "periorbital"
+      ],
+      "laterality": "nicht_anwendbar",
+      "morphology": "myogene frontale Aktivitaet synchron zur Blitzfrequenz",
+      "rhythmicity": "stimulusgekoppelt",
+      "montage_behavior": {
+        "bipolar_longitudinal": "",
+        "bipolar_transverse": "",
+        "referential_cz": "",
+        "referential_average": "",
+        "referential_mastoid": "",
+        "best_montage": "",
+        "pitfalls": "",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": true,
+        "photic_synchronous": true,
+        "stimulation_synchronous": false,
+        "device_synchronous": false
+      },
+      "patient_context": [
+        "intermittierende Fotostimulation"
+      ],
+      "triggering_situation": [],
+      "vigilance_context": [],
+      "auxiliary_channels": [
+        "Stimulusmarker",
+        "Video",
+        "EOG"
+      ],
+      "cross_references": {
+        "eeg_mimics": []
+      },
+      "dialog_logic": {
+        "key_features": [
+          "frontale/periorbitale EMG-Dominanz",
+          "keine generalisierte kortikale Spike-Wave-Ausbreitung",
+          "exakte Blitzsynchronitaet"
+        ],
+        "criteria_for": [],
+        "criteria_against": [],
+        "discriminating_questions": []
+      },
+      "provocation_or_check": [],
+      "correction_intervention": [
+        "Video/Stimulusmarker pruefen",
+        "gegen PPR abgrenzen"
+      ],
+      "common_misinterpretations": [
+        "photoparoxysmale Reaktion"
+      ],
+      "images": [
+        {
+          "file": "placeholder_art_016.png",
+          "montage": "bipolare Längsreihe",
+          "context": "",
+          "caption": "Photomyogene/photomyoklonische Reaktion",
+          "status": "placeholder"
+        }
+      ],
+      "teaching_pearl": "",
+      "warning": null,
+      "clinical_relevance": "",
+      "notes": "In Wellen-Datenbank sollte PPR separat bleiben; photomyogene Reaktion ist Artefakt/physiologische Muskelantwort.",
+      "data_status": "partial",
+      "priority_for_mvp": "mittel",
+      "source_notes": []
+    },
+    {
+      "id": "ART_017",
+      "name": "EKG-/Kardialartefakt",
+      "aliases": [
+        "ECG artifact",
+        "Cardiac artifact",
+        "EKG-Einstreuung",
+        "Arrhythmie-Artefakt",
+        "Extrasystolen-Artefakt",
+        "PVC artifact",
+        "arrhythmia-related ECG artifact",
+        "Herzrhythmusartefakt"
+      ],
+      "artifact_class": "physiologisch",
+      "subcategory": "kardial",
+      "scope": "routine",
+      "source": "Elektrische Herzaktivität (QRS-Vektor) strahlt in EEG-Elektroden ein; bei Arrhythmie/Extrasystolen unregelmäßig",
+      "frequency": {
+        "label": "variabel",
+        "min_hz": 0.8,
+        "max_hz": 2.5,
+        "typical_hz": 1.2,
+        "note": "Entspricht der Herzfrequenz (ca. 60-100/min = 1-1.7 Hz)"
+      },
+      "amplitude": {
+        "label": "klein",
+        "min_uv": 10,
+        "max_uv": 100,
+        "typical_uv": 30
+      },
+      "duration": {
+        "label": "sehr_kurz",
+        "min_ms": 20,
+        "max_ms": 100,
+        "typical_ms": 50,
+        "note": "QRS-synchron, kurz und regelmaessig"
+      },
+      "localization": [
+        "temporal_posterior",
+        "temporal_mittel"
+      ],
+      "laterality": "links",
+      "morphology": "Spitze, diphasische oder QRS-ähnliche Transienten; regelmäßig wiederkehrend mit Herzfrequenz",
+      "rhythmicity": "rhythmisch",
+      "montage_behavior": {
+        "bipolar_longitudinal": "Oft links temporal/aurikular betont; in mehreren Kanälen sichtbar; keine kortikale Phasenumkehr",
+        "bipolar_transverse": "Links betont oft",
+        "referential_cz": "Kann breit erscheinen wenn Referenz EKG-fern",
+        "referential_average": "Oft deutlicher bei gemeinsamer Referenz (verteilt EKG auf alle Kanäle)",
+        "referential_mastoid": "PROBLEMATISCH – Referenzkontamination: A1/A2 (Mastoiden/Ohrläppchen) liegen nahe den Halsgefäßen und nehmen EKG-Signale direkt auf. Da A1/A2 die Referenz bilden, wird das EKG-Signal von ALLEN Kanälen subtrahiert → EKG-Artefakt erscheint scheinbar generalisiert in allen Ableitungen. Kann GPDs, generalisierte Spikes oder Triphasische Wellen vortäuschen.",
+        "best_montage": "Bipolare Längsreihe; immer EKG-Kanal parallel laufen lassen",
+        "pitfalls": "Mastoid-Referenz → Referenzkontamination durch EKG: Fokal-temporal wirkender EKG-Artefakt wird zu scheinbar generalisiertem Muster. Wichtigste DD: GPDs, periodische Entladungen. Entscheidung: EKG-Kanal zeitlich korrelieren; Montage auf Bipolar wechseln.",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": true,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": false,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": false
+      },
+      "patient_context": [
+        "Jeder Zustand",
+        "niedrige EEG-Amplitude macht EKG-Artefakt sichtbarer",
+        "tachykard"
+      ],
+      "triggering_situation": "Immer vorhanden; ausgeprägter bei hoher Herzfrequenz, tiefliegenden Elektroden, ungünstiger Referenz",
+      "vigilance_context": [
+        "wach",
+        "schlaefrig",
+        "koma"
+      ],
+      "auxiliary_channels": [
+        "EKG-Kanal (obligat)"
+      ],
+      "cross_references": {
+        "eeg_mimics": [
+          "EEG_0042",
+          "EEG_0059"
+        ]
+      },
+      "dialog_logic": {
+        "key_features": [
+          "exakt QRS-synchron",
+          "regelmaessig mit Herzfrequenz",
+          "links temporal betont",
+          "kein kortikales Feld",
+          "EKG-Kanal bestätigt"
+        ],
+        "criteria_for": [
+          "Frequenz entspricht Herzfrequenz",
+          "Exakte QRS-Synchronität",
+          "Kein kortikales Feld",
+          "EKG-Kanal zeigt QRS zeitgleich"
+        ],
+        "criteria_against": [
+          "Frequenz unabhängig von Herzfrequenz",
+          "Plausibles kortikales Feld",
+          "Unregelmäßig (→ dann ART_020 Arrhythmie)"
+        ],
+        "discriminating_questions": [
+          "Entspricht die Frequenz der Herzfrequenz?",
+          "Ist es exakt QRS-synchron (EKG-Kanal)?",
+          "Ist es links temporal betont?"
+        ]
+      },
+      "provocation_or_check": [
+        "EKG-Kanal anzeigen und zeitlichen Bezug prüfen",
+        "Herzfrequenz mit Artefaktfrequenz vergleichen",
+        "Montage wechseln"
+      ],
+      "correction_intervention": "EKG-Kanal obligat; Mastoid-Referenz meiden; ICA-basierte Artefaktkorrektur; Average-Referenz",
+      "common_misinterpretations": [
+        "Fokale Spikes (temporal)",
+        "LPDs",
+        "Periodische Entladungen"
+      ],
+      "images": [
+        {
+          "file": "placeholder_ekg_art.png",
+          "montage": "bipolare Längsreihe",
+          "context": "wach, EKG-Kanal parallel",
+          "caption": "EKG-Artefakt: links temporal, QRS-synchron, regelmäßig",
+          "status": "placeholder"
+        }
+      ],
+      "teaching_pearl": "EKG-Artefakt ist immer da – nur die Amplitude variiert. Herzfrequenz = Artefaktfrequenz ist das Schlüsselkriterium. EKG-Kanal ist Pflicht.",
+      "warning": "Mastoiden-Referenz kann EKG in alle Kanäle einspeisen und generalisierte periodische Entladungen (GPDs) vortäuschen.",
+      "clinical_relevance": "Wichtige DD für temporale Spikes und LPDs. EKG-Kanal obligat bei jeder EEG-Ableitung.",
+      "notes": "Regulärer Herzrhythmus: regelmäßige QRS-artige Spike-Artefakte, synchron zum EKG-Kanal. Arrhythmie/Extrasystolen (PVC): unregelmäßige Abstände; kann epileptiforme Aktivität imitieren. Diagnose: immer EKG-Kanal mitableiten und zeitlich korrelieren. Topographie: häufiger bei tiefliegenden Elektroden (T3/T4, Fp1/Fp2) und ungünstiger Referenz. Abhilfe: EKG-Kanal, Average-Referenz statt Mastoid, ICU-EEG immer mit EKG-Kanal.",
+      "data_status": "complete",
+      "priority_for_mvp": "hoch",
+      "source_notes": []
+    },
+    {
+      "id": "ART_018",
+      "name": "Puls-/Ballistokardiographisches Artefakt",
+      "aliases": [
+        "Pulse artifact",
+        "Pulsartefakt",
+        "Arterienpuls-Artefakt",
+        "Ballistocardiographic artifact",
+        "BCG artifact",
+        "kardialmechanisches Artefakt"
+      ],
+      "artifact_class": "physiologisch_mechanisch",
+      "subcategory": "vaskulaer",
+      "scope": "ICU_optional",
+      "source": "Mechanische Pulsation einer Arterie unter/nahe einer Elektrode (Puls) oder Körperbewegung durch den Herzschlag (ballistokardiographisch)",
+      "frequency": {
+        "label": "variabel",
+        "min_hz": null,
+        "max_hz": null,
+        "typical_hz": null,
+        "note": "pulssynchron, Herzfrequenzbereich"
+      },
+      "amplitude": {
+        "label": "variabel",
+        "min_uv": null,
+        "max_uv": null,
+        "typical_uv": null
+      },
+      "duration": {
+        "label": "variabel",
+        "min_ms": null,
+        "max_ms": null,
+        "typical_ms": null,
+        "note": "wiederholte langsame Wellen; oft laenger als QRS"
+      },
+      "localization": [
+        "temporal",
+        "frontal",
+        "ueber oberflaechlichen Gefaessen",
+        "elektrodenabhaengig"
+      ],
+      "laterality": "nicht_anwendbar",
+      "morphology": "langsame rhythmische Wellen/Deflexionen",
+      "rhythmicity": "regelmaessig pulssynchron",
+      "montage_behavior": {
+        "bipolar_longitudinal": "",
+        "bipolar_transverse": "",
+        "referential_cz": "",
+        "referential_average": "",
+        "referential_mastoid": "",
+        "best_montage": "",
+        "pitfalls": "",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": true,
+        "respiration_synchronous": false,
+        "movement_synchronous": false,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": false
+      },
+      "patient_context": [
+        "Elektrode ueber pulsierendem Gefaess",
+        "starke extrakranielle Pulsation",
+        "moeglich bei Kollateralzirkulation ueber extrakranielle Gefaesse"
+      ],
+      "triggering_situation": "Elektrode über Arterie; MRT-EEG-Kombination (BCG ausgeprägter)",
+      "vigilance_context": [],
+      "auxiliary_channels": [
+        "EKG",
+        "Puls/Plethysmographie falls vorhanden",
+        "Palpation"
+      ],
+      "cross_references": {
+        "eeg_mimics": []
+      },
+      "dialog_logic": {
+        "key_features": [
+          "pulssynchron mit leichter Verzoegerung nach QRS",
+          "lokale Elektrode betroffen",
+          "mechanisch durch Versetzen/Druecken beeinflussbar"
+        ],
+        "criteria_for": [],
+        "criteria_against": [],
+        "discriminating_questions": []
+      },
+      "provocation_or_check": [
+        "Elektrode palpieren",
+        "Elektrode leicht versetzen",
+        "EKG/Puls vergleichen"
+      ],
+      "correction_intervention": "Elektrode umplatzieren (Puls); EKG-Kanal zur Identifikation; BCG-Subtraktion im MRT-EEG",
+      "common_misinterpretations": [
+        "fokale rhythmische Delta-Aktivitaet",
+        "periodische langsame Aktivitaet"
+      ],
+      "images": [
+        {
+          "file": "placeholder_art_018.png",
+          "montage": "bipolare Längsreihe",
+          "context": "",
+          "caption": "Pulsartefakt",
+          "status": "placeholder"
+        }
+      ],
+      "teaching_pearl": "",
+      "warning": null,
+      "clinical_relevance": "",
+      "notes": "Pulsartefakt: Elektrode liegt über einer oberflächlichen Arterie → rhythmische langsame Auslenkung synchron zum Herzschlag; fokal auf einen Kanal. Ballistokardiographisch: gesamter Körper/Kopf bewegt sich minimal mit dem Herzschlag → rhythmische Artefakte auf mehreren Kanälen; besonders in MRT-EEG-Kombination (BCG-Artefakt). Diagnose: Synchronizität mit EKG-Kanal; fokal (Puls) vs. generalisiert (BCG). Abhilfe: Elektrode verschieben (Puls); EKG-basierte Subtraktion (BCG im MRT).",
+      "data_status": "complete",
+      "priority_for_mvp": "mittel",
+      "source_notes": []
+    },
+    {
+      "id": "ART_021",
+      "name": "Herzschrittmacherartefakt",
+      "aliases": [
+        "Pacemaker artifact"
+      ],
+      "artifact_class": "implantatbedingt",
+      "subcategory": "Implantate",
+      "scope": "ICU_optional",
+      "source": "Schrittmacherimpuls",
+      "frequency": {
+        "label": "variabel",
+        "min_hz": null,
+        "max_hz": null,
+        "typical_hz": null,
+        "note": "schrittmachersynchron"
+      },
+      "amplitude": {
+        "label": "variabel",
+        "min_uv": null,
+        "max_uv": null,
+        "typical_uv": null
+      },
+      "duration": {
+        "label": "variabel",
+        "min_ms": null,
+        "max_ms": null,
+        "typical_ms": null,
+        "note": "sehr kurz"
+      },
+      "localization": [
+        "diffus moeglich",
+        "referenzabhaengig"
+      ],
+      "laterality": "nicht_anwendbar",
+      "morphology": "sehr schmale elektrische Spikes",
+      "rhythmicity": "regelmaessig oder demand-abhaengig",
+      "montage_behavior": {
+        "bipolar_longitudinal": "",
+        "bipolar_transverse": "",
+        "referential_cz": "",
+        "referential_average": "",
+        "referential_mastoid": "",
+        "best_montage": "",
+        "pitfalls": "",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": true,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": false,
+        "photic_synchronous": false,
+        "stimulation_synchronous": true,
+        "device_synchronous": false
+      },
+      "patient_context": [
+        "implantierter Herzschrittmacher"
+      ],
+      "triggering_situation": [],
+      "vigilance_context": [],
+      "auxiliary_channels": [
+        "EKG",
+        "Anamnese/Implantatausweis"
+      ],
+      "cross_references": {
+        "eeg_mimics": [
+          "EEG_0042"
+        ]
+      },
+      "dialog_logic": {
+        "key_features": [
+          "sehr schmale repetitive Spikes",
+          "Bezug zu Schrittmacherimpuls",
+          "nicht kortikal verteilt"
+        ],
+        "criteria_for": [],
+        "criteria_against": [],
+        "discriminating_questions": []
+      },
+      "provocation_or_check": [],
+      "correction_intervention": [
+        "Implantat dokumentieren",
+        "EKG pruefen"
+      ],
+      "common_misinterpretations": [
+        "epileptiforme Spikes",
+        "technische Stoerung"
+      ],
+      "images": [
+        {
+          "file": "placeholder_art_021.png",
+          "montage": "bipolare Längsreihe",
+          "context": "",
+          "caption": "Herzschrittmacherartefakt",
+          "status": "placeholder"
+        }
+      ],
+      "teaching_pearl": "",
+      "warning": null,
+      "clinical_relevance": "",
+      "notes": "",
+      "data_status": "partial",
+      "priority_for_mvp": "mittel",
+      "source_notes": []
+    },
+    {
+      "id": "ART_022",
+      "name": "Elektrodenartefakte",
+      "artifact_class": "technisch",
+      "subcategory": "Elektrode",
+      "main_category": null,
+      "aliases": [
+        "Elektroden-Pop",
+        "Electrode pop",
+        "Lead pop",
+        "Elektroden-Wackelartefakt",
+        "Lead movement artifact",
+        "Schlechter Elektrodenkontakt",
+        "High impedance electrode",
+        "offene Elektrode"
+      ],
+      "localization": [
+        "elektrodenspezifisch",
+        "ein oder mehrere Kanäle"
+      ],
+      "laterality": "fokal",
+      "eeg_signature": "Fokal auf eine oder wenige Elektroden beschränkt. Vier Haupttypen: (1) Elektroden-Pop: kurze scharfe Auslenkung, alle Kanäle der Elektrode gegenphasig in bipolarer Ableitung – pathognomonisch. (2) Wackelartefakt: repetitive irreguläre Auslenkungen, kabelbedingt, bewegungskorreliert. (3) Schlechter Kontakt / hohe Impedanz: erhöhtes Rauschen, 50-Hz-Einstreuung, rail-to-rail-Auslenkung bei offener Elektrode. (4) Elektrodenbrücke / Salzbrücke: bipolare Ableitung zwischen gebrückten Elektroden = 0 (Kanal erscheint flach); Kurzschluss: zwei Kanäle zeigen identisches Signal.",
+      "identification_keys": [
+        "Strikt fokal auf eine oder benachbarte Elektrode(n) begrenzt",
+        "Pop: gegenphasiges Muster in allen Kanälen der Elektrode (bipolar)",
+        "Wackel: bewegungskorreliert, unregelmäßig, kabelbedingt",
+        "Schlechter Kontakt: Impedanzerhöhung, fokal, Rauschen",
+        "Brücke/Kurzschluss: bipolare Ableitung zwischen Elektroden = 0 oder flach",
+        "Impedanzmessung klärend"
+      ],
+      "common_misinterpretations": [
+        "Elektroden-Pop als epileptiformen Spike oder Sharp Wave fehlgedeutet",
+        "Wackelartefakt als fokale Verlangsamung oder Sharp Waves",
+        "Schlechter Kontakt als fokale Pathologie, Beta-Aktivität oder Verlangsamung",
+        "Elektrodenbrücke als scheinbare Symmetrie oder falsch-niedrige fokale Aktivität"
+      ],
+      "montage_behavior": {
+        "best_montage": "Bipolare Längsreihe – gegenphasiges Muster bei Pop diagnostisch",
+        "bipolar_longitudinal": "Pop: alle Kanäle der Elektrode betroffen, gegenphasig – Fingerabdruck-Muster. Brücke: Kanal zwischen gebrückten Elektroden = 0.",
+        "bipolar_transverse": "Gleiches Prinzip wie Längsreihe",
+        "referential_mastoid": "Pop: nur betroffene Elektrode vs. Mastoid auffällig",
+        "referential_cz": "Nur Kanäle der betroffenen Elektrode betroffen",
+        "referential_average": "Pop verteilt sich leicht auf andere Kanäle (abgeschwächt)",
+        "pitfalls": "Einzelkanalansicht kann wie ein Spike aussehen – immer alle Kanäle der Elektrode prüfen. Impedanzmessung vor jeder Ableitung empfohlen.",
+        "typical_montage": "bipolare Längsreihe"
+      },
+      "teaching_pearl": "Elektrodenartefakte sind immer fokal – das ist das wichtigste Erkennungsmerkmal. Elektroden-Pop: alle Kanäle der Elektrode, gegenphasig in bipolarer Montage – dieser Fingerabdruck ist unverwechselbar. Elektrodenbrücke/Salzbrücke: bipolare Ableitung zwischen gebrückten Elektroden = 0 (flache Linie). Schlechter Kontakt: Impedanz messen. Wackelartefakt: bewegungskorreliert, Kabel prüfen. Lösung: immer die Elektrode selbst überprüfen und nachbessern.",
+      "notes": "Untertypen: (1) Elektroden-Pop – kurze scharfe Entladung durch Impedanzsprung; (2) Wackelartefakt – Kabelbewegung oder mechanischer Kontakt; (3) Schlechter Kontakt / hohe Impedanz (>5–10 kΩ) / offene Elektrode; (4) Elektrodenbrücke / Salzbrücke / Kurzschluss durch Paste oder Schweiß.",
+      "data_status": "complete",
+      "priority_for_mvp": "hoch",
+      "source_notes": [],
+      "source": "Impedanzsprung, Kabelbewegung oder schlechter Elektrodenkontakt; vier Hauptmechanismen: (1) Pop: abrupter Impedanzsprung → kurze scharfe Auslenkung; (2) Wackelartefakt: Kabelbewegung → repetitive irreguläre Auslenkungen; (3) Schlechter Kontakt/hohe Impedanz: erhöhtes Rauschen, Einstreuung; (4) Offene Elektrode: rail-to-rail-Auslenkung",
+      "frequency": {
+        "label": "variabel",
+        "min_hz": null,
+        "max_hz": null,
+        "typical_hz": null,
+        "note": "Abhängig vom Typ: Pop = breitbandig transient; Wackel = irregulär niedrigfrequent; schlechter Kontakt = 50-Hz-Einstreuung + Rauschen"
+      },
+      "amplitude": {
+        "label": "variabel",
+        "min_uv": null,
+        "max_uv": null,
+        "typical_uv": null,
+        "note": "Pop: sehr groß (100–2000 µV); Wackel: variabel; schlechter Kontakt: Rauschniveau erhöht"
+      },
+      "duration": {
+        "label": "variabel",
+        "min_ms": null,
+        "max_ms": null,
+        "typical_ms": null,
+        "note": "Pop: <50 ms; Wackel: variabel, solange Bewegung anhält; schlechter Kontakt: anhaltend"
+      },
+      "morphology": "Fokal auf eine oder wenige Elektroden beschränkt. Vier Haupttypen: (1) Elektroden-Pop: kurze scharfe Auslenkung, alle Kanäle der Elektrode gegenphasig in bipolarer Ableitung – pathognomonisch. (2) Wackelartefakt: repetitive irreguläre Auslenkungen, kabelbedingt, bewegungskorreliert. (3) Schlechter Kontakt / hohe Impedanz: erhöhtes Rauschen, 50-Hz-Einstreuung, rail-to-rail-Auslenkung bei offener Elektrode. (4) Elektrodenbrücke / Salzbrücke: bipolare Ableitung zwischen gebrückten Elektroden = 0 (Kanal erscheint flach); Kurzschluss: zwei Kanäle zeigen identisches Signal.",
+      "rhythmicity": "arrhythmisch",
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": true,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": false
+      },
+      "patient_context": [
+        "jede Situation",
+        "besonders bei Bewegung oder langen Ableitungen"
+      ],
+      "triggering_situation": [
+        "Kabelbewegung",
+        "schlechte Elektrodenfixierung",
+        "Schwitzen",
+        "Impedanzsprung",
+        "Elektrodenproblem"
+      ],
+      "vigilance_context": [
+        "wach",
+        "schlaefrig",
+        "koma"
+      ],
+      "auxiliary_channels": [
+        "Impedanzmessung (obligat)",
+        "Video"
+      ],
+      "cross_references": {
+        "eeg_mimics": []
+      },
+      "dialog_logic": {
+        "key_features": [
+          "Strikt fokal auf eine oder benachbarte Elektrode(n) begrenzt",
+          "Pop: gegenphasiges Muster in allen Kanälen der Elektrode (bipolar)",
+          "Wackel: bewegungskorreliert, unregelmäßig, kabelbedingt",
+          "Schlechter Kontakt: Impedanzerhöhung, fokal, Rauschen",
+          "Brücke/Kurzschluss: bipolare Ableitung zwischen Elektroden = 0 oder flach",
+          "Impedanzmessung klärend"
+        ],
+        "criteria_for": [
+          "Strikt auf eine Elektrode begrenzt",
+          "Gegenphasiges Muster in bipolarer Ableitung (Pop)",
+          "Verschwindet nach Elektrodenkorrektur"
+        ],
+        "criteria_against": [
+          "Mehrere unabhängige Elektroden betroffen (→ anderes Artefakt)",
+          "Kein Bezug zu Elektrodenproblem"
+        ],
+        "mimics": [],
+        "discriminating_questions": [
+          "Welche Elektrode ist betroffen?",
+          "Ist das Muster gegenphasig in bipolarer Montage?",
+          "Impedanz erhöht?"
+        ]
+      },
+      "provocation_or_check": [
+        "Impedanzmessung",
+        "Elektrode nachbessern",
+        "Kabel fixieren"
+      ],
+      "correction_intervention": [
+        "Elektrode neu anlegen",
+        "Kontakt verbessern",
+        "Kabel fixieren",
+        "Gel nachfüllen"
+      ],
+      "warning": "Elektroden-Pop kann einen epileptiformen Spike exakt imitieren. Schlüssel: gegenphasiges Muster in ALLEN Kanälen der betroffenen Elektrode — das ist bei echten kortikalen Potenzialen nicht möglich.",
+      "images": [
+        {
+          "file": "placeholder.png",
+          "montage": "bipolare Längsreihe",
+          "context": "",
+          "caption": "",
+          "status": "placeholder"
+        }
+      ]
+    },
+    {
+      "id": "ART_028",
+      "name": "Schwitzartefakt",
+      "aliases": [
+        "Sweat artifact",
+        "Perspiration artifact",
+        "Schweissartefakt"
+      ],
+      "artifact_class": "physiologisch_autonomes_ns",
+      "subcategory": "Autonomes Nervensystem",
+      "scope": "ICU_optional",
+      "source": "Schweiss/Salzfilm veraendert Haut-Elektroden-Potentiale und kann Elektroden koppeln",
+      "frequency": {
+        "label": "variabel",
+        "min_hz": null,
+        "max_hz": null,
+        "typical_hz": null,
+        "note": "sehr langsam, Drift; haeufig <0.5 Hz"
+      },
+      "amplitude": {
+        "label": "variabel",
+        "min_uv": null,
+        "max_uv": null,
+        "typical_uv": null
+      },
+      "duration": {
+        "label": "variabel",
+        "min_ms": null,
+        "max_ms": null,
+        "typical_ms": null,
+        "note": "lang, Sekunden bis Minuten"
+      },
+      "localization": [
+        "diffus oder regionale feuchte Areale",
+        "frontotemporal moeglich"
+      ],
+      "laterality": "nicht_anwendbar",
+      "morphology": "langsame Baseline-Drifts, wandernde Wellen",
+      "rhythmicity": "nicht rhythmisch",
+      "montage_behavior": {
+        "bipolar_longitudinal": "",
+        "bipolar_transverse": "",
+        "referential_cz": "",
+        "referential_average": "",
+        "referential_mastoid": "",
+        "best_montage": "",
+        "pitfalls": "",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": false,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": false
+      },
+      "patient_context": [
+        "Schwitzen",
+        "warmer Raum",
+        "Fieber",
+        "Angst"
+      ],
+      "triggering_situation": [],
+      "vigilance_context": [],
+      "auxiliary_channels": [
+        "Impedanz",
+        "Inspektion der Kopfhaut"
+      ],
+      "cross_references": {
+        "eeg_mimics": []
+      },
+      "dialog_logic": {
+        "key_features": [
+          "sehr langsame Drift",
+          "feuchte Kopfhaut",
+          "mehrere Elektroden/Kopplung"
+        ],
+        "criteria_for": [],
+        "criteria_against": [],
+        "discriminating_questions": []
+      },
+      "provocation_or_check": [],
+      "correction_intervention": [
+        "Kopfhaut trocknen",
+        "Raum kuehlen",
+        "Elektroden/Paste korrigieren"
+      ],
+      "common_misinterpretations": [
+        "diffuse/fokale Delta-Aktivitaet",
+        "Baseline-Verlangsamung"
+      ],
+      "images": [
+        {
+          "file": "placeholder_art_028.png",
+          "montage": "bipolare Längsreihe",
+          "context": "",
+          "caption": "Schwitzartefakt",
+          "status": "placeholder"
+        }
+      ],
+      "teaching_pearl": "",
+      "warning": null,
+      "clinical_relevance": "",
+      "notes": "",
+      "data_status": "partial",
+      "priority_for_mvp": "mittel",
+      "source_notes": []
+    },
+    {
+      "id": "ART_029",
+      "name": "Netzartefakt",
+      "aliases": [
+        "50 Hz Netzartefakt",
+        "60 Hz Netzartefakt",
+        "AC artifact",
+        "Netzbrummen",
+        "mains artifact",
+        "Wechselstromeinstreuung"
+      ],
+      "artifact_class": "technisch",
+      "subcategory": "Geräte und Umgebungsstörungen",
+      "scope": "ICU_optional",
+      "source": "Einstreuung des Wechselstromnetzes (Europa: 50 Hz, USA/andere: 60 Hz) durch schlechte Erdung, hohe Impedanz oder Nähe zu Netzgeräten",
+      "frequency": {
+        "label": "variabel",
+        "min_hz": null,
+        "max_hz": null,
+        "typical_hz": null,
+        "note": "exakt 50 Hz, ggf. Harmonische 100/150 Hz"
+      },
+      "amplitude": {
+        "label": "variabel",
+        "min_uv": null,
+        "max_uv": null,
+        "typical_uv": null
+      },
+      "duration": {
+        "label": "variabel",
+        "min_ms": null,
+        "max_ms": null,
+        "typical_ms": null,
+        "note": "kontinuierlich oder intermittierend"
+      },
+      "localization": [
+        "diffus",
+        "einzelne hochohmige Elektrode moeglich"
+      ],
+      "laterality": "nicht_anwendbar",
+      "morphology": "regelmaessige sinusfoermige Hochfrequenzstoerung",
+      "rhythmicity": "streng frequenzstabil",
+      "montage_behavior": {
+        "bipolar_longitudinal": "",
+        "bipolar_transverse": "",
+        "referential_cz": "",
+        "referential_average": "",
+        "referential_mastoid": "",
+        "best_montage": "",
+        "pitfalls": "",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": false,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": false
+      },
+      "patient_context": [
+        "hohe Impedanz",
+        "schlechte Erdung",
+        "elektrische Geraete in Naehe"
+      ],
+      "triggering_situation": "Schlechte Erdung, hohe Impedanz, Nähe zu Netzgeräten; fokal bei einzelner schlechter Elektrode",
+      "vigilance_context": [],
+      "auxiliary_channels": [
+        "Frequenzanalyse",
+        "Impedanzpruefung"
+      ],
+      "cross_references": {
+        "eeg_mimics": []
+      },
+      "dialog_logic": {
+        "key_features": [
+          "exakt 50 Hz",
+          "frequenzstabil",
+          "nicht kortikal plausibel"
+        ],
+        "criteria_for": [],
+        "criteria_against": [],
+        "discriminating_questions": []
+      },
+      "provocation_or_check": [],
+      "correction_intervention": "Impedanz senken, Elektrodenkontakt verbessern, störende Geräte entfernen, Erdung prüfen; Notchfilter als letztes Mittel",
+      "common_misinterpretations": [
+        "Beta-Aktivitaet",
+        "EMG"
+      ],
+      "images": [
+        {
+          "file": "placeholder_art_029.png",
+          "montage": "bipolare Längsreihe",
+          "context": "",
+          "caption": "50-Hz-Netzartefakt",
+          "status": "placeholder"
+        }
+      ],
+      "teaching_pearl": "",
+      "warning": null,
+      "clinical_relevance": "",
+      "notes": "50 Hz (Europa/Australien/Asien) oder 60 Hz (USA/Kanada). Erscheint als perfekt sinusoidale Linie mit exakt dieser Frequenz auf allen oder einzelnen Kanälen. Ursachen: schlechte Erdung, hohe Elektrodenimpedanz, Nähe zu Stromkabeln/-geräten. Abhilfe: Impedanz reduzieren, Kabel trennen, Notchfilter (nur wenn nötig – verdeckt echte 50/60-Hz-EEG-Aktivität nicht vorhanden).",
+      "data_status": "complete",
+      "priority_for_mvp": "mittel",
+      "source_notes": []
+    },
+    {
+      "id": "ART_031",
+      "name": "Erdungs-/Referenzproblem",
+      "aliases": [
+        "Ground artifact",
+        "Reference artifact"
+      ],
+      "artifact_class": "technisch",
+      "subcategory": "Elektrode",
+      "scope": "ICU_optional",
+      "source": "fehlerhafte Erdung oder kontaminierte Referenz",
+      "frequency": {
+        "label": "variabel",
+        "min_hz": null,
+        "max_hz": null,
+        "typical_hz": null,
+        "note": "variabel; haeufig Netzbrummen/Drift"
+      },
+      "amplitude": {
+        "label": "variabel",
+        "min_uv": null,
+        "max_uv": null,
+        "typical_uv": null
+      },
+      "duration": {
+        "label": "variabel",
+        "min_ms": null,
+        "max_ms": null,
+        "typical_ms": null,
+        "note": "persistierend/intermittierend"
+      },
+      "localization": [
+        "diffus",
+        "referenzabhaengig"
+      ],
+      "laterality": "nicht_anwendbar",
+      "morphology": "globales Rauschen, Drift oder Netzeinstreuung",
+      "rhythmicity": "technisch",
+      "montage_behavior": {
+        "bipolar_longitudinal": "",
+        "bipolar_transverse": "",
+        "referential_cz": "",
+        "referential_average": "",
+        "referential_mastoid": "",
+        "best_montage": "",
+        "pitfalls": "",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": false,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": false
+      },
+      "patient_context": [],
+      "triggering_situation": [],
+      "vigilance_context": [],
+      "auxiliary_channels": [
+        "Impedanz",
+        "Referenz-/Ground-Pruefung"
+      ],
+      "cross_references": {
+        "eeg_mimics": []
+      },
+      "dialog_logic": {
+        "key_features": [
+          "breit/global",
+          "aendert sich mit Referenz/Montage",
+          "nicht neuroanatomisch"
+        ],
+        "criteria_for": [],
+        "criteria_against": [],
+        "discriminating_questions": []
+      },
+      "provocation_or_check": [],
+      "correction_intervention": [
+        "Ground/Referenz pruefen",
+        "Kabelkontakte pruefen",
+        "Stoerquellen entfernen"
+      ],
+      "common_misinterpretations": [
+        "diffuse Enzephalopathie",
+        "Low-voltage-fast"
+      ],
+      "images": [
+        {
+          "file": "placeholder_art_031.png",
+          "montage": "bipolare Längsreihe",
+          "context": "",
+          "caption": "Erdungs-/Referenzproblem",
+          "status": "placeholder"
+        }
+      ],
+      "teaching_pearl": "",
+      "warning": null,
+      "clinical_relevance": "",
+      "notes": "",
+      "data_status": "partial",
+      "priority_for_mvp": "mittel",
+      "source_notes": []
+    },
+    {
+      "id": "ART_032",
+      "name": "Elektrostatisches Artefakt",
+      "aliases": [
+        "Static artifact",
+        "Electrostatic artifact"
+      ],
+      "artifact_class": "technisch",
+      "subcategory": "Geräte und Umgebungsstörungen",
+      "scope": "ICU_optional",
+      "source": "statische Aufladung, Kleidung, Bettwaesche, Bewegung",
+      "frequency": {
+        "label": "variabel",
+        "min_hz": null,
+        "max_hz": null,
+        "typical_hz": null,
+        "note": "irregulaer"
+      },
+      "amplitude": {
+        "label": "variabel",
+        "min_uv": null,
+        "max_uv": null,
+        "typical_uv": null
+      },
+      "duration": {
+        "label": "variabel",
+        "min_ms": null,
+        "max_ms": null,
+        "typical_ms": null,
+        "note": "kurz bis intermittierend"
+      },
+      "localization": [
+        "variabel",
+        "kanal- oder gruppenabhaengig"
+      ],
+      "laterality": "nicht_anwendbar",
+      "morphology": "abrupte irregulaere Ausschlaege",
+      "rhythmicity": "irregulaer",
+      "montage_behavior": {
+        "bipolar_longitudinal": "",
+        "bipolar_transverse": "",
+        "referential_cz": "",
+        "referential_average": "",
+        "referential_mastoid": "",
+        "best_montage": "",
+        "pitfalls": "",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": true,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": false
+      },
+      "patient_context": [
+        "Bewegung",
+        "synthetische Kleidung",
+        "trockene Umgebung"
+      ],
+      "triggering_situation": [],
+      "vigilance_context": [],
+      "auxiliary_channels": [],
+      "cross_references": {
+        "eeg_mimics": []
+      },
+      "dialog_logic": {
+        "key_features": [
+          "bewegungs-/kontaktabhaengig",
+          "unphysiologische Verteilung",
+          "nicht reproduzierbares Feld"
+        ],
+        "criteria_for": [],
+        "criteria_against": [],
+        "discriminating_questions": []
+      },
+      "provocation_or_check": [],
+      "correction_intervention": [
+        "Kleidung/Bettwaesche pruefen",
+        "Kabel entlasten",
+        "Erdung pruefen"
+      ],
+      "common_misinterpretations": [
+        "Sharp Waves",
+        "Elektroden-Pop"
+      ],
+      "images": [
+        {
+          "file": "placeholder_art_032.png",
+          "montage": "bipolare Längsreihe",
+          "context": "",
+          "caption": "Elektrostatisches Artefakt",
+          "status": "placeholder"
+        }
+      ],
+      "teaching_pearl": "",
+      "warning": null,
+      "clinical_relevance": "",
+      "notes": "",
+      "data_status": "partial",
+      "priority_for_mvp": "mittel",
+      "source_notes": []
+    },
+    {
+      "id": "ART_033",
+      "name": "Aliasing-/Samplingartefakt",
+      "aliases": [
+        "Aliasing artifact",
+        "sampling artifact"
+      ],
+      "artifact_class": "technisch",
+      "subcategory": "Digitalisierung/Filter",
+      "scope": "ICU_optional",
+      "source": "unzureichende Abtastung/Filterung hochfrequenter Signale",
+      "frequency": {
+        "label": "variabel",
+        "min_hz": null,
+        "max_hz": null,
+        "typical_hz": null,
+        "note": "scheinbare niedrigere Frequenz aus hoher Stoerfrequenz"
+      },
+      "amplitude": {
+        "label": "variabel",
+        "min_uv": null,
+        "max_uv": null,
+        "typical_uv": null
+      },
+      "duration": {
+        "label": "variabel",
+        "min_ms": null,
+        "max_ms": null,
+        "typical_ms": null,
+        "note": "je nach Stoerquelle"
+      },
+      "localization": [
+        "systemabhaengig"
+      ],
+      "laterality": "nicht_anwendbar",
+      "morphology": "kuenstlich wirkende rhythmische oder frequenzstabile Aktivitaet",
+      "rhythmicity": "frequenzstabil/technisch",
+      "montage_behavior": {
+        "bipolar_longitudinal": "",
+        "bipolar_transverse": "",
+        "referential_cz": "",
+        "referential_average": "",
+        "referential_mastoid": "",
+        "best_montage": "",
+        "pitfalls": "",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": false,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": false
+      },
+      "patient_context": [],
+      "triggering_situation": [],
+      "vigilance_context": [],
+      "auxiliary_channels": [
+        "Technische Einstellungen",
+        "Samplingrate/Filter pruefen"
+      ],
+      "cross_references": {
+        "eeg_mimics": []
+      },
+      "dialog_logic": {
+        "key_features": [
+          "technisch nicht biologisch plausibel",
+          "Abhaengigkeit von Filter/Sampling"
+        ],
+        "criteria_for": [],
+        "criteria_against": [],
+        "discriminating_questions": []
+      },
+      "provocation_or_check": [],
+      "correction_intervention": [
+        "Sampling-/Filtereinstellungen pruefen",
+        "Stoerquelle entfernen"
+      ],
+      "common_misinterpretations": [
+        "rhythmisches EEG-Muster"
+      ],
+      "images": [
+        {
+          "file": "placeholder_art_033.png",
+          "montage": "bipolare Längsreihe",
+          "context": "",
+          "caption": "Aliasing-/Samplingartefakt",
+          "status": "placeholder"
+        }
+      ],
+      "teaching_pearl": "",
+      "warning": null,
+      "clinical_relevance": "",
+      "notes": "",
+      "data_status": "partial",
+      "priority_for_mvp": "mittel",
+      "source_notes": []
+    },
+    {
+      "id": "ART_034",
+      "name": "Externes Medizingerät-Artefakt",
+      "aliases": [
+        "Pumpenartefakt",
+        "Monitorartefakt",
+        "Dialyse-Artefakt",
+        "ECMO-Artefakt",
+        "LVAD-Artefakt",
+        "CRRT-Artefakt",
+        "Infusionspumpen-Artefakt",
+        "external device artifact",
+        "ICU device artifact"
+      ],
+      "artifact_class": "extern_technisch",
+      "subcategory": "Geräte und Umgebungsstörungen",
+      "scope": "ICU_optional",
+      "source": "Elektrische oder mechanische Störungen durch externe Medizingeräte (Infusions-/Spritzenpumpen, Patientenmonitore, Dialyse/CRRT, ECMO/LVAD)",
+      "frequency": {
+        "label": "variabel",
+        "min_hz": null,
+        "max_hz": null,
+        "typical_hz": null,
+        "note": "geraetezyklusabhaengig, oft periodisch"
+      },
+      "amplitude": {
+        "label": "variabel",
+        "min_uv": null,
+        "max_uv": null,
+        "typical_uv": null
+      },
+      "duration": {
+        "label": "variabel",
+        "min_ms": null,
+        "max_ms": null,
+        "typical_ms": null,
+        "note": "solange Geraet/Interferenz besteht"
+      },
+      "localization": [
+        "variabel",
+        "kabel-/lagerungsabhaengig"
+      ],
+      "laterality": "nicht_anwendbar",
+      "morphology": "periodische oder hochfrequente technische Stoerung",
+      "rhythmicity": "geraetesynchron",
+      "montage_behavior": {
+        "bipolar_longitudinal": "",
+        "bipolar_transverse": "",
+        "referential_cz": "",
+        "referential_average": "",
+        "referential_mastoid": "",
+        "best_montage": "",
+        "pitfalls": "",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": false,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": true
+      },
+      "patient_context": [
+        "stationaeres Setting",
+        "Pumpen nahe EEG-Kabeln"
+      ],
+      "triggering_situation": "Intensivstation (ICU-EEG); aktive Pumpen/Geräte; schlechte Erdung der Geräte",
+      "vigilance_context": [],
+      "auxiliary_channels": [
+        "Geraete-/Zeitprotokoll",
+        "Video/Beobachtung"
+      ],
+      "cross_references": {
+        "eeg_mimics": [
+          "EEG_0059"
+        ]
+      },
+      "dialog_logic": {
+        "key_features": [
+          "Synchronitaet zum Pumpenzyklus",
+          "Aenderung bei Umpositionieren/Abschalten",
+          "kein kortikales Feld"
+        ],
+        "criteria_for": [],
+        "criteria_against": [],
+        "discriminating_questions": []
+      },
+      "provocation_or_check": [],
+      "correction_intervention": "Gerät temporär ausschalten (wenn sicher); Kabel abschirmen; Gerät vom Patienten entfernen; separate Erdung; Zeitstempel der Geräteereignisse im EEG notieren",
+      "common_misinterpretations": [
+        "periodisches Muster",
+        "rhythmische Aktivitaet"
+      ],
+      "images": [
+        {
+          "file": "placeholder_art_034.png",
+          "montage": "bipolare Längsreihe",
+          "context": "",
+          "caption": "Pumpenartefakt",
+          "status": "placeholder"
+        }
+      ],
+      "teaching_pearl": "",
+      "warning": null,
+      "clinical_relevance": "",
+      "notes": "Infusions-/Spritzenpumpen: rhythmische mechanische Impulse (Schrittmotor), oft niedrigfrequent. Dialyse/CRRT: Pumpenrhythmus, elektrische Einstreuung. ECMO/LVAD: Hochfrequenz-Pumpenrhythmus (ECMO >1000 rpm), kann gesamtes EEG überlagern. Patientenmonitor: 50/60-Hz-Einstreuung oder Alarmimpulse. Gemeinsames Merkmal: rhythmisch, synchron zum Gerät, verschwindet beim Ausschalten/Abkoppeln des Geräts. ICU-EEG: immer alle angeschlossenen Geräte in der Protokollierung notieren.",
+      "data_status": "complete",
+      "priority_for_mvp": "mittel",
+      "source_notes": []
+    },
+    {
+      "id": "ART_035",
+      "name": "Beatmungsartefakt",
+      "aliases": [
+        "Ventilator artifact",
+        "Respirator artifact"
+      ],
+      "artifact_class": "extern_mechanisch",
+      "subcategory": "Geräte und Umgebungsstörungen",
+      "scope": "ICU_optional",
+      "source": "Beatmungsgeraet, Schlauchbewegung, respiratorische Mechanik",
+      "frequency": {
+        "label": "variabel",
+        "min_hz": null,
+        "max_hz": null,
+        "typical_hz": null,
+        "note": "atemfrequenz-/beatmungssynchron"
+      },
+      "amplitude": {
+        "label": "variabel",
+        "min_uv": null,
+        "max_uv": null,
+        "typical_uv": null
+      },
+      "duration": {
+        "label": "variabel",
+        "min_ms": null,
+        "max_ms": null,
+        "typical_ms": null,
+        "note": "regelmaessig waehrend Beatmung"
+      },
+      "localization": [
+        "diffus",
+        "kabel-/lagerungsabhaengig"
+      ],
+      "laterality": "nicht_anwendbar",
+      "morphology": "rhythmische langsame oder mechanische Artefakte",
+      "rhythmicity": "regelmaessig atemsynchron",
+      "montage_behavior": {
+        "bipolar_longitudinal": "",
+        "bipolar_transverse": "",
+        "referential_cz": "",
+        "referential_average": "",
+        "referential_mastoid": "",
+        "best_montage": "",
+        "pitfalls": "",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": true,
+        "movement_synchronous": false,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": true
+      },
+      "patient_context": [
+        "stationaer",
+        "beatmeter Patient"
+      ],
+      "triggering_situation": [],
+      "vigilance_context": [],
+      "auxiliary_channels": [
+        "Atemkurve",
+        "Beatmungsfrequenz",
+        "Video"
+      ],
+      "cross_references": {
+        "eeg_mimics": []
+      },
+      "dialog_logic": {
+        "key_features": [
+          "Synchronitaet zur Beatmung",
+          "mechanisch erklaerbar",
+          "keine kortikale Feldlogik"
+        ],
+        "criteria_for": [],
+        "criteria_against": [],
+        "discriminating_questions": []
+      },
+      "provocation_or_check": [],
+      "correction_intervention": [
+        "Schlaeuche/Kabel entkoppeln",
+        "Beatmungsfrequenz vergleichen"
+      ],
+      "common_misinterpretations": [
+        "rhythmische Delta-Aktivitaet",
+        "periodisches Muster"
+      ],
+      "images": [
+        {
+          "file": "placeholder_art_035.png",
+          "montage": "bipolare Längsreihe",
+          "context": "",
+          "caption": "Beatmungsartefakt",
+          "status": "placeholder"
+        }
+      ],
+      "teaching_pearl": "",
+      "warning": null,
+      "clinical_relevance": "",
+      "notes": "",
+      "data_status": "partial",
+      "priority_for_mvp": "mittel",
+      "source_notes": []
+    },
+    {
+      "id": "ART_036",
+      "name": "Orofaziales Muskelartefakt",
+      "aliases": [
+        "Kauartefakt",
+        "Masseterartefakt",
+        "Chewing artifact"
+      ],
+      "artifact_class": "physiologisch_muskulaer_bewegung",
+      "subcategory": "Muskelartefakte",
+      "scope": "routine",
+      "source": "M. masseter und M. temporalis; hochamplitudiges rhythmisches EMG durch Kaubewegungen; stärker als allgemeiner EMG-Artefakt durch koordinierten Kaurhythmus",
+      "frequency": {
+        "label": "hoch",
+        "min_hz": 20,
+        "max_hz": 200,
+        "typical_hz": 60,
+        "note": "Kaurhythmus 1–2 Hz; EMG-Hauptenergie >30 Hz; rhythmische Burst-Struktur"
+      },
+      "amplitude": {
+        "label": "gross",
+        "min_uv": 100,
+        "max_uv": 2000,
+        "typical_uv": 500
+      },
+      "duration": {
+        "label": "episodisch",
+        "min_ms": 200,
+        "max_ms": 800,
+        "typical_ms": 400,
+        "note": "Einzelne Kaubewegung 200–800 ms; wiederholt in Kaurhythmus"
+      },
+      "localization": [
+        "temporal",
+        "frontozentral"
+      ],
+      "laterality": "bilateral_oder_unilateral",
+      "morphology": "Rhythmische hochamplitudige EMG-Bursts in 1–2 Hz Kaurhythmus; temporal betont (T3/T4, F7/F8); bei einseitigem Kauen lateralisiert; hochfrequente EMG-Aktivität innerhalb der Bursts",
+      "rhythmicity": "rhythmisch_episodisch",
+      "montage_behavior": {
+        "bipolar_longitudinal": "Temporal dominant: Fp1-F7, F7-T3 und analog rechts; Bursts korrelieren mit Kaubewegung",
+        "bipolar_transverse": "Lateral betont; bei einseitigem Kauen gut lateralisierbar",
+        "referential_cz": "T3/T4 dominiert; Cz wenig betroffen",
+        "referential_average": "Temporal betont",
+        "referential_mastoid": "Mastoid kann mitbetroffen sein",
+        "best_montage": "Bipolar longitudinal zeigt rhythmischen Burstcharakter am besten",
+        "pitfalls": "Verwechslung mit TIRDA oder LPDs temporal möglich; Kaurhythmus imitiert periodische Entladungen",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": true,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": false
+      },
+      "patient_context": [
+        "Nahrungsaufnahme",
+        "Kaugummi",
+        "Stress/Zähnepressen",
+        "Unruhe"
+      ],
+      "triggering_situation": [
+        "Kauen",
+        "Kaugummi",
+        "Nahrungsaufnahme",
+        "Bruxismus"
+      ],
+      "vigilance_context": [
+        "wach",
+        "schlaefrig"
+      ],
+      "auxiliary_channels": [
+        "Video obligat (Kaubewegungen sichtbar)"
+      ],
+      "cross_references": {
+        "eeg_mimics": [
+          "TIRDA",
+          "Temporale periodische Entladungen",
+          "LPDs temporal"
+        ]
+      },
+      "dialog_logic": {
+        "key_features": [
+          "1–2 Hz Rhythmus der Bursts",
+          "temporal betont",
+          "zeitgebunden an Kauakt",
+          "EMG >20 Hz innerhalb des Bursts",
+          "kein kortikales Feld"
+        ],
+        "criteria_for": [
+          "Zeitkorrelation mit Kaubewegung im Video",
+          "Hochfrequenter Inhalt >20 Hz",
+          "Temporales Maximum",
+          "Verschwindet nach Aufforderung"
+        ],
+        "criteria_against": [
+          "Fortsetzung ohne Kaubewegung",
+          "Niedrigfrequente Morphologie ohne EMG-Anteile"
+        ],
+        "discriminating_questions": [
+          "Kaut der Patient?",
+          "Kieferbewegung im Video sichtbar?",
+          "Verschwindet bei Entspannung des Kiefers?"
+        ]
+      },
+      "provocation_or_check": [
+        "Kiefer öffnen lassen",
+        "Kauen unterbrechen"
+      ],
+      "correction_intervention": [
+        "Keine Nahrungsaufnahme während Ableitung",
+        "Kaugummi nicht erlauben"
+      ],
+      "common_misinterpretations": [
+        "TIRDA",
+        "LPDs temporal",
+        "Temporale Anfallsaktivität"
+      ],
+      "images": [],
+      "teaching_pearl": "Der Kaurhythmus von 1–2 Hz täuscht periodische Entladungen vor — aber das EMG innerhalb der Bursts verrät die Quelle. Kiefer öffnen lassen: Artefakt verschwindet sofort.",
+      "warning": "Verwechslung mit TIRDA oder temporalen LPDs kann zu unnötiger antiepileptischer Therapie führen.",
+      "clinical_relevance": "Häufig bei unkooperativen, ängstlichen oder dementen Patienten.",
+      "notes": "",
+      "data_status": "complete",
+      "priority_for_mvp": "hoch",
+      "source_notes": [
+        "Niedermeyer & da Silva, 6th ed."
+      ]
+    },
+    {
+      "id": "ART_037",
+      "name": "Glossokinetisches Artefakt",
+      "aliases": [
+        "Zungenartefakt",
+        "Schluckartefakt",
+        "Glossokinetic artifact"
+      ],
+      "artifact_class": "physiologisch_muskulaer_bewegung",
+      "subcategory": "Muskelartefakte",
+      "scope": "routine",
+      "source": "Zungendipol (Spitze elektrisch negativ, Basis positiv); Bewegung der Zunge beim Sprechen, Schlucken oder Lippenbewegungen verändert die Dipolausrichtung relativ zu frontalen Elektroden → langsame Potenzialverschiebung im Deltabereich",
+      "frequency": {
+        "label": "niedrig",
+        "min_hz": 0.5,
+        "max_hz": 5,
+        "typical_hz": 1.5,
+        "note": "Deltabereich; entspricht der Zungen-/Schluckbewegungsfrequenz; kann DC-Shift-Charakter haben"
+      },
+      "amplitude": {
+        "label": "mittel",
+        "min_uv": 50,
+        "max_uv": 500,
+        "typical_uv": 150
+      },
+      "duration": {
+        "label": "kurz_bis_mittel",
+        "min_ms": 300,
+        "max_ms": 2000,
+        "typical_ms": 700,
+        "note": "Einzelnes Schlucken 0.5–1 s; Sprechen: anhaltend"
+      },
+      "localization": [
+        "frontopolar",
+        "frontal"
+      ],
+      "laterality": "bilateral_symmetrisch",
+      "morphology": "Langsame biphasische Welle frontal/frontopolar; Maximum Fp1/Fp2; kein okzipitales Maximum; imitiert frontale Slow Waves oder frontale Spikes; bei Sprechen: rhythmische langsame Aktivität",
+      "rhythmicity": "episodisch_oder_rhythmisch",
+      "montage_behavior": {
+        "bipolar_longitudinal": "Frontopolares Maximum Fp1/Fp2; anteriore Kanäle dominiert; kein posteriores Korrelat",
+        "bipolar_transverse": "Frontal symmetrisch",
+        "referential_cz": "Frontopolare Negativität deutlich; Cz kaum betroffen",
+        "referential_average": "Frontopolares Maximum",
+        "referential_mastoid": "Frontopolar betont",
+        "best_montage": "Bipolar longitudinal + Video-Zeitkorrelation",
+        "pitfalls": "Imitiert FIRDA, frontale Sharp Waves, frontale epileptiforme Potenziale",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": true,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": false
+      },
+      "patient_context": [
+        "Sprechen während EEG",
+        "Dysphagie",
+        "häufiges Schlucken",
+        "Speichelfluss",
+        "Parkinson"
+      ],
+      "triggering_situation": [
+        "Zungenbewegung",
+        "Schlucken",
+        "Sprechen",
+        "Lippenbewegungen"
+      ],
+      "vigilance_context": [
+        "wach",
+        "schlaefrig"
+      ],
+      "auxiliary_channels": [
+        "Video (Mund-/Zungenbewegung)",
+        "EMG submental (Schlucknachweis)"
+      ],
+      "cross_references": {
+        "eeg_mimics": [
+          "FIRDA",
+          "Frontale Sharp Waves",
+          "frontale epileptiforme Entladungen"
+        ]
+      },
+      "dialog_logic": {
+        "key_features": [
+          "frontopolares Maximum",
+          "langsam (Deltabereich)",
+          "zeitgebunden an Schlucken/Sprechen/Zungenbewegung",
+          "kein kortikales Feld",
+          "kein posteriores Pendant"
+        ],
+        "criteria_for": [
+          "Zeitkorrelation mit Schlucken/Sprechen im Video",
+          "Frontopolares Maximum ohne Ausbreitung",
+          "Niederfrequent <5 Hz",
+          "Kein kortikales Feld"
+        ],
+        "criteria_against": [
+          "Persistenz ohne Zungenbewegung",
+          "Posteriore Ausbreitung",
+          "Generalisierte Ausbreitung mit okzipitalem Korrelat"
+        ],
+        "discriminating_questions": [
+          "Bewegt der Patient die Zunge oder schluckt er?",
+          "Ist es zeitgleich mit Schlucken im Video?",
+          "Gibt es ein posteriores Korrelat?"
+        ]
+      },
+      "provocation_or_check": [
+        "Schluckakt gezielt auslösen und Zeitkorrelation prüfen",
+        "Patienten anweisen: 'Zunge ruhig halten'"
+      ],
+      "correction_intervention": [
+        "Sprechen während EEG vermeiden",
+        "Schlucken ankündigen lassen"
+      ],
+      "common_misinterpretations": [
+        "FIRDA",
+        "Frontale Sharp Waves",
+        "Frontale epileptiforme Aktivität"
+      ],
+      "images": [],
+      "teaching_pearl": "Das glossokinetische Artefakt ist klinisch gefährlich: Der Zungendipol imitiert frontale epileptiforme Potenziale. Schlüssel: Patient schlucken lassen, zeitgenaue Korrelation prüfen — kein posteriores Korrelat.",
+      "warning": "Fehldiagnose als frontale Epilepsie möglich. Besonders bei Parkinson (Dysphagie, Hypersalivation) und Patienten die sprechen.",
+      "clinical_relevance": "Häufig bei Parkinson, Schlaganfall, geriatrischen Patienten. Im Langzeit-EEG omnipräsent.",
+      "notes": "",
+      "data_status": "complete",
+      "priority_for_mvp": "hoch",
+      "source_notes": [
+        "Niedermeyer & da Silva, 6th ed.",
+        "Tatum et al. Handbook of EEG Interpretation"
+      ]
+    },
+    {
+      "id": "ART_038",
+      "name": "Tremorartifakt",
+      "aliases": [
+        "Tremor artifact",
+        "Physiologischer Tremor (EEG-Artefakt)"
+      ],
+      "artifact_class": "physiologisch_muskulaer_bewegung",
+      "subcategory": "Bewegungsartefakte",
+      "scope": "routine",
+      "source": "Rhythmische, unwillkürliche Muskelkontraktionen durch pathologischen oder physiologischen Tremor; erzeugen rhythmische Elektroden- und Körperbewegung → kombiniertes EMG + Bewegungsartefakt",
+      "frequency": {
+        "label": "rhythmisch_niedrig_bis_mittel",
+        "min_hz": 3,
+        "max_hz": 12,
+        "typical_hz": 5,
+        "note": "Parkinson-Ruhetremor: 4–6 Hz; essenzieller Tremor (Halte-/Aktionstremor): 6–12 Hz; zerebellärer Intentionstremor: 3–5 Hz; physiologischer Tremor: 8–12 Hz"
+      },
+      "amplitude": {
+        "label": "variabel",
+        "min_uv": 30,
+        "max_uv": 1000,
+        "typical_uv": 200
+      },
+      "duration": {
+        "label": "anhaltend",
+        "min_ms": null,
+        "max_ms": null,
+        "typical_ms": null,
+        "note": "Anhaltend solange Tremor aktiv; Ruhetremor sistiert bei Bewegung; Aktionstremor nur bei Halteposition"
+      },
+      "localization": [
+        "frontal",
+        "temporal",
+        "diffus"
+      ],
+      "laterality": "kontralateral_oder_bilateral",
+      "morphology": "Streng rhythmische Wellen mit stabiler Frequenz im Delta-Theta-Bereich (Parkinson) oder Theta-Alpha-Bereich (essenziell); Überlagerung von rhythmischer Grundfrequenz + hochfrequentem EMG innerhalb jeder Periode; topographisch nicht wie kortikale Aktivität verteilt",
+      "rhythmicity": "rhythmisch_streng",
+      "montage_behavior": {
+        "bipolar_longitudinal": "Frontozentral bei Kopf-/Armtremor; temporal bei einseitigem Extremitätentremor; streng rhythmische Komponente in mehreren Kanälen",
+        "bipolar_transverse": "Lateralisierung möglich bei unilateralem Tremor",
+        "referential_cz": "Diffuse Beteiligung wenn Rumpf/Kopf mitschwingt",
+        "referential_average": "Breite rhythmische Aktivität",
+        "referential_mastoid": "Mastoid kann mitschwingen",
+        "best_montage": "Bipolar longitudinal + Akzelerometer-Kanal (Langzeit-EEG)",
+        "pitfalls": "Verwechslung mit rhythmischen epileptischen Entladungen; Parkinson-Tremor (4–6 Hz) imitiert Theta; essenzieller Tremor (8–12 Hz) imitiert Alpha",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": true,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": false
+      },
+      "patient_context": [
+        "Parkinson-Syndrom",
+        "essenzieller Tremor",
+        "Medikamenten-induzierter Tremor",
+        "Angst (physiologischer Tremor)",
+        "zerebelläre Erkrankung"
+      ],
+      "triggering_situation": [
+        "Ruhe (Parkinson-Ruhetremor)",
+        "Halteposition (essenzieller Tremor)",
+        "Intention (zerebellärer Tremor)",
+        "Aufregung/Koffein (physiologisch)",
+        "Medikamente (Valproat, Lithium, Beta-Agonisten)"
+      ],
+      "vigilance_context": [
+        "wach",
+        "schlaefrig"
+      ],
+      "auxiliary_channels": [
+        "Akzelerometer (Langzeit-EEG: direkte Tremorfrequenzmessung)",
+        "Video",
+        "EMG-Kanal"
+      ],
+      "cross_references": {
+        "eeg_mimics": [
+          "Rhythmische Theta-Aktivität",
+          "Alpha-Variante",
+          "GRDA",
+          "Rhythmische epileptische Entladungen"
+        ]
+      },
+      "dialog_logic": {
+        "key_features": [
+          "streng rhythmisch mit stabiler Frequenz",
+          "kein kortikales Feld",
+          "Frequenz entspricht klinischem Tremor",
+          "EMG-Anteile innerhalb der Wellen",
+          "topographisch nicht-epileptisch"
+        ],
+        "criteria_for": [
+          "Strenge Frequenzstabilität (stabiler als epileptische Muster)",
+          "Zeitkorrelation mit sichtbarem Tremor",
+          "Kombination aus rhythmischer Grundfrequenz + EMG",
+          "Kein kortikales Feld",
+          "Sistieren bei Lagerung der Extremität (Ruhetremor)"
+        ],
+        "criteria_against": [
+          "Evolution der Frequenz (Anfall)",
+          "Klar kortikales Feld",
+          "Sistieren des Artefakts bei unverändertem Tremor"
+        ],
+        "discriminating_questions": [
+          "Sieht man Tremor im Video?",
+          "Wie ist die Tremorfrequenz klinisch?",
+          "Sistiert der Tremor bei Intention (Ruhetremor)?",
+          "Gibt es eine ictal evolution?"
+        ]
+      },
+      "provocation_or_check": [
+        "Klinische Tremorfrequenz messen und mit EEG-Frequenz vergleichen",
+        "Extremität stützen/lagern (Ruhetremor sistiert)"
+      ],
+      "correction_intervention": [
+        "Betroffene Extremität lagern/stützen",
+        "Akzelerometer dokumentieren"
+      ],
+      "common_misinterpretations": [
+        "Theta-Rhythmus",
+        "Alpha-Variante",
+        "GRDA",
+        "Fokale rhythmische Entladungen"
+      ],
+      "images": [],
+      "teaching_pearl": "Der Tremorartifakt ist einzigartig streng rhythmisch — stabiler als die meisten epileptischen Muster. Frequenz entspricht exakt dem klinischen Tremor, EMG-Anteile innerhalb jeder Welle, kein kortikales Feld, sistiert bei Lagerung der Extremität.",
+      "warning": "Parkinson-Tremor (4–6 Hz) kann GRDA perfekt imitieren. Bei Verwechslung mit rhythmischen epileptischen Entladungen droht Überdiagnose.",
+      "clinical_relevance": "Häufig bei neurologischen Patienten (Parkinson, essenzieller Tremor). Im ambulanten Langzeit-EEG typisches Problem.",
+      "notes": "",
+      "data_status": "complete",
+      "priority_for_mvp": "hoch",
+      "source_notes": [
+        "Niedermeyer & da Silva, 6th ed.",
+        "Tatum et al. Handbook of EEG Interpretation"
+      ]
+    },
+    {
+      "id": "ART_039",
+      "name": "Neurostimulator-Artefakt",
+      "aliases": [
+        "VNS artifact",
+        "DBS artifact",
+        "RNS artifact",
+        "SCS artifact",
+        "Vagusnervstimulator-Artefakt",
+        "Tiefe-Hirnstimulations-Artefakt",
+        "Rückenmarkstimulator-Artefakt",
+        "responsive neurostimulation artifact",
+        "Hirnschrittmacher-Artefakt"
+      ],
+      "artifact_class": "implantatbedingt",
+      "subcategory": "Implantate",
+      "scope": "ICU_optional",
+      "source": "Periodische elektrische Stimulationsimpulse von implantierten Neurostimulatoren (VNS, DBS, RNS, SCS)",
+      "frequency": {
+        "label": "variabel",
+        "min_hz": null,
+        "max_hz": null,
+        "typical_hz": null,
+        "note": "stimulationssynchron; je nach VNS-Programm"
+      },
+      "amplitude": {
+        "label": "variabel",
+        "min_uv": null,
+        "max_uv": null,
+        "typical_uv": null
+      },
+      "duration": {
+        "label": "variabel",
+        "min_ms": null,
+        "max_ms": null,
+        "typical_ms": null,
+        "note": "während Stimulationszyklus"
+      },
+      "localization": [
+        "diffus oder referenzabhaengig",
+        "Hals-/EMG-Komponenten moeglich"
+      ],
+      "laterality": "nicht_anwendbar",
+      "morphology": "elektrische Interferenz und/oder EMG-assoziierte Aktivitaet",
+      "rhythmicity": "zyklisch nach Stimulationsprogramm",
+      "montage_behavior": {
+        "bipolar_longitudinal": "",
+        "bipolar_transverse": "",
+        "referential_cz": "",
+        "referential_average": "",
+        "referential_mastoid": "",
+        "best_montage": "",
+        "pitfalls": "",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": false,
+        "photic_synchronous": false,
+        "stimulation_synchronous": true,
+        "device_synchronous": true
+      },
+      "patient_context": [
+        "implantierter VNS",
+        "Epilepsiepatient"
+      ],
+      "triggering_situation": "Implantat aktiv; VNS-Zyklen nach Timer; DBS kontinuierlich; RNS bedarfsgesteuert",
+      "vigilance_context": [],
+      "auxiliary_channels": [
+        "Anamnese",
+        "Stimulationsintervall",
+        "Implantatdaten",
+        "EKG/EMG optional"
+      ],
+      "cross_references": {
+        "eeg_mimics": []
+      },
+      "dialog_logic": {
+        "key_features": [
+          "periodisch passend zum VNS-Zyklus",
+          "nicht kortikal verteilt",
+          "ggf. Heiserkeit/Halsgefuehl"
+        ],
+        "criteria_for": [],
+        "criteria_against": [],
+        "discriminating_questions": []
+      },
+      "provocation_or_check": [],
+      "correction_intervention": "Gerät temporär ausschalten (wenn klinisch möglich); Ableitung zwischen Stimulationszyklen; spezielle EEG-Verstärker für DBS-Patienten",
+      "common_misinterpretations": [
+        "epileptiforme Aktivitaet",
+        "technische Stoerung"
+      ],
+      "images": [
+        {
+          "file": "placeholder_art_039.png",
+          "montage": "bipolare Längsreihe",
+          "context": "",
+          "caption": "Vagusnervstimulator-Artefakt",
+          "status": "placeholder"
+        }
+      ],
+      "teaching_pearl": "",
+      "warning": null,
+      "clinical_relevance": "",
+      "notes": "VNS (Vagusnervstimulator): regelmäßige Impulsserien (typisch alle 5 min, 20–30 s Dauer), meist linkstemporal betont. DBS (tiefe Hirnstimulation): hochfrequente Stimulationsartefakte, kann gesamtes EEG überlagern. RNS: intermittierend, bedarfsgesteuert. SCS (Rückenmarkstimulator): seltener im Kopf-EEG sichtbar. Gemeinsames Merkmal: periodische, hochfrequente Nadelimpulse mit bekanntem Geräterhythmus. Diagnose: Anamnese (Implantat?) + charakteristischer Rhythmus.",
+      "data_status": "complete",
+      "priority_for_mvp": "mittel",
+      "source_notes": []
+    },
+    {
+      "id": "ART_040",
+      "name": "Salzbrückenartefakt",
+      "aliases": [
+        "Salt bridge artifact",
+        "Elektrodenbrücke",
+        "Electrode bridge",
+        "Kurzschlussartefakt"
+      ],
+      "artifact_class": "technisch_elektrode",
+      "subcategory": "Elektrode",
+      "scope": "routine",
+      "source": "Elektrolytbrücke zwischen zwei benachbarten Elektroden durch Schweiß, Leitpaste oder überschüssiges Elektrolytgel; elektrischer Kurzschluss zwischen den Elektroden → Potenzialausgleich → Amplitudenreduktion des bipolaren Signals auf diesen Elektroden",
+      "frequency": {
+        "label": "nicht_anwendbar",
+        "min_hz": null,
+        "max_hz": null,
+        "typical_hz": null,
+        "note": "Keine eigene Frequenz; betrifft alle Frequenzbänder gleichmäßig durch Amplitudenreduktion"
+      },
+      "amplitude": {
+        "label": "reduziert",
+        "min_uv": null,
+        "max_uv": null,
+        "typical_uv": null,
+        "note": "Amplitude des bipolaren Signals zwischen den überbrückten Elektroden deutlich reduziert oder aufgehoben"
+      },
+      "duration": {
+        "label": "anhaltend",
+        "min_ms": null,
+        "max_ms": null,
+        "typical_ms": null,
+        "note": "Anhaltend solange Elektrolytbrücke besteht; kann sich im Verlauf ändern"
+      },
+      "localization": [
+        "lokal_bei_betroffenen_elektroden"
+      ],
+      "laterality": "variabel",
+      "morphology": "Amplitudenreduktion im bipolaren Kanal zwischen den überbrückten Elektroden; in der Referenzmontage erscheinen die betroffenen Elektroden nahezu identisch (kein Potenzialunterschied); kein transientes Ereignis, sondern anhaltende Unterdrückung; Nachbarkanäle mit gemeinsamer Elektrode ebenfalls mitbetroffen",
+      "rhythmicity": "nicht_anwendbar",
+      "montage_behavior": {
+        "bipolar_longitudinal": "Betroffener bipolarer Kanal: nahezu isoelektrisch (flaches Signal) zwischen den kurzgeschlossenen Elektroden; angrenzende Kanäle können normal wirken",
+        "bipolar_transverse": "Gleiches Prinzip — betroffener Kanal flach",
+        "referential_cz": "Beide betroffenen Elektroden zeigen nahezu identisches Signal — kein Potenzialunterschied zwischen ihnen; erst in Referenzmontage erkennbar",
+        "referential_average": "Betroffene Elektroden zeigen ähnliches Profil",
+        "referential_mastoid": "Amplitudenreduktion sichtbar",
+        "best_montage": "Referenzmontage zeigt Äquipotenzialität der überbrückten Elektroden am klarsten",
+        "typical_montage": "Referenzmontage (Cz oder Mastoid)",
+        "pitfalls": "In bipolarer Längsreihe kann ein flacher Kanal als 'normale Stille' fehlinterpretiert werden; Verwechslung mit fokaler Suppression oder kortikaler Stille möglich"
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": false,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": false
+      },
+      "patient_context": [
+        "starkes Schwitzen",
+        "langer Ableitungszeitraum",
+        "überschüssige Leitpaste"
+      ],
+      "triggering_situation": [
+        "Schweiß",
+        "überschüssiges Elektrolytgel",
+        "enger Elektrodenabstand"
+      ],
+      "vigilance_context": [
+        "wach",
+        "schlaefrig",
+        "koma"
+      ],
+      "auxiliary_channels": [
+        "Impedanzmessung (betroffene Elektroden zeigen auffällig niedrige Impedanz zwischen sich)"
+      ],
+      "cross_references": {
+        "eeg_mimics": [
+          "Fokale Suppression",
+          "kortikale Stille",
+          "Elektrodenartefakt"
+        ]
+      },
+      "dialog_logic": {
+        "key_features": [
+          "anhaltend flacher bipolarer Kanal",
+          "kein transientes Ereignis",
+          "Äquipotenzialität in Referenzmontage",
+          "niedrige Interelektroden-Impedanz"
+        ],
+        "criteria_for": [
+          "Anhaltende Amplitudenreduktion eines bipolaren Kanals",
+          "Beide Elektroden zeigen identisches Signal in Referenzmontage",
+          "Niedrige Impedanz zwischen betroffenen Elektroden"
+        ],
+        "criteria_against": [
+          "Transient (→ Elektroden-Pop)",
+          "Andere Kanäle mitbetroffen ohne gemeinsame Elektrode (→ Suppression?)"
+        ],
+        "discriminating_questions": [
+          "Impedanz zwischen den Elektroden prüfen?",
+          "Zeigen die Elektroden in Referenzmontage identisches Signal?",
+          "Ist der Kanal durchgehend flach oder nur episodisch?"
+        ]
+      },
+      "provocation_or_check": [
+        "Impedanzmessung: sehr niedrige Impedanz zwischen betroffenen Elektroden",
+        "Referenzmontage: Äquipotenzialität der Elektroden",
+        "Elektrode abtrocknen und Gel neu auftragen"
+      ],
+      "correction_intervention": [
+        "Elektroden abtrocknen",
+        "Gel entfernen und neu auftragen",
+        "Abstand zwischen Elektroden sicherstellen",
+        "Bei Schwitzen: Kollodium-Fixierung"
+      ],
+      "common_misinterpretations": [
+        "Fokale kortikale Suppression (z.B. Infarkt, Hämatom)",
+        "Elektrode ausgefallen",
+        "Echte EEG-Stille"
+      ],
+      "teaching_pearl": "Die Salzbrücke ist eine stille Falle: Ein anhaltend flacher bipolarer Kanal wirkt wie kortikale Stille — aber die Impedanzmessung und Referenzmontage klären es sofort. Beide überbrückten Elektroden zeigen identisches Potential — physikalisch unmöglich bei echtem kortikalem Befund.",
+      "warning": "Salzbrücke zwischen wichtigen Elektroden kann einen fokalen Befund (z.B. Herdunterdrückung über Infarkt) maskieren. Impedanzkontrolle vor und während langer Ableitungen obligat.",
+      "clinical_relevance": "Besonders relevant bei langen ICU-Ableitungen und bei diaphoretischen Patienten. Auch bei schlecht gesetzten Elektroden mit zu viel Gel.",
+      "notes": "",
+      "data_status": "complete",
+      "priority_for_mvp": "mittel",
+      "source_notes": [
+        "Niedermeyer & da Silva, 6th ed.",
+        "ACNS Guideline on EEG Artifacts"
+      ],
+      "images": [
+        {
+          "file": "placeholder.png",
+          "montage": "bipolare Längsreihe",
+          "context": "",
+          "caption": "",
+          "status": "placeholder"
+        }
+      ]
+    },
+    {
+      "id": "ART_041",
+      "name": "Slow Eye Movements (SEM)",
+      "aliases": [
+        "Langsame Augenbewegungen",
+        "Slow Rolling Eye Movements",
+        "SREM",
+        "Schlafassoziierte Augenbewegungen"
+      ],
+      "artifact_class": "physiologisch",
+      "subcategory": "okulär",
+      "scope": "routine",
+      "source": "Korneoretinaler Dipol; langsames, konjugiertes Gleiten des Bulbus — typisch für Vigilanzreduktion und N1-Schlaf. Die positive Kornea bewegt sich rhythmisch nach links und rechts, erzeugt gegenläufige Signale in F7/F8 und Fp1/Fp2.",
+      "frequency": {
+        "label": "nicht_anwendbar",
+        "min_hz": 0.1,
+        "max_hz": 0.5,
+        "typical_hz": 0.2,
+        "note": "Sehr langsam, sinusförmig, 0,1–0,5 Hz. Nicht mit Frequenz im EEG-Sinne zu verwechseln."
+      },
+      "amplitude": {
+        "label": "mittel",
+        "min_uv": 50,
+        "max_uv": 400,
+        "typical_uv": 150
+      },
+      "duration": {
+        "label": "lang",
+        "min_ms": 1000,
+        "max_ms": 5000,
+        "typical_ms": 2500,
+        "note": "Einzelbewegung dauert 1–5 s; treten in Serien auf, häufig mehrere Minuten lang"
+      },
+      "localization": [
+        "frontopolar",
+        "frontal"
+      ],
+      "laterality": "bilateral_gegenlaeufig",
+      "morphology": "Langsame, sinusförmige, konjugierte Augenbewegungen ohne Sakkaden. In F7 und F8 gegenlaufende Wellen sichtbar (Fp1 positiv wenn Augen links, Fp2 positiv wenn Augen rechts). Keine abrupten Phasen wie bei REMs. Schlagweise wie eine sanfte Pendelbewegung.",
+      "rhythmicity": "rhythmisch",
+      "montage_behavior": {
+        "bipolar_longitudinal": "Frontopolare Kanäle (Fp1–F7, Fp2–F8) zeigen gegenphasige langsame Wellen; bei Augenbewegung nach rechts: positive Deflexion Fp2–F8, negative Fp1–F7",
+        "bipolar_transverse": "Gegenphasigkeit links/rechts frontal klar erkennbar",
+        "referential_cz": "Frontopolare Elektroden zeigen langsame Sinuswellen; deutlich von Background abzutrennen",
+        "referential_average": "Frontale Dominanz, posteriore Elektroden wenig beeinflusst",
+        "referential_mastoid": "Frontopolares Maximum gut sichtbar",
+        "best_montage": "EOG-Kanal (horizontal und vertikal) parallel zum EEG — eindeutigste Identifikation",
+        "pitfalls": "Kann anteriore Deltaaktivität imitieren; Unterscheidung: SEM konjugiert gegenphasig, kein kortikales Feld posterior",
+        "typical_montage": ""
+      },
+      "cortical_field_plausible": false,
+      "time_locking": {
+        "ecg_synchronous": false,
+        "pulse_synchronous": false,
+        "respiration_synchronous": false,
+        "movement_synchronous": false,
+        "photic_synchronous": false,
+        "stimulation_synchronous": false,
+        "device_synchronous": false
+      },
+      "patient_context": [
+        "Müdigkeit",
+        "Somnolenz",
+        "Einschlafen",
+        "N1-Schlaf",
+        "Augen halb geschlossen"
+      ],
+      "triggering_situation": [
+        "Vigilanzreduktion",
+        "Einschlafphase",
+        "N1-NREM-Schlaf"
+      ],
+      "vigilance_context": [
+        "schlaefrig",
+        "N1"
+      ],
+      "auxiliary_channels": [
+        "EOG horizontal (empfohlen)",
+        "EOG vertikal"
+      ],
+      "cross_references": {
+        "eeg_mimics": [
+          "EEG_0010"
+        ],
+        "artifact_mimics": [
+          "ART_002",
+          "ART_003"
+        ],
+        "artifact_distinctions": "ART_002/003 sind willkürliche, schnellere Augenbewegungen im Wachzustand. SEM sind langsamer (0,1–0,5 Hz), konjugiert-rollend, im Schlafkontext."
+      },
+      "dialog_logic": {
+        "key_features": [
+          "langsam 0,1–0,5 Hz",
+          "konjugiert-gegenphasig F7/F8",
+          "Vigilanzreduktion / N1-Schlaf",
+          "sinusförmig",
+          "kein kortikales Feld posterior"
+        ],
+        "criteria_for": [
+          "Slow rolling movement",
+          "konjugiert bilateral",
+          "N1-Schlafkontext",
+          "Frequenz <0,5 Hz"
+        ],
+        "criteria_against": [
+          "Sakkadisch-abrupt (→ willkürliche Augenbewegung)",
+          "Kortikales Feld posterior (→ Delta-Aktivität)",
+          "Wachzustand mit Blinzeln"
+        ]
+      },
+      "provocation_or_check": "EOG-Kanal vergleichen: bei SEM sinusförmige Gegenphasigkeit horizontal, kein Blinzeln",
+      "correction_intervention": "Kein Eingriff notwendig — SEM ist Normalphänomen; als positives N1-Zeichen werten",
+      "warning": null,
+      "teaching_pearl": "Slow Eye Movements sind das erste verlässliche Zeichen des Einschlafens — noch bevor der Alpha-Grundrhythmus vollständig erlischt. AASM-konform sind sie zusammen mit Alpha-Reduktion <50% der Epoche das Hauptkriterium für N1.",
+      "data_status": "complete",
+      "images": []
+    }
+  ]
+}

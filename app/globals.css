@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+/* ─── Dark-mode via .dark class ─────────────────────────────────────────────── */
+@custom-variant dark (&:is(.dark, .dark *));
+
+/* ─── Font registration ──────────────────────────────────────────────────────── */
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* ─── Design Tokens (Light) ──────────────────────────────────────────────────── */
+:root {
+  --bg-base:      #f8fafc;
+  --bg-surface:   #ffffff;
+  --bg-elevated:  #ffffff;
+  --bg-subtle:    #f1f5f9;
+  --bg-muted:     #e2e8f0;
+  --border:       #e2e8f0;
+  --border-strong:#cbd5e1;
+  --text-primary:   #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary:  #94a3b8;
+  --brand:        #2563eb;
+  --brand-light:  #dbeafe;
+  --glass-bg:     rgba(255,255,255,0.85);
+  --glass-border: rgba(226,232,240,0.8);
+  --shadow-sm:    0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md:    0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg:    0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+  --shadow-glow:  0 0 0 3px rgb(37 99 235 / 0.15);
+}
+
+/* ─── Design Tokens (Dark) ───────────────────────────────────────────────────── */
+.dark {
+  --bg-base:      #090e1a;
+  --bg-surface:   #0f1629;
+  --bg-elevated:  #161f35;
+  --bg-subtle:    #1a2540;
+  --bg-muted:     #243050;
+  --border:       #1e2d47;
+  --border-strong:#2a3f5e;
+  --text-primary:   #f0f4f8;
+  --text-secondary: #8fa3be;
+  --text-tertiary:  #4e6380;
+  --brand:        #4d8ef0;
+  --brand-light:  #162040;
+  --glass-bg:     rgba(9,14,26,0.88);
+  --glass-border: rgba(30,45,71,0.9);
+  --shadow-sm:    0 1px 3px 0 rgb(0 0 0 / 0.4);
+  --shadow-md:    0 4px 8px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+  --shadow-lg:    0 10px 20px -3px rgb(0 0 0 / 0.6), 0 4px 8px -4px rgb(0 0 0 / 0.5);
+  --shadow-glow:  0 0 0 3px rgb(77 142 240 / 0.25);
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* ─── Animations ─────────────────────────────────────────────────────────────── */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+.animate-fade-in  { animation: fade-in 0.3s ease both; }
+.animate-slide-up { animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-scale-in { animation: scale-in 0.2s ease both; }
+
+.delay-75  { animation-delay: 75ms; }
+.delay-100 { animation-delay: 100ms; }
+.delay-150 { animation-delay: 150ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+
+/* ─── Utilities ──────────────────────────────────────────────────────────────── */
+.glass {
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+}
+
+.pb-safe {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 9px; }
