@@ -74,10 +74,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           {/* ── Footer ── */}
           <footer className="hidden md:block border-t mt-16" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-surface)' }}>
-            <div className="mx-auto max-w-6xl px-4 py-5 text-xs" style={{ color: 'var(--text-tertiary)' }}>
-              EEG Navigator — Didaktisches Lern- und Entscheidungssystem.{' '}
-              <strong style={{ color: 'var(--text-secondary)' }}>Kein Medizinprodukt.</strong>{' '}
-              Nicht zur klinischen Anwendung geeignet.
+            <div className="mx-auto max-w-6xl px-4 py-5 flex items-center justify-between text-xs" style={{ color: 'var(--text-tertiary)' }}>
+              <span>
+                EEG Navigator — Didaktisches Lern- und Entscheidungssystem.{' '}
+                <strong style={{ color: 'var(--text-secondary)' }}>Kein Medizinprodukt.</strong>{' '}
+                Nicht zur klinischen Anwendung geeignet.
+              </span>
+              <a href="/admin"
+                className="transition-opacity hover:opacity-100 opacity-30 ml-4"
+                style={{ color: 'var(--text-tertiary)' }}>
+                ·
+              </a>
             </div>
           </footer>
 

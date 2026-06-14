@@ -11,6 +11,7 @@ import { StatusBadge, ClassificationBadge, DiseaseValueBadge, Tag } from '@/comp
 import { label } from '@/lib/labels'
 import { ENTITY_EEG_STATE } from '@/lib/eegStates'
 import EEGMiniViewer from '@/components/EEGViewer/EEGMiniViewer'
+import { isAdminAuthenticated } from '@/lib/admin-auth'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -30,6 +31,7 @@ export default async function EntityDetailPage({ params }: Props) {
   if (!entity) notFound()
 
   const isWave = isWaveEntity(entity)
+  const isAdmin = await isAdminAuthenticated()
 
   return (
     <div className="max-w-4xl animate-fade-in">
@@ -46,6 +48,16 @@ export default async function EntityDetailPage({ params }: Props) {
         </Link>
         <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>/</span>
         <span className="text-xs font-medium truncate" style={{ color: 'var(--text-secondary)' }}>{entity.name}</span>
+        {isAdmin && (
+          <Link href={`/admin/entity/${entity.id}`}
+            className="ml-auto inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium border transition-all hover:bg-violet-50 hover:border-violet-300 hover:text-violet-700"
+            style={{ color: 'var(--text-tertiary)', borderColor: 'var(--border)' }}>
+            <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125"/>
+            </svg>
+            Bearbeiten
+          </Link>
+        )}
       </div>
 
       {/* ── Mobile Sticky EEG-Kurzinfo ── */}
