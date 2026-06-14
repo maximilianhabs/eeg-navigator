@@ -8816,15 +8816,19 @@
       "name": "Triphasische Wellen",
       "aliases": [
         "triphasic waves",
-        "generalized triphasic waves"
+        "generalized triphasic waves",
+        "TWs",
+        "GPDs with triphasic morphology",
+        "generalized periodic discharges with triphasic morphology"
       ],
       "main_category": "Diffuse pathologische Muster und Komamuster",
       "subcategory": "Enzephalopathiemuster",
       "frequency": {
         "label": "Delta",
-        "min_hz": 1,
+        "min_hz": 0.5,
         "max_hz": 2,
-        "typical_hz": 1.5
+        "typical_hz": 1.5,
+        "note": "Typisch 1–2 Hz; 0,5–2 Hz möglich. Frequenzen >2–2,5 Hz erhöhen NCSE-Verdacht erheblich."
       },
       "amplitude": {
         "label": "groß",
@@ -8846,12 +8850,13 @@
       ],
       "laterality": "bilateral_symmetrisch",
       "field_distribution": {
-        "description": "Frontales Maximum bilateral; antero-posteriorer Phasengradient (anteriore Komponente vor posteriorer)",
+        "description": "Frontales Maximum bilateral (Fp1/Fp2, F3/F4, Fz); antero-posteriorer Phasengradient: anteriore Komponente erscheint 25–140 ms vor posteriorer. Sehr weites, bilateral-symmetrisches Feld, kein fokaler Generator — passend zu diffuser Hirndysfunktion.",
         "phase_reversal": "nicht_anwendbar",
         "field_plausibility": "regional",
-        "reference_contamination_risk": "niedrig"
+        "reference_contamination_risk": "niedrig",
+        "anterior_posterior_lag_ms": "25–140"
       },
-      "morphology": "M-förmig oder W-förmig: negativ-positiv-negativ (NPNoder PNP je nach Referenz), frontales Maximum, antero-posteriorer Gradient",
+      "morphology": "Drei-Phasen-Komplex: (1) kleine initiale Negativität, (2) dominante positive Hauptkomponente (größte Amplitude), (3) breite terminale Negativität. Frontales Maximum bilateral; antero-posteriorer Phasengradient (anteriore Komponente erscheint 25–140 ms vor posteriorer). Gesamtkomplex breiter als epileptiforme Transienten.",
       "potential_course": "Periodisch wiederkehrend; antero-posteriorer Sweep (anteriore Phase zuerst)",
       "rhythmicity": "rhythmisch",
       "periodicity": "periodisch",
@@ -8900,7 +8905,22 @@
           "Ist ein antero-posteriorer Phasengradient erkennbar?",
           "Liegt ein metabolisches Grundleiden vor?",
           "Gibt es eine Spike-Komponente?"
-        ]
+        ],
+        "ncse_differentiation": {
+          "for_encephalopathy": [
+            "Frequenz 0,5–2 Hz, keine Evolution",
+            "Frontales Maximum, anteroposteriores Lag",
+            "stabile Morphologie ohne Änderung über Zeit",
+            "passender metabolischer Kontext"
+          ],
+          "for_ncse": [
+            "Frequenz >2–2,5 Hz",
+            "zeitliche Evolution (Frequenz, Amplitude, Morphologie)",
+            "Plus-Merkmale (ACNS)",
+            "klinische Korrelation (subtle motor signs)",
+            "Ansprechen auf Benzodiazepine (EEG-Verbesserung)"
+          ]
+        }
       },
       "differential_diagnoses": [
         "EEG_0060"
@@ -8917,9 +8937,9 @@
           "status": "placeholder"
         }
       ],
-      "teaching_pearl": "Triphasische Wellen = metabolische Enzephalopathie bis zum Beweis des Gegenteils. Leber, Niere, Schilddrüse.",
-      "warning": "Abgrenzung zu GPDs (ACNS) schwierig. Der antero-posteriore Sweep ist das wichtigste Unterscheidungsmerkmal.",
-      "notes": "Klassisch bei hepatischer Enzephalopathie. Auch bei CJD, renaler und pulmonaler Enzephalopathie.",
+      "teaching_pearl": "Triphasische Wellen sind keine Diagnose, sondern eine Morphologie. Moderne Einordnung: GPDs mit triphasischer Morphologie (ACNS 2021). Häufigste Ursache heute toxisch-metabolische Enzephalopathie — Leber, Niere, Medikamente (Cefepim!), Sepsis. Das charakteristischste Merkmal ist nicht die Dreiphasigkeit selbst, sondern die Kombination aus bifrontalem Maximum, 1–2 Hz Periodizität und anteroposteriorem Zeitversatz (25–140 ms). NCSE-Ausschluss bei Frequenz >2 Hz, Evolution oder klinischer Korrelation obligat.",
+      "warning": "Abgrenzung zu GPDs (ACNS): Triphasics gelten heute als Subtyp der GPDs. Antero-posteriores Lag (25–140 ms) ist das wichtigste morphologische Unterscheidungsmerkmal zu anderen GPD-Subtypen. NCSE-Ausschluss bei Frequenz >2–2,5 Hz, zeitlicher Evolution oder klinischem Korrelat immer erforderlich. Cefepim als medikamentöse Ursache häufig übersehen.",
+      "notes": "Klassisch bei hepatischer Enzephalopathie, aber moderne Serien zeigen Triphasics häufiger bei Nierenversagen. Wichtige toxische Ursachen: Cefepim (häufig übersehen!), Lithium, Baclofen. Bei CJD typischerweise PSWCs (schärfer, mit Myoklonien, progredient) — nicht mit metabolischen Triphasics gleichsetzen. Nur mäßige Interrater-Reliabilität in Expertenstudien.",
       "data_status": "complete",
       "priority_for_mvp": "mittel",
       "source_notes": [
@@ -8931,7 +8951,46 @@
       },
       "spatial_distribution": "generalisiert",
       "spatial_subtype": null,
-      "spatial_note": null
+      "spatial_note": null,
+      "etiology": {
+        "metabolic": [
+          "hepatische Enzephalopathie",
+          "urämische Enzephalopathie (heute oft häufiger als hepatisch)",
+          "Hypernatriämie",
+          "Hyponatriämie",
+          "schwere Elektrolytstörungen"
+        ],
+        "toxic_drugs": [
+          "Cefepim",
+          "Lithium",
+          "Baclofen",
+          "Pregabalin",
+          "Valproat",
+          "Sedativa"
+        ],
+        "systemic": [
+          "Sepsis",
+          "Multiorganversagen"
+        ],
+        "structural": [
+          "Schlaganfall",
+          "Tumoren",
+          "postanoxische Enzephalopathie (seltener)"
+        ],
+        "prion": [
+          "CJD — ähnliche Morphologie möglich (PSWCs), aber spezifisch unterschiedlich"
+        ]
+      },
+      "cjd_distinction": {
+        "summary": "Triphasische Wellen ≠ CJD-Muster. Häufiger Denkfehler.",
+        "cjd_pattern": "Periodic Sharp Wave Complexes (PSWCs): generalisiert, periodisch ~1 Hz, scharf konturiert, biphasisch oder triphasisch möglich, oft mit Myoklonien gekoppelt, progredienter Verlauf",
+        "metabolic_triphasics": "Breiter, diffuser, stärker frontaldominiert, meist ohne Myoklonus-Kopplung, reversibel bei Behandlung der Grundkrankheit"
+      },
+      "reliability_note": "Nur mäßige Interrater-Übereinstimmung zwischen EEG-Experten. Morphologie allein reicht nicht zur ätiologischen Zuordnung — klinischer Kontext ist entscheidend.",
+      "acns_classification": {
+        "preferred_term": "GPDs with triphasic morphology",
+        "note": "ACNS (2021) behandelt Triphasics nicht mehr als eigenständige Kategorie, sondern als Subtyp generalisierter periodischer Entladungen (GPDs). Die morphologische Bezeichnung bleibt klinisch gebräuchlich."
+      }
     },
     {
       "id": "EEG_0068",
