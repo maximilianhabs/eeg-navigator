@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { verifyToken, SESSION_COOKIE } from '@/lib/auth'
+import { verifyToken, SESSION_COOKIE } from '@/lib/auth-edge'
 
 // Public — keine Auth nötig
 const PUBLIC_PATHS = ['/login', '/api/auth/login']
@@ -8,7 +8,7 @@ function isAdminPath(pathname: string) {
   return pathname.startsWith('/admin') || pathname.startsWith('/api/admin')
 }
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Immer erlaubt
@@ -18,7 +18,7 @@ export function middleware(request: NextRequest) {
 
   // Session prüfen
   const token = request.cookies.get(SESSION_COOKIE)?.value
-  const session = token ? verifyToken(token) : null
+  const session = token ? await verifyToken(token) : null
 
   if (!session) {
     // API → 401, Seite → Login

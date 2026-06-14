@@ -3,9 +3,13 @@ import fs from 'fs'
 import path from 'path'
 import bcrypt from 'bcryptjs'
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// Re-export edge-compatible types and constants so importers don't need two imports
+export type { UserRole, SessionPayload } from './auth-edge'
+export { SESSION_COOKIE } from './auth-edge'
 
-export type UserRole = 'user' | 'admin'
+// ─── Types (Node.js runtime only) ─────────────────────────────────────────────
+
+import type { UserRole, SessionPayload } from './auth-edge'
 
 export interface User {
   id: string
@@ -13,13 +17,6 @@ export interface User {
   passwordHash: string
   role: UserRole
   createdAt: string
-}
-
-export interface SessionPayload {
-  userId: string
-  username: string
-  role: UserRole
-  exp: number
 }
 
 // ─── Token signing (HMAC-SHA256, no external dep) ────────────────────────────
@@ -50,7 +47,6 @@ export function verifyToken(token: string): SessionPayload | null {
 
 // ─── Cookie helpers ───────────────────────────────────────────────────────────
 
-export const SESSION_COOKIE = 'eeg-session'
 export const SESSION_MAX_AGE = 60 * 60 * 10 // 10 hours
 
 // ─── User storage (data/users.json) ──────────────────────────────────────────
