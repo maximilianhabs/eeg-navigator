@@ -11776,28 +11776,34 @@
       "aliases": [
         "Temporaler Anfall EEG",
         "TLE-Anfallsmuster",
-        "Temporallappen-Anfall EEG"
+        "Temporallappen-Anfall EEG",
+        "TLE",
+        "Mesialtemporales Anfallsmuster",
+        "Temporal lobe seizure EEG",
+        "TIRDA-assoziiertes Muster"
       ],
       "main_category": "Anfallsmuster",
       "subcategory": "Fokale Anfallsmuster",
       "frequency": {
         "label": "Theta/Alpha",
-        "min_hz": 4,
-        "max_hz": 12,
-        "typical_hz": 6
+        "min_hz": 1,
+        "max_hz": 13,
+        "typical_hz": 6,
+        "note": "Phasenabhängig: TIRDA interiktal 1–4 Hz; iktal klassisch 5–7 Hz (Theta); fortgeschritten 8–13 Hz; LVFA >13 Hz. Frequenzanstieg ist Kernevidenz für Iktalität."
       },
       "amplitude": {
         "label": "mittel",
         "min_uv": 30,
-        "max_uv": 200,
-        "typical_uv": 80
+        "max_uv": 500,
+        "typical_uv": 100,
+        "note": "Typisch zunehmend im Anfallsverlauf: Initial-Flattening (<50 µV) → Theta-Phase 50–150 µV → Spätphase 200–500 µV. Amplitude allein ist kein Iktalitätskriterium."
       },
       "duration": {
         "label": "variabel",
-        "min_ms": null,
-        "max_ms": null,
-        "typical_ms": null,
-        "note": "Anfallsdauer variabel; iktal: Sekunden bis Minuten"
+        "min_ms": 30000,
+        "max_ms": 180000,
+        "typical_ms": 90000,
+        "note": "Mesialtemporale Anfälle: typisch 60–180 s. Kürzere Anfälle (<30 s) möglich, aber schwer abgrenzbar von kurzen Mustern. Postiktale Phase oft länger als iktale."
       },
       "polarity": "variabel",
       "localization": [
@@ -11806,24 +11812,24 @@
       ],
       "laterality": "unilateral",
       "field_distribution": {
-        "description": "",
+        "description": "Maximum: F7/T7 (links) oder F8/T8 (rechts). Mesialtemporale Anfälle: EEG-Maximum anterior temporal oder sphenoidal — Skalpelektroden erfassen mesiale Strukturen nur indirekt. Typische Ausbreitung: anterior temporal → mid temporal → temporal posterior → kontralateral. Lateralisierung gelingt in ~70–80% der Scalp-EEG-Ableitungen.",
         "phase_reversal": "möglich",
-        "field_plausibility": "",
-        "reference_contamination_risk": ""
+        "field_plausibility": "regional_unilateral_temporal",
+        "reference_contamination_risk": "niedrig_bei_Mastoid_Referenz"
       },
-      "morphology": "Rhythmische Theta-Aktivität (4–8 Hz) temporal einseitig; Initial-Flattening des Hintergrunds; Evolution in Frequenz und Amplitude; Propagation möglich; postiktale Verlangsamung temporal",
-      "potential_course": "",
+      "morphology": "5-Phasen-Modell: (1) Attenuation/Desynchronisation — lokale Hintergrundabschwächung (\"Initial-Flattening\"), niedrige Amplitude, Sekunden; häufig übersehen. (2) Rhythmische Thetaaktivität — 5–7 Hz, sinusoid-rhythmisch, temporal anterior/mid; häufigste klassische TLE-Phase. (3) Frequenzzunahme — 3 Hz → 5 Hz → 7 Hz → 8–10 Hz; Beschleunigung belegt Iktalität. (4) Amplitudenzunahme — parallel zunehmende Synchronisation: 50 µV → 100 µV → 200–500 µV. (5) Postiktale Verlangsamung — fokale Delta-/Thetaaktivität temporal ipsilateral; hoher Lateralisierungswert.",
+      "potential_course": "Temporal Spike (interiktal) → EEG-Attenuation → Rhythmische Thetaaktivität (5–7 Hz) → Frequenzanstieg → Amplitudenzunahme → räumliche Ausbreitung (bei Propagation) → Anfallsende → Postiktale Delta-Verlangsamung temporal. Gesamtdauer typisch 60–180 s. Postiktale Verlangsamung oft deutlicher lateral isierierbar als das Iktalmuster selbst.",
       "rhythmicity": "rhythmisch_evoluierend",
       "periodicity": "nicht_periodisch",
       "montage_behavior": {
-        "bipolar_longitudinal": "",
-        "bipolar_transverse": "",
-        "referential_cz": "",
-        "referential_average": "",
-        "referential_mastoid": "",
+        "bipolar_longitudinal": "Beste Montage für TLE. Rhythmische Aktivität in temporaler Kette (Fp1-F7-T7-P7 / Fp2-F8-T8-P8) deutlich erkennbar. Phasenumkehr in F7/T7 oder F8/T8 bei anteriorem Anfallsmaximum. Evolution (Frequenzanstieg, Amplitudenzunahme) gut verfolgbar.",
+        "bipolar_transverse": "Hilft bei Lateralisierung: asymmetrische Amplitude in transversalen Reihen spricht für ipsilaterale Seite. F7–Fz–F8-Kanal zeigt oft Seitendifferenz.",
+        "referential_cz": "Gut zur Feldbeurteilung: temporale Elektroden (T7/T8, F7/F8) zeigen bei TLE maximale Amplitude. Cz-Referenz vorteilhaft gegenüber Mastoid bei bilateralem Befall.",
+        "referential_average": "Bei fokalen Mustern weniger geeignet: Average-Referenz verteilt das iktale Signal über alle Elektroden und kann Lateralisierung abschwächen.",
+        "referential_mastoid": "Klassisch für TLE. Ipsilaterale Mastoid-Elektrode liegt nahe am Generator — cave: ipsila laterale Kontamination möglich. Kontralateraler Mastoid als Referenz für bessere Lateralisierung.",
         "best_montage": "bipolare Längsreihe",
         "typical_montage": "bipolare Längsreihe",
-        "pitfalls": ""
+        "pitfalls": "Initial-Flattening wird in allen Montagen leicht übersehen — besonders wenn Grundaktivität niedrig ist. Mesialtemporale Anfälle können am Skalp sehr diskret beginnen. Average-Referenz verschleiert Lateralisierung. Postiktale Delta-Aktivität ist oft besser lateralisiert als das Iktalmuster — immer bis in die postiktale Phase weiterlesen."
       },
       "classification": "epileptiform",
       "disease_value": "hochpathologisch",
@@ -11837,35 +11843,51 @@
       "pediatric_only": false,
       "dialog_logic": {
         "key_features": [
-          "temporal einseitig",
-          "Theta 4–8 Hz",
-          "Evolution",
-          "Initial-Flattening",
-          "postiktale Verlangsamung temporal"
+          "Rhythmische Thetaaktivität 5–7 Hz temporal einseitig",
+          "Initial-Flattening als erster Befund",
+          "Evolution (Frequenz + Amplitude + Ausbreitung)",
+          "Postiktale Deltaaktivität temporal ipsilateral",
+          "F7/T7 oder F8/T8 als Maximum"
         ],
         "criteria_for": [
-          "Temporal einseitige rhythmische Aktivität",
-          "Evolution in Frequenz/Amplitude",
-          "Postiktale regionale Verlangsamung"
+          "Temporal lateralisierte rhythmische Aktivität mit Evolution",
+          "Initial-Flattening gefolgt von rhythmischem Theta",
+          "Postiktale regionale Verlangsamung ipsilateral",
+          "TIRDA interiktal als starker Hinweis",
+          "F7/T7 oder F8/T8-Maximum"
         ],
         "criteria_against": [
-          "Bilateral synchron von Beginn (→ generalisiert)",
-          "Frontal betont (→ Frontallappenanfall)"
+          "Bilateral synchron von Beginn → generalisiertes Muster",
+          "Frontal betont, schnell, kurz → Frontallappenanfall (EEG_0097)",
+          "Keine Evolution → eher interiktales Muster oder TIRDA",
+          "Kontinuierlich ohne Ende → temporaler NCSE (EEG_0099)"
         ],
         "mimics": [
-          "EEG_0097"
+          "EEG_0097",
+          "EEG_0099",
+          "EEG_0033"
         ],
         "discriminating_questions": [
-          "Ist das Muster temporal lateralisiert?",
-          "Gibt es eine Evolution?",
-          "Wie ist die postiktale Verlangsamung lokalisiert?"
+          "Ist das Muster temporal lateralisiert (F7/T7 oder F8/T8)?",
+          "Gibt es eine Evolution in Frequenz und Amplitude?",
+          "Wie ist die postiktale Verlangsamung lokalisiert?",
+          "War ein Initial-Flattening erkennbar?",
+          "Gibt es interiktale TIRDA?"
         ]
       },
       "differential_diagnoses": [
         "EEG_0097",
-        "EEG_0095"
+        "EEG_0095",
+        "EEG_0099",
+        "EEG_0033"
       ],
-      "common_misinterpretations": [],
+      "common_misinterpretations": [
+        "Initial-Flattening wird übersehen — Anfang des Anfalls verpasst",
+        "Postiktale Deltaaktivität als eigenständige Pathologie fehlinterpretiert",
+        "TIRDA als Artefakt oder unspezifische Verlangsamung fehlgedeutet — hohes epilepsiediagnostisches Gewicht",
+        "Mesialtemporaler Anfall als \"kleiner Befund\" abgetan, da Skalpsignal anfangs diskret",
+        "Average-Referenz gewählt → Lateralisierung verschleiert"
+      ],
       "images": [
         {
           "file": "placeholder.png",
@@ -11875,10 +11897,10 @@
           "status": "placeholder"
         }
       ],
-      "teaching_pearl": "Das typische TLE-Anfallsmuster: Initial-Flattening, dann rhythmische Theta temporal einseitig mit Evolution. Lateralisierung gelingt in ~70–80% der Scalp-EEG-Ableitungen.",
-      "warning": "Scalp-EEG lateralisiert, aber intrakranielle Ableitungen zeigen oft früheren Beginn. Für chirurgische Planung ist Scalp-EEG nur erster Schritt.",
-      "notes": "",
-      "data_status": "partial",
+      "teaching_pearl": "Das prototypische mesialtemporale Anfallsmuster: Initial-Flattening → rhythmische Thetaaktivität 5–7 Hz → Frequenzanstieg → Amplitudenzunahme → postiktale Delta temporal. Evolution ist das wichtigste Einzelkriterium. TIRDA interiktal ist nahezu pathognomonisch für TLE. Postiktale Deltaaktivität temporal lateralisiert oft besser als das Iktalmuster selbst.",
+      "warning": "Scalp-EEG zeigt mesialtemporale Anfälle häufig verzögert und abgeschwächt — frühes Anfallsstadium am Skalp diskret. Für chirurgische Planung ist Scalp-EEG nur erster Schritt; intrakranielle Ableitungen (SEEG, subdural) sind Standard. Average-Referenz kann Lateralisierung verschleiern — bipolare Längsreihe bevorzugen.",
+      "notes": "TLE ist häufigste fokale Epilepsie des Erwachsenenalters; Hippokampussklerose häufigste strukturelle Ursache. Scalp-EEG lateralisiert in ~70–80%. TIRDA (1–4 Hz temporal rhythmisch interiktal) ist einer der stärksten Einzelbefunde für TLE. Postiktale Deltaaktivität temporal oft besser lateralisierend als das Iktalmuster selbst. 30–40% medikamentenresistent — epilepsiechirurgische Evaluation sollte früh erfolgen.",
+      "data_status": "complete",
       "priority_for_mvp": "mittel",
       "source_notes": [
         "Niedermeyer & da Silva, 6th ed.",
@@ -11887,12 +11909,76 @@
       ],
       "cross_references": {
         "eeg_mimics": [
-          "EEG_0097"
-        ]
+          "EEG_0097",
+          "EEG_0099",
+          "EEG_0033"
+        ],
+        "interictal_correlate": "EEG_0033 (TIRDA)"
       },
       "spatial_distribution": "regional_temporal",
       "spatial_subtype": "unilateral_temporal",
-      "spatial_note": ""
+      "spatial_note": "F7/T7 links oder F8/T8 rechts als Maximum. Sphenoidal-Elektroden erhöhen mesiale Sensitivität deutlich.",
+      "source": "Mesiales Temporallappen-System (Hippokampus, Amygdala, entorhinaler Kortex) — häufigste Anfallsquelle beim Erwachsenen. Neokortikal temporal: laterale Temporalrinde. Mesiale Strukturen werden am Skalpelektroden-EEG nur indirekt erfasst — intrakranielle Ableitungen zeigen oft früheren und klareren Beginn.",
+      "tirda": {
+        "name": "Temporal Intermittent Rhythmic Delta Activity (TIRDA)",
+        "frequency": "1–4 Hz",
+        "localization": "F7/T7 (links) oder F8/T8 (rechts)",
+        "status": "interiktal — kein Anfallsmuster",
+        "significance": "Hoch epilepsiespezifisch. Einer der stärksten interiktalen Marker einer Temporallappenepilepsie. PPV für TLE sehr hoch.",
+        "distinction_from_ictal": "TIRDA: rhythmisch-stereotyp, keine Evolution, keine Frequenzzunahme. Iktal: Evolution obligat.",
+        "ref": "EEG_0033"
+      },
+      "lvfa": {
+        "name": "Low Voltage Fast Activity (LVFA)",
+        "frequency": ">13 Hz",
+        "amplitude": "niedrig (<50 µV)",
+        "onset": "plötzlich, abrupt",
+        "localization": "mesial temporal oder frontal",
+        "note": "Hochspezifisches iktales Muster. Intrakraniell häufiger sichtbar als am Skalp. Klassischer Anfangsbefund bei mesialtemporalen Anfällen im intrakraniellen EEG."
+      },
+      "mesial_vs_neocortical": {
+        "mesial_temporal": {
+          "eeg": "Rhythmische Thetaaktivität, sinusoid, relativ sauber",
+          "onset": "Initial-Flattening häufig, dann Theta",
+          "scalp": "Oft anfangs diskret — mesiale Strukturen schwer erfassbar",
+          "typical_frequency": "5–7 Hz"
+        },
+        "neocortical_temporal": {
+          "eeg": "Schärfere Muster, Spikes, schnellere Aktivität",
+          "onset": "Oft direkter Anfangsbefund ohne ausgeprägtes Flattening",
+          "scalp": "Größere Skalpsignale, da näher an Elektroden",
+          "typical_frequency": "8–13 Hz oder LVFA"
+        }
+      },
+      "lateralization_signs": {
+        "most_important": "Frühestes Rhythmusmaximum — die Seite mit früherem Beginn, größerer Amplitude und stärkerer Rhythmizität",
+        "postictal_delta": "Postiktale fokale Delta-Verlangsamung ipsilateral zur Anfallsquelle — oft deutlicher als Iktalmuster",
+        "postictal_suppression": "Lokale Amplitudenreduktion ipsilateral (gelegentlich)",
+        "scalp_lateralization_rate": "~70–80% der TLE-Anfälle lateral isierbar am Skalp-EEG",
+        "clinical_note": "Unilaterale Automatismen (Hand) + dystone Gegenhand → ipsilaterale Automatismusseite meist Anfallsseite (semiologisches Kriterium)"
+      },
+      "etiology": {
+        "mesial_temporal": [
+          "Hippokampussklerose (häufigste Ursache mesiotemporaler Epilepsie)",
+          "Mesiale Temporallappensklerose (MTS)",
+          "Postenzephalitische Narben",
+          "Febrile Anfälle in der Kindheit (Risikofaktor)"
+        ],
+        "neocortical_temporal": [
+          "Low-grade Gliome",
+          "Gangliogliome",
+          "Dysembryoplastische neuroepitheliale Tumoren (DNET)",
+          "Fokale kortikale Dysplasie Typ I",
+          "Kavernome"
+        ],
+        "note": "TLE ist häufig medikamentenresistent — 30–40% werden epilepsiechirurgische Kandidaten."
+      },
+      "interictal_patterns": {
+        "anterior_temporal_spikes": "Klassiker: F7/T7 oder F8/T8-Maximum, scharfe Negativität, physiologisches Feld",
+        "temporal_sharp_waves": "70–200 ms Dauer, anterior temporal, oft synchron mit Spikes",
+        "TIRDA": "1–4 Hz rhythmische Delta, temporal, hoher PPV für TLE — interiktal, keine Evolution",
+        "note": "Interiktale Spikes lateralisieren in ~60–70% korrekt zur Anfallsseite. TIRDA hat höheren Spezifitätswert als isolierte Spikes."
+      }
     },
     {
       "id": "EEG_0097",
