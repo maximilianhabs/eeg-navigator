@@ -97,18 +97,6 @@ export default function AtlasPage() {
       </div>
 
       {/* ── Disclaimer ── */}
-      <div className="mt-8 rounded-xl border px-4 py-3 flex items-start gap-3 text-xs animate-fade-in delay-300"
-        style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-subtle)', color: 'var(--text-tertiary)' }}>
-        <svg className="w-4 h-4 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25z"/>
-        </svg>
-        <p className="leading-relaxed">
-          <strong className="font-semibold" style={{ color: 'var(--text-secondary)' }}>Kein Medizinprodukt.</strong>{' '}
-          Dieser EEG Navigator dient ausschließlich zu Lehr- und Informationszwecken. Er ersetzt keine klinische Befundung
-          durch qualifiziertes Fachpersonal und darf nicht zur medizinischen Diagnostik oder Therapieentscheidung
-          verwendet werden.
-        </p>
-      </div>
     </div>
   )
 }

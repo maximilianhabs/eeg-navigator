@@ -80,15 +80,22 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <footer className="hidden md:block border-t mt-16" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-surface)' }}>
             <div className="mx-auto max-w-6xl px-4 py-5 flex items-center justify-between text-xs" style={{ color: 'var(--text-tertiary)' }}>
               <span>
-                EEG Navigator — Didaktisches Lern- und Entscheidungssystem.{' '}
+                © {new Date().getFullYear()} Maximilian Habs.{' '}
                 <strong style={{ color: 'var(--text-secondary)' }}>Kein Medizinprodukt.</strong>{' '}
-                Nicht zur klinischen Anwendung geeignet.
+                Ausschließlich zu Lehr- und Informationszwecken.
               </span>
-              <a href="/admin"
-                className="transition-opacity hover:opacity-100 opacity-30 ml-4"
-                style={{ color: 'var(--text-tertiary)' }}>
-                ·
-              </a>
+              <div className="flex items-center gap-3 ml-4">
+                <a href="/impressum"
+                  className="transition-opacity hover:opacity-100 opacity-50 hover:text-current"
+                  style={{ color: 'var(--text-tertiary)' }}>
+                  Impressum &amp; Datenschutz
+                </a>
+                <a href="/admin"
+                  className="transition-opacity hover:opacity-100 opacity-20"
+                  style={{ color: 'var(--text-tertiary)' }}>
+                  ·
+                </a>
+              </div>
             </div>
           </footer>
 
