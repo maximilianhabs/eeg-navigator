@@ -1,12 +1,7 @@
-import { isAdminAuthenticated } from '@/lib/admin-auth'
 import { getAllWellen, getAllArtefakte } from '@/lib/data'
-import AdminLoginForm from '@/components/admin/AdminLoginForm'
 import Link from 'next/link'
 
 export default async function AdminPage() {
-  const isAuth = await isAdminAuthenticated()
-  if (!isAuth) return <AdminLoginForm />
-
   const wellen = getAllWellen()
   const artefakte = getAllArtefakte()
   const partials = [
@@ -25,11 +20,11 @@ export default async function AdminPage() {
             {wellen.length} Wellen · {artefakte.length} Artefakte
           </p>
         </div>
-        <a href="/api/admin/logout"
-          className="text-xs font-medium px-3 py-1.5 rounded-lg border transition-colors hover:bg-red-50 hover:text-red-600 hover:border-red-200"
-          style={{ color: 'var(--text-tertiary)', borderColor: 'var(--border)' }}>
-          Abmelden
-        </a>
+        <Link href="/admin/users"
+          className="text-xs font-medium px-3 py-1.5 rounded-lg border transition-colors hover:bg-slate-50"
+          style={{ color: 'var(--text-secondary)', borderColor: 'var(--border)' }}>
+          Benutzer
+        </Link>
       </div>
 
       {/* Unvollständige Entitäten */}

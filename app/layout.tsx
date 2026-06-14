@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import BottomNav from '@/components/BottomNav'
+import UserChip from '@/components/UserChip'
+import { getCurrentUser } from '@/lib/admin-auth'
 import './globals.css'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
@@ -16,7 +18,8 @@ export const metadata: Metadata = {
   description: 'Regelbasiertes EEG-Lehr- und Entscheidungssystem',
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const user = await getCurrentUser()
   return (
     <html lang="de" className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
       <body className="antialiased min-h-screen flex flex-col" style={{ backgroundColor: 'var(--bg-base)', color: 'var(--text-primary)' }}>
@@ -61,8 +64,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </nav>
 
               {/* Right side */}
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-2">
                 <ThemeToggle />
+                {user && <UserChip username={user.username} role={user.role} />}
               </div>
             </div>
           </header>

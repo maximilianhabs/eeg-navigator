@@ -1,26 +1,46 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { verifyToken, SESSION_COOKIE } from '@/lib/auth'
 
-const PUBLIC_ADMIN_PATHS = ['/admin', '/api/admin/login']
+// Public — keine Auth nötig
+const PUBLIC_PATHS = ['/login', '/api/auth/login']
+
+function isAdminPath(pathname: string) {
+  return pathname.startsWith('/admin') || pathname.startsWith('/api/admin')
+}
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
-  const isAdminPath = pathname.startsWith('/admin') || pathname.startsWith('/api/admin')
-  if (!isAdminPath) return NextResponse.next()
-  if (PUBLIC_ADMIN_PATHS.includes(pathname)) return NextResponse.next()
 
-  const session = request.cookies.get('eeg-admin-session')
-  const secret = process.env.ADMIN_SECRET
+  // Immer erlaubt
+  if (PUBLIC_PATHS.some(p => pathname === p || pathname.startsWith(p + '/'))) {
+    return NextResponse.next()
+  }
 
-  if (!secret || session?.value !== secret) {
+  // Session prüfen
+  const token = request.cookies.get(SESSION_COOKIE)?.value
+  const session = token ? verifyToken(token) : null
+
+  if (!session) {
+    // API → 401, Seite → Login
     if (pathname.startsWith('/api/')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Nicht angemeldet' }, { status: 401 })
     }
-    return NextResponse.redirect(new URL('/admin', request.url))
+    const url = request.nextUrl.clone()
+    url.pathname = '/login'
+    return NextResponse.redirect(url)
+  }
+
+  // Admin-Routen: nur für admin
+  if (isAdminPath(pathname) && session.role !== 'admin') {
+    if (pathname.startsWith('/api/')) {
+      return NextResponse.json({ error: 'Keine Berechtigung' }, { status: 403 })
+    }
+    return NextResponse.redirect(new URL('/', request.url))
   }
 
   return NextResponse.next()
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/admin/:path*'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|ico|css|js)$).*)'],
 }
