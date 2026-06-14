@@ -1,0 +1,42 @@
+services:
+  caddy:
+    image: caddy:2-alpine
+    container_name: eeg-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"   # HTTP/3
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - eeg-navigator
+
+  eeg-navigator:
+    build: .
+    container_name: eeg-navigator
+    restart: unless-stopped
+    # Port nicht nach außen exponieren — nur Caddy spricht den Container an
+    expose:
+      - "3000"
+    environment:
+      - NODE_ENV=production
+      - APP_SECRET=${APP_SECRET}
+    volumes:
+      - eeg_data:/app/data
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/impressum"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+volumes:
+  eeg_data:
+    driver: local
+  caddy_data:
+    driver: local
+  caddy_config:
+    driver: local

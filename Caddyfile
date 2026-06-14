@@ -1,0 +1,21 @@
+eeg.neuro-vibe.de {
+    # Automatisches HTTPS via Let's Encrypt
+    encode zstd gzip
+
+    # Security Headers
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Permissions-Policy "camera=(), microphone=(), geolocation=()"
+        Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:"
+        -Server
+    }
+
+    # Echte Client-IP an Next.js weiterleiten (für Rate-Limiter in der App)
+    header_up X-Forwarded-For {remote_host}
+    header_up X-Real-IP {remote_host}
+
+    reverse_proxy eeg-navigator:3000
+}

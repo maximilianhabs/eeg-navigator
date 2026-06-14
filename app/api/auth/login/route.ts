@@ -1,7 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { findUserByUsername, comparePassword, signToken, SESSION_COOKIE, SESSION_MAX_AGE } from '@/lib/auth'
+import { checkRateLimit, resetRateLimit } from '@/lib/rate-limit'
 
 export async function POST(request: NextRequest) {
+  // IP aus Header (Caddy setzt x-forwarded-for) oder Fallback
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim()
+    ?? request.headers.get('x-real-ip')
+    ?? 'unknown'
+
+  const { allowed, remaining, resetAt } = checkRateLimit(ip)
+  if (!allowed) {
+    const retryAfterSec = Math.ceil((resetAt - Date.now()) / 1000)
+    return NextResponse.json(
+      { error: `Zu viele Anmeldeversuche. Bitte ${Math.ceil(retryAfterSec / 60)} Minuten warten.` },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(retryAfterSec),
+          'X-RateLimit-Remaining': '0',
+        },
+      }
+    )
+  }
+
   const { username, password } = await request.json()
 
   if (!username || !password) {
@@ -19,6 +40,9 @@ export async function POST(request: NextRequest) {
   if (!valid) {
     return NextResponse.json({ error: 'Ungültige Anmeldedaten' }, { status: 401 })
   }
+
+  // Erfolgreicher Login: Rate-Limit-Zähler zurücksetzen
+  resetRateLimit(ip)
 
   const token = signToken({
     userId: user.id,

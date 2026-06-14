@@ -7,5 +7,19 @@ services:
       - "3020:3000"
     environment:
       - NODE_ENV=production
+      - APP_SECRET=${APP_SECRET}          # aus .env auf dem Server
+    volumes:
+      # data/ persistent halten: users, entity-edits, backups überleben rebuilds
+      - eeg_data:/app/data
     labels:
       - "caddy.reverse_proxy={{upstreams 3000}}"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/impressum"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  eeg_data:
+    driver: local
