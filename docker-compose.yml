@@ -1,0 +1,11 @@
+services:
+  eeg-navigator:
+    build: .
+    container_name: eeg-navigator
+    restart: unless-stopped
+    ports:
+      - "3020:3000"
+    environment:
+      - NODE_ENV=production
+    labels:
+      - "caddy.reverse_proxy={{upstreams 3000}}"
