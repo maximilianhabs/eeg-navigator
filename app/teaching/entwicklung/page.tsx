@@ -309,6 +309,99 @@ const GROUPS = [
 
 const FEAT_MAP = Object.fromEntries(FEATURES.map(f => [f.id, f]))
 
+// ─── PDR-Daten ───────────────────────────────────────────────────────────────
+
+const PDR_DATA = [
+  { age: 'Neonatal', range: '3–4', min: 3, max: 4, band: 'delta', note: 'Kein stabiler PDR' },
+  { age: '3 Mo.',    range: '4–5', min: 4, max: 5, band: 'theta', note: '' },
+  { age: '6 Mo.',    range: '5–6', min: 5, max: 6, band: 'theta', note: '' },
+  { age: '1 Jahr',   range: '5–6', min: 5, max: 6, band: 'theta', note: '' },
+  { age: '2 Jahre',  range: '6–7', min: 6, max: 7, band: 'theta', note: '' },
+  { age: '4 Jahre',  range: '7–8', min: 7, max: 8, band: 'theta-alpha', note: '' },
+  { age: '6 Jahre',  range: '8–9', min: 8, max: 9, band: 'alpha', note: 'Erw.-Grenze' },
+  { age: '8–10 J.',  range: '9–10', min: 9, max: 10, band: 'alpha', note: 'Stabil adult' },
+]
+
+const BAND_COLOR: Record<string, { bg: string; border: string; text: string }> = {
+  delta:        { bg: 'bg-slate-200',   border: 'border-slate-400',   text: 'text-slate-700' },
+  theta:        { bg: 'bg-amber-100',   border: 'border-amber-400',   text: 'text-amber-800' },
+  'theta-alpha':{ bg: 'bg-lime-100',    border: 'border-lime-400',    text: 'text-lime-800'  },
+  alpha:        { bg: 'bg-emerald-100', border: 'border-emerald-400', text: 'text-emerald-800' },
+}
+
+// Hz scale: 2–13 Hz (full range for bar position)
+const HZ_MIN = 2
+const HZ_MAX = 13
+function hzToPercent(hz: number) { return ((hz - HZ_MIN) / (HZ_MAX - HZ_MIN)) * 100 }
+
+function PDRChart() {
+  return (
+    <div className="rounded-xl border p-4 space-y-3 h-full"
+      style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-surface)' }}>
+      <div className="flex items-center justify-between">
+        <h3 className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>
+          Grundrhythmus (PDR) nach Alter
+        </h3>
+        <div className="flex items-center gap-2 text-[9px] font-semibold">
+          <span className="px-1.5 py-0.5 rounded bg-slate-200 text-slate-600">δ</span>
+          <span className="px-1.5 py-0.5 rounded bg-amber-100 text-amber-700">θ</span>
+          <span className="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700">α</span>
+        </div>
+      </div>
+
+      {/* Hz-Achse */}
+      <div className="relative" style={{ marginLeft: '4.5rem' }}>
+        <div className="relative h-3">
+          {[2, 4, 6, 8, 10, 12].map(hz => (
+            <span key={hz}
+              style={{ left: `${hzToPercent(hz)}%`, color: 'var(--text-tertiary)', position: 'absolute', transform: 'translateX(-50%)' }}
+              className="text-[8px] font-mono">
+              {hz}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div className="space-y-1">
+        {PDR_DATA.map(d => {
+          const col = BAND_COLOR[d.band]
+          const barLeft = hzToPercent(d.min)
+          const barWidth = hzToPercent(d.max) - barLeft
+          return (
+            <div key={d.age} className="flex items-center gap-2">
+              <span className="text-[10px] font-semibold w-16 flex-shrink-0 text-right"
+                style={{ color: 'var(--text-secondary)' }}>
+                {d.age}
+              </span>
+              <div className="flex-1 relative h-5">
+                {/* track */}
+                <div className="absolute inset-y-1.5 inset-x-0 rounded-full"
+                  style={{ backgroundColor: 'var(--bg-subtle)' }}/>
+                {/* bar */}
+                <div
+                  style={{ left: `${barLeft}%`, width: `${barWidth}%` }}
+                  className={`absolute inset-y-0.5 rounded-full border ${col.bg} ${col.border} flex items-center justify-center`}>
+                  <span className={`text-[9px] font-bold ${col.text} leading-none`}>{d.range} Hz</span>
+                </div>
+              </div>
+              {d.note && (
+                <span className="text-[9px] font-semibold text-emerald-700 w-14 flex-shrink-0 leading-tight">
+                  {d.note}
+                </span>
+              )}
+              {!d.note && <span className="w-14 flex-shrink-0"/>}
+            </div>
+          )
+        })}
+      </div>
+
+      <p className="text-[10px] italic" style={{ color: 'var(--text-tertiary)' }}>
+        PDR = Posteriore Dominante Rhythmik (okzipital, Augen geschlossen)
+      </p>
+    </div>
+  )
+}
+
 // ─── PMA-Rechner ─────────────────────────────────────────────────────────────
 
 function PMACalculator() {
@@ -317,32 +410,41 @@ function PMACalculator() {
   const pma = ga + ca
 
   return (
-    <div className="rounded-xl border border-blue-200 bg-blue-50 p-4 space-y-3">
+    <div className="rounded-xl border p-4 space-y-3 h-full"
+      style={{ borderColor: '#bfdbfe', backgroundColor: '#eff6ff' }}>
       <h3 className="text-sm font-bold text-blue-900">PMA-Rechner</h3>
-      <div className="grid grid-cols-2 gap-4">
+
+      <div className="space-y-2.5">
         <div>
-          <label className="text-xs font-semibold text-slate-600">Gestationsalter (GA)</label>
-          <div className="flex items-center gap-2 mt-1">
-            <input type="range" min={23} max={42} value={ga} onChange={e => setGa(+e.target.value)}
-              className="flex-1 accent-blue-600"/>
-            <span className="text-sm font-mono font-bold text-blue-800 w-12">{ga} Wo</span>
+          <div className="flex justify-between items-center mb-1">
+            <label className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">
+              Gestationsalter (GA)
+            </label>
+            <span className="text-sm font-mono font-bold text-blue-800">{ga} Wo</span>
           </div>
+          <input type="range" min={23} max={42} value={ga} onChange={e => setGa(+e.target.value)}
+            className="w-full accent-blue-600 h-1.5"/>
         </div>
+
         <div>
-          <label className="text-xs font-semibold text-slate-600">Chronologisches Alter (CA)</label>
-          <div className="flex items-center gap-2 mt-1">
-            <input type="range" min={0} max={16} value={ca} onChange={e => setCa(+e.target.value)}
-              className="flex-1 accent-blue-600"/>
-            <span className="text-sm font-mono font-bold text-blue-800 w-12">{ca} Wo</span>
+          <div className="flex justify-between items-center mb-1">
+            <label className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">
+              Chron. Alter (CA)
+            </label>
+            <span className="text-sm font-mono font-bold text-blue-800">{ca} Wo</span>
           </div>
+          <input type="range" min={0} max={16} value={ca} onChange={e => setCa(+e.target.value)}
+            className="w-full accent-blue-600 h-1.5"/>
         </div>
       </div>
-      <div className="rounded-lg bg-blue-600 px-4 py-2 flex items-center justify-between">
-        <span className="text-sm font-semibold text-blue-100">PMA = GA + CA</span>
-        <span className="text-2xl font-black text-white">{pma} Wochen</span>
+
+      <div className="rounded-lg bg-blue-600 px-3 py-2 flex items-center justify-between">
+        <span className="text-xs font-semibold text-blue-200">PMA = GA + CA</span>
+        <span className="text-xl font-black text-white">{pma} Wo</span>
       </div>
-      <p className="text-xs text-blue-700 italic">
-        Beispiel: Frühgeburt bei 34 SSW, jetzt 4 Wochen alt → PMA = 34 + 4 = 38 Wochen
+
+      <p className="text-[10px] text-blue-700 italic leading-snug">
+        z.B. 34 SSW + 4 Wo alt → PMA 38 Wo
       </p>
     </div>
   )
@@ -450,8 +552,11 @@ export default function EntwicklungPage() {
       {/* ── TAB: TIMELINE ── */}
       {tab === 'timeline' && (
         <div className="space-y-5">
-          {/* PMA-Rechner */}
-          <PMACalculator />
+          {/* Kompakt-Row: PMA-Rechner + PDR-Chart nebeneinander */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+            <PMACalculator />
+            <PDRChart />
+          </div>
 
           {/* Gantt-Chart */}
           <div className="rounded-xl border border-slate-200 bg-white overflow-hidden">

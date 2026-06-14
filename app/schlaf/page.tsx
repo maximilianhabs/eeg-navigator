@@ -1,5 +1,8 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getAllWellen, getAllArtefakte } from '@/lib/data'
+
+export const metadata: Metadata = { title: 'Schlaf-EEG' }
 
 // ── Schlafstadien-Konfiguration (AASM Berry et al. 2012) ─────────────────────
 

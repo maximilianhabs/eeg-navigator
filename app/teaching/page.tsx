@@ -1,3 +1,6 @@
+import type { Metadata } from 'next'
+export const metadata: Metadata = { title: 'Teaching' }
+
 import Link from 'next/link'
 
 const MODULES = [

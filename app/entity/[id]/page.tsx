@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import {
@@ -15,6 +16,12 @@ interface Props {
   params: Promise<{ id: string }>
 }
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params
+  const entity = getWelleById(id) ?? getArtefaktById(id)
+  return { title: entity?.name ?? id }
+}
+
 export default async function EntityDetailPage({ params }: Props) {
   const { id } = await params
   const wave = getWelleById(id)
@@ -27,14 +34,19 @@ export default async function EntityDetailPage({ params }: Props) {
   return (
     <div className="max-w-4xl animate-fade-in">
 
-      {/* ── Breadcrumb ── */}
-      <nav className="flex items-center gap-1.5 mb-4 text-xs" style={{ color: 'var(--text-tertiary)' }}>
-        <Link href="/" className="hover:underline transition-colors" style={{ color: 'var(--text-tertiary)' }}>Atlas</Link>
-        <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
-        </svg>
-        <span style={{ color: 'var(--text-secondary)' }}>{entity.name}</span>
-      </nav>
+      {/* ── Back + Breadcrumb ── */}
+      <div className="flex items-center gap-3 mb-4">
+        <Link href="/"
+          className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all hover:-translate-x-0.5"
+          style={{ backgroundColor: 'var(--bg-subtle)', color: 'var(--text-secondary)', border: '1px solid var(--border)' }}>
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/>
+          </svg>
+          Atlas
+        </Link>
+        <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>/</span>
+        <span className="text-xs font-medium truncate" style={{ color: 'var(--text-secondary)' }}>{entity.name}</span>
+      </div>
 
       {/* ── Mobile Sticky EEG-Kurzinfo ── */}
       {isWave && (

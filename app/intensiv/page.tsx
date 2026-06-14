@@ -1,3 +1,6 @@
+import type { Metadata } from 'next'
+export const metadata: Metadata = { title: 'Intensiv & ICU-EEG' }
+
 import Link from 'next/link'
 import { getAllWellen } from '@/lib/data'
 
