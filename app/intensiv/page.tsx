@@ -69,12 +69,12 @@ export default function IntensivPage() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-3 mb-2">
-          <h1 className="text-2xl font-bold text-slate-900">Intensiv & Bewusstseinsstörungen</h1>
+          <h1 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>Intensiv & Bewusstseinsstörungen</h1>
           <span className="text-xs font-semibold bg-amber-100 text-amber-700 ring-1 ring-amber-200 ring-inset rounded-full px-2.5 py-0.5">
             In Entwicklung
           </span>
         </div>
-        <p className="text-sm text-slate-500 leading-relaxed max-w-2xl">
+        <p className="text-sm leading-relaxed max-w-2xl" style={{ color: 'var(--text-tertiary)' }}>
           Maligne EEG-Muster nach ACNS Standardized Critical Care EEG Terminology 2021 (Hirsch et al.).
           Konzeptseite — vollständige Implementierung mit Vigilanz-Spektrum, Ätiologie-Tabs und
           Salzburger Kriterien folgt in einer späteren Version.
@@ -104,7 +104,7 @@ export default function IntensivPage() {
       </Link>
 
       {/* Konzept-Hinweis */}
-      <div className="rounded-xl border border-blue-200 bg-blue-50 px-5 py-4 text-sm text-blue-800 leading-relaxed">
+      <div className="rounded-xl border border-blue-200 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-800 px-5 py-4 text-sm text-blue-800 dark:text-blue-300 leading-relaxed">
         <strong>Geplante Struktur:</strong> Vigilanz-Spektrum (Wach → Enzephalopathie → Koma) ·
         ACNS-Malignitätsgruppen · Ätiologie-Tabs (HIBI / Metabolisch / Status epilepticus) ·
         Reaktivitäts-Assessment
@@ -112,7 +112,7 @@ export default function IntensivPage() {
 
       {/* ACNS-Gruppen */}
       <div className="space-y-6">
-        <h2 className="text-base font-semibold text-slate-700">ACNS-Klassifikation nach Malignitätsgrad</h2>
+        <h2 className="text-base font-semibold" style={{ color: 'var(--text-secondary)' }}>ACNS-Klassifikation nach Malignitätsgrad</h2>
 
         {ACNS_GROUPS.map(group => {
           const entities = group.ids.map(id => entityMap[id]).filter(Boolean)
@@ -121,16 +121,17 @@ export default function IntensivPage() {
               <div className="flex items-baseline gap-3 mb-1">
                 <span className={`text-sm font-bold ${group.color}`}>{group.label}</span>
               </div>
-              <p className="text-xs text-slate-500 mb-4">{group.description}</p>
+              <p className="text-xs mb-4" style={{ color: 'var(--text-tertiary)' }}>{group.description}</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {entities.map(e => (
                   <Link
                     key={e.id}
                     href={`/entity/${e.id}`}
-                    className="flex items-start gap-3 rounded-lg border border-white/80 bg-white/70 px-3 py-2.5 hover:bg-white hover:shadow-sm transition-all"
+                    className="flex items-start gap-3 rounded-lg border px-3 py-2.5 hover:shadow-sm transition-all"
+                    style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-surface)' }}
                   >
-                    <span className="mt-0.5 text-[10px] font-mono text-slate-400 flex-shrink-0">{e.id}</span>
-                    <span className="text-xs font-medium text-slate-700 leading-snug">{e.name}</span>
+                    <span className="mt-0.5 text-[10px] font-mono flex-shrink-0" style={{ color: 'var(--text-tertiary)' }}>{e.id}</span>
+                    <span className="text-xs font-medium leading-snug" style={{ color: 'var(--text-primary)' }}>{e.name}</span>
                   </Link>
                 ))}
               </div>
@@ -140,9 +141,9 @@ export default function IntensivPage() {
       </div>
 
       {/* Anfallsmuster im ICU-Kontext */}
-      <div className="rounded-xl border border-slate-200 bg-white p-5">
-        <h2 className="text-sm font-semibold text-slate-700 mb-1">Anfallsmuster im ICU-Kontext</h2>
-        <p className="text-xs text-slate-400 mb-4">
+      <div className="rounded-xl border p-5" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-surface)' }}>
+        <h2 className="text-sm font-semibold mb-1" style={{ color: 'var(--text-secondary)' }}>Anfallsmuster im ICU-Kontext</h2>
+        <p className="text-xs mb-4" style={{ color: 'var(--text-tertiary)' }}>
           Nicht-konvulsiver Status epilepticus (NCSE) und GCSE — Diagnose nach Salzburger Kriterien
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -153,10 +154,11 @@ export default function IntensivPage() {
               <Link
                 key={id}
                 href={`/entity/${id}`}
-                className="flex items-start gap-3 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2.5 hover:bg-white hover:border-slate-200 hover:shadow-sm transition-all"
+                className="flex items-start gap-3 rounded-lg border px-3 py-2.5 hover:shadow-sm transition-all"
+                style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-subtle)' }}
               >
-                <span className="mt-0.5 text-[10px] font-mono text-slate-400 flex-shrink-0">{e.id}</span>
-                <span className="text-xs font-medium text-slate-700 leading-snug">{e.name}</span>
+                <span className="mt-0.5 text-[10px] font-mono flex-shrink-0" style={{ color: 'var(--text-tertiary)' }}>{e.id}</span>
+                <span className="text-xs font-medium leading-snug" style={{ color: 'var(--text-primary)' }}>{e.name}</span>
               </Link>
             )
           })}
@@ -164,9 +166,9 @@ export default function IntensivPage() {
       </div>
 
       {/* Fehlende Entities — Hinweis */}
-      <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-5 py-4">
-        <p className="text-xs font-semibold text-slate-500 mb-2">Noch nicht implementiert (geplant)</p>
-        <ul className="text-xs text-slate-400 space-y-1 list-disc list-inside">
+      <div className="rounded-xl border border-dashed px-5 py-4" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-subtle)' }}>
+        <p className="text-xs font-semibold mb-2" style={{ color: 'var(--text-tertiary)' }}>Noch nicht implementiert (geplant)</p>
+        <ul className="text-xs space-y-1 list-disc list-inside" style={{ color: 'var(--text-tertiary)' }}>
           <li>EEG_0087 Suppressed Background (&lt;10 µV) — Highly Malignant</li>
           <li>EEG_0088 Low-Voltage Continuous Background (10–20 µV) — Malignant</li>
           <li>EEG_0089 Diskontinuierlicher Hintergrund (ICU) — Malignant</li>

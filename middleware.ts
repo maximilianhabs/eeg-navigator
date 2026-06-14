@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { verifyToken, SESSION_COOKIE } from '@/lib/auth-edge'
 
 // Public — keine Auth nötig
-const PUBLIC_PATHS = ['/login', '/api/auth/login']
+const PUBLIC_PATHS = ['/login', '/api/auth/login', '/impressum']
 
 function isAdminPath(pathname: string) {
   return pathname.startsWith('/admin') || pathname.startsWith('/api/admin')

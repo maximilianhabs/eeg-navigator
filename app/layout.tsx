@@ -77,7 +77,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </main>
 
           {/* ── Footer ── */}
-          <footer className="hidden md:block border-t mt-16" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-surface)' }}>
+          <footer className="border-t mt-16 pb-20 md:pb-0" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-surface)' }}>
             <div className="mx-auto max-w-6xl px-4 py-5 flex items-center justify-between text-xs" style={{ color: 'var(--text-tertiary)' }}>
               <span>
                 © {new Date().getFullYear()} Maximilian Habs.{' '}

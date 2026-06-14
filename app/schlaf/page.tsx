@@ -449,36 +449,35 @@ export default function SchlafPage() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-3 mb-2">
-          <h1 className="text-2xl font-bold text-slate-900">Schlafstadien & Schlaf-EEG</h1>
+          <h1 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>Schlafstadien & Schlaf-EEG</h1>
           <span className="text-xs font-semibold bg-emerald-100 text-emerald-700 ring-1 ring-emerald-200 ring-inset rounded-full px-2.5 py-0.5">
             AASM 2012
           </span>
         </div>
-        <p className="text-sm text-slate-500 leading-relaxed max-w-2xl">
+        <p className="text-sm leading-relaxed max-w-2xl" style={{ color: 'var(--text-tertiary)' }}>
           Schlafstadien nach AASM (Berry et al. 2012) — EEG, EOG und EMG-Charakteristika für die visuelle Schlafstadien-Klassifikation.
           Ziel: anhand dieser Kriterien das Schlafstadium aus dem Polysomnographie-EEG sicher ermitteln.
         </p>
       </div>
 
       {/* Hypnogramm */}
-      <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-        <div className="px-4 py-2 border-b border-slate-100">
-          <span className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
+      <div className="rounded-xl border shadow-sm overflow-hidden" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-surface)' }}>
+        <div className="px-4 py-2 border-b" style={{ borderColor: 'var(--border)' }}>
+          <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--text-tertiary)' }}>
             Typisches Hypnogramm · 8h Nachtschlaf · schematisch
           </span>
         </div>
         <div className="px-2 pt-3 pb-2">
           <HypnogramSVG />
-          {/* Legende */}
-          <div className="flex flex-wrap gap-3 mt-2 pt-2 border-t border-slate-100 px-2">
+          <div className="flex flex-wrap gap-3 mt-2 pt-2 border-t px-2" style={{ borderColor: 'var(--border)' }}>
             {(['W', 'REM', 'N1', 'N2', 'N3'] as const).map(stage => (
-              <span key={stage} className="flex items-center gap-1.5 text-xs text-slate-600">
+              <span key={stage} className="flex items-center gap-1.5 text-xs" style={{ color: 'var(--text-secondary)' }}>
                 <span className="w-3 h-3 rounded-sm flex-shrink-0 border"
                   style={{ background: STAGE_FILL[stage], borderColor: STAGE_STROKE[stage] }} />
                 {stage === 'W' ? 'Wach' : stage === 'REM' ? 'REM' : stage}
               </span>
             ))}
-            <span className="ml-auto text-[10px] text-slate-400 self-center">
+            <span className="ml-auto text-[10px] self-center" style={{ color: 'var(--text-tertiary)' }}>
               N3-Anteil nimmt mit Alter ab · REM nimmt zur 2. Nachthälfte hin zu
             </span>
           </div>
@@ -486,19 +485,19 @@ export default function SchlafPage() {
       </div>
 
       {/* Staging-Überblick Tabelle */}
-      <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-        <div className="px-4 py-2 border-b border-slate-100">
-          <span className="text-xs font-semibold text-slate-400 uppercase tracking-widest">Schnell-Referenz · AASM-Kriterien</span>
+      <div className="rounded-xl border shadow-sm overflow-hidden" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-surface)' }}>
+        <div className="px-4 py-2 border-b" style={{ borderColor: 'var(--border)' }}>
+          <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--text-tertiary)' }}>Schnell-Referenz · AASM-Kriterien</span>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-slate-100 bg-slate-50">
-                <th className="text-left px-4 py-2.5 font-semibold text-slate-500 w-16">Stadium</th>
-                <th className="text-left px-3 py-2.5 font-semibold text-slate-500">EEG-Merkmal</th>
-                <th className="text-left px-3 py-2.5 font-semibold text-slate-500">EOG</th>
-                <th className="text-left px-3 py-2.5 font-semibold text-slate-500">EMG</th>
-                <th className="text-left px-3 py-2.5 font-semibold text-slate-500 w-16">Anteil</th>
+              <tr className="border-b" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-subtle)' }}>
+                <th className="text-left px-4 py-2.5 font-semibold w-16" style={{ color: 'var(--text-tertiary)' }}>Stadium</th>
+                <th className="text-left px-3 py-2.5 font-semibold" style={{ color: 'var(--text-tertiary)' }}>EEG-Merkmal</th>
+                <th className="text-left px-3 py-2.5 font-semibold" style={{ color: 'var(--text-tertiary)' }}>EOG</th>
+                <th className="text-left px-3 py-2.5 font-semibold" style={{ color: 'var(--text-tertiary)' }}>EMG</th>
+                <th className="text-left px-3 py-2.5 font-semibold w-16" style={{ color: 'var(--text-tertiary)' }}>Anteil</th>
               </tr>
             </thead>
             <tbody>
@@ -508,16 +507,16 @@ export default function SchlafPage() {
                 { stage: 'N3', eeg: 'Delta 0,5–2 Hz, >75 µV, ≥20% der Epoche', eog: 'Fehlend', emg: 'Sehr niedrig', ant: '15–20%', color: '#d8b4fe' },
                 { stage: 'REM', eeg: 'LVMF; Sägezahnwellen 2–3 Hz frontozentral', eog: 'REMs (rapid, sakkadisch)', emg: 'Atonie', ant: '20–25%', color: '#fda4af' },
               ].map(row => (
-                <tr key={row.stage} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <tr key={row.stage} className="border-b transition-colors hover:opacity-90" style={{ borderColor: 'var(--border)' }}>
                   <td className="px-4 py-2.5">
-                    <span className="inline-block rounded px-2 py-0.5 text-xs font-bold" style={{ background: row.color }}>
+                    <span className="inline-block rounded px-2 py-0.5 text-xs font-bold text-slate-800" style={{ background: row.color }}>
                       {row.stage}
                     </span>
                   </td>
-                  <td className="px-3 py-2.5 text-slate-700">{row.eeg}</td>
-                  <td className="px-3 py-2.5 text-slate-600">{row.eog}</td>
-                  <td className="px-3 py-2.5 text-slate-600">{row.emg}</td>
-                  <td className="px-3 py-2.5 font-mono text-slate-500">{row.ant}</td>
+                  <td className="px-3 py-2.5" style={{ color: 'var(--text-primary)' }}>{row.eeg}</td>
+                  <td className="px-3 py-2.5" style={{ color: 'var(--text-secondary)' }}>{row.eog}</td>
+                  <td className="px-3 py-2.5" style={{ color: 'var(--text-secondary)' }}>{row.emg}</td>
+                  <td className="px-3 py-2.5 font-mono" style={{ color: 'var(--text-tertiary)' }}>{row.ant}</td>
                 </tr>
               ))}
             </tbody>
@@ -527,7 +526,7 @@ export default function SchlafPage() {
 
       {/* Stadien-Karten */}
       <div className="space-y-6">
-        <h2 className="text-base font-semibold text-slate-700">Detailansicht nach Stadium</h2>
+        <h2 className="text-base font-semibold" style={{ color: 'var(--text-secondary)' }}>Detailansicht nach Stadium</h2>
 
         {STAGES.map(stage => (
           <div key={stage.id} className={`rounded-xl border ${stage.color.border} ${stage.color.bg} overflow-hidden`}>
@@ -541,14 +540,14 @@ export default function SchlafPage() {
                       {stage.id}
                     </span>
                     {stage.proportion && (
-                      <span className="text-xs text-slate-500 font-mono">{stage.proportion} der Schlafzeit</span>
+                      <span className="text-xs font-mono" style={{ color: 'var(--text-tertiary)' }}>{stage.proportion} der Schlafzeit</span>
                     )}
                   </div>
                   <h3 className={`text-lg font-bold ${stage.color.text}`}>{stage.name}</h3>
-                  <p className="text-sm text-slate-500">{stage.subtitle}</p>
+                  <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>{stage.subtitle}</p>
                 </div>
-                <div className="text-xs text-slate-500 max-w-sm">
-                  <span className="font-semibold text-slate-600">AASM-Kriterium: </span>
+                <div className="text-xs max-w-sm" style={{ color: 'var(--text-tertiary)' }}>
+                  <span className="font-semibold" style={{ color: 'var(--text-secondary)' }}>AASM-Kriterium: </span>
                   {stage.aasm}
                 </div>
               </div>
@@ -559,18 +558,19 @@ export default function SchlafPage() {
               {stage.sections.map(sec => (
                 <div
                   key={sec.label}
-                  className={`rounded-lg px-4 py-3 ${sec.highlight ? 'bg-white/80 shadow-sm ring-1 ring-black/5' : 'bg-white/50'}`}
+                  className={`rounded-lg px-4 py-3 ${sec.highlight ? 'shadow-sm ring-1 ring-black/5' : ''}`}
+                  style={{ backgroundColor: sec.highlight ? 'var(--bg-surface)' : 'rgba(var(--bg-surface-rgb, 255,255,255), 0.5)' }}
                 >
                   <div className="flex items-center gap-1.5 mb-1.5">
                     <span className="text-base">{sec.icon}</span>
-                    <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{sec.label}</span>
+                    <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: 'var(--text-tertiary)' }}>{sec.label}</span>
                     {sec.highlight && (
                       <span className="ml-auto text-[9px] font-semibold bg-blue-100 text-blue-700 rounded px-1.5 py-0.5">
                         Staging-Kriterium
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-slate-700 leading-relaxed">{sec.content}</p>
+                  <p className="text-xs leading-relaxed" style={{ color: 'var(--text-primary)' }}>{sec.content}</p>
                 </div>
               ))}
             </div>
@@ -578,7 +578,7 @@ export default function SchlafPage() {
             {/* Entities + Staging-Tipp */}
             <div className={`px-5 pb-4 flex flex-wrap items-start justify-between gap-4 border-t ${stage.color.border} pt-4`}>
               <div>
-                <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide mb-1.5">Verknüpfte Entitäten</p>
+                <p className="text-[10px] font-semibold uppercase tracking-wide mb-1.5" style={{ color: 'var(--text-tertiary)' }}>Verknüpfte Entitäten</p>
                 <div className="flex flex-wrap gap-1.5">
                   {stage.entities.map(ref => {
                     const isArt = ref.id.startsWith('ART_')
@@ -599,8 +599,8 @@ export default function SchlafPage() {
                 </div>
               </div>
               <div className="max-w-xs">
-                <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide mb-1">Staging-Tipp</p>
-                <p className="text-xs text-slate-600 leading-relaxed italic">{stage.stagingTip}</p>
+                <p className="text-[10px] font-semibold uppercase tracking-wide mb-1" style={{ color: 'var(--text-tertiary)' }}>Staging-Tipp</p>
+                <p className="text-xs leading-relaxed italic" style={{ color: 'var(--text-secondary)' }}>{stage.stagingTip}</p>
               </div>
             </div>
           </div>
@@ -608,8 +608,8 @@ export default function SchlafPage() {
       </div>
 
       {/* Wichtige Übergänge */}
-      <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 className="text-sm font-semibold text-slate-700 mb-3">Kritische Übergänge & Fallstricke</h2>
+      <div className="rounded-xl border p-5 shadow-sm" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-surface)' }}>
+        <h2 className="text-sm font-semibold mb-3" style={{ color: 'var(--text-secondary)' }}>Kritische Übergänge & Fallstricke</h2>
         <div className="grid gap-3 sm:grid-cols-2">
           {[
             { title: 'Wach → N1', body: 'Alpha-Zerfall: PDR-Amplitude sinkt, Frequenz kann leicht verlangsamen. Erste SEM im EOG — oft noch bevor Alpha <50%. RMTD (EEG_0033) kann Theta-Aktivität in N1 imitieren.' },
@@ -617,18 +617,18 @@ export default function SchlafPage() {
             { title: 'N2 → N3', body: 'Delta-Wellen (>75 µV) nehmen ≥20% der Epoche ein. Spindeln werden seltener, können aber erhalten bleiben. Cave: Benzodiazepine hemmen N3 — SWS-Mangel trotz langer Schlafzeit.' },
             { title: 'N3 → REM', body: 'Häufig über N2 als Zwischenstadium. LVMF-Hintergrund wie N1, aber entscheidend: REMs und Atonie. Sägezahnwellen als Hinweis. REM-Anteil steigt im späten Schlaf.' },
           ].map(item => (
-            <div key={item.title} className="rounded-lg bg-slate-50 px-4 py-3">
-              <p className="text-xs font-semibold text-slate-700 mb-1">→ {item.title}</p>
-              <p className="text-xs text-slate-600 leading-relaxed">{item.body}</p>
+            <div key={item.title} className="rounded-lg px-4 py-3" style={{ backgroundColor: 'var(--bg-subtle)' }}>
+              <p className="text-xs font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>→ {item.title}</p>
+              <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{item.body}</p>
             </div>
           ))}
         </div>
       </div>
 
       {/* Hinweis */}
-      <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-5 py-4">
-        <p className="text-xs font-semibold text-slate-500 mb-1">Geplante Erweiterungen</p>
-        <ul className="text-xs text-slate-400 space-y-1 list-disc list-inside">
+      <div className="rounded-xl border border-dashed px-5 py-4" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-subtle)' }}>
+        <p className="text-xs font-semibold mb-1" style={{ color: 'var(--text-tertiary)' }}>Geplante Erweiterungen</p>
+        <ul className="text-xs space-y-1 list-disc list-inside" style={{ color: 'var(--text-tertiary)' }}>
           <li>Interaktive Schlafstadien-Klassifikation an Beispiel-Epochen</li>
           <li>Schlaf-Scoring-Modus im EEG-Viewer (30-s-Epoche, manuelle Stadien-Zuweisung)</li>
           <li>Arousal-Reaktionen und Mikro-Arousals</li>
