@@ -12025,54 +12025,58 @@
         "Absence status epilepticus",
         "Petit-mal-Status",
         "Spike-Wave-Stupor",
-        "Nonconvulsive absence SE"
+        "Nonconvulsive absence SE",
+        "ASE"
       ],
       "main_category": "Anfallsmuster",
       "subcategory": "Status epilepticus",
       "frequency": {
         "label": "Alpha",
-        "min_hz": 2.5,
+        "min_hz": 2.0,
         "max_hz": 4,
-        "typical_hz": 3
+        "typical_hz": 3,
+        "note": "Klassische Absence: 3 Hz; im Status oft 2–3 Hz, gelegentlich langsamer. Frequenzvarianz ist im Status häufiger als im isolierten Anfall."
       },
       "amplitude": {
         "label": "groß",
         "min_uv": 100,
-        "max_uv": 600,
-        "typical_uv": 300
+        "max_uv": 500,
+        "typical_uv": 200,
+        "note": "Deutliche interindividuelle und intraindividuelle Varianz. Im Status oft geringere Amplitude als bei isolierten Absencen."
       },
       "duration": {
         "label": "variabel",
-        "min_ms": null,
+        "min_ms": 30000,
         "max_ms": null,
         "typical_ms": null,
-        "note": "Anfallsdauer variabel; iktal: Sekunden bis Minuten"
+        "note": "Einzelne Absence: 5–20 s. Absenzstatus per Definition ≥30 s, klinisch meist Stunden; Statusdauern von Tagen bei inadäquater Behandlung beschrieben."
       },
       "polarity": "variabel",
       "localization": [
         "generalisiert",
+        "frontozentral",
         "frontopolar"
       ],
       "laterality": "bilateral_synchron",
       "field_distribution": {
-        "description": "",
+        "description": "Generalisierte Verteilung mit frontozentraler Dominanz (F3/F4, Fz, Cz). Kein fokaler Phasenumkehrpunkt — diffuses bilaterales Feld. Thalamo-kortikale Netzwerke (frontale Kortexareale + medialer Thalamus) als Generatoren, nachgewiesen durch EEG-fMRT und MEG.",
         "phase_reversal": "möglich",
-        "field_plausibility": "",
-        "reference_contamination_risk": ""
+        "field_plausibility": "generalisiert_frontal",
+        "reference_contamination_risk": "niedrig"
       },
-      "morphology": "Kontinuierliche oder fast-kontinuierliche generalisierte Spike-Wave ≥3 Hz; frontopolares Maximum; abrupter Beginn/Ende; anhaltend >30 s bis Stunden; klinisch: fluktuierende Bewusstseinsstümpfung",
-      "potential_course": "",
+      "morphology": "Generalisierte Spike-Wave-Komplexe: scharfer Spike (synchrone neuronale Entladung) gefolgt von langsamer Welle (inhibitorische Hyperpolarisation). Im Status: kontinuierlich oder nahezu kontinuierlich, 2–4 Hz, leicht unregelmäßiger als bei isolierter Absence. Gelegentlich Polyspike-Wave-Einschübe. Bilateral synchron, frontozentrale Betonung. Abrupter Beginn und Ende (Kriterium für IGE-Genese).",
+      "potential_course": "Kontinuierliche oder nahezu kontinuierliche GSW über Stunden; Frequenz kann im Verlauf leicht variieren. Unter Benzodiazepin: rasche EEG-Normalisierung, dann Wiederkehr normaler Hintergrundaktivität. Ohne Therapie: Stunden bis Tage; keine Progredienz zum GCSE typisch bei IGE-assoziiertem ASE.",
       "rhythmicity": "rhythmisch",
       "periodicity": "nicht_periodisch",
       "montage_behavior": {
-        "bipolar_longitudinal": "",
-        "bipolar_transverse": "",
-        "referential_cz": "",
-        "referential_average": "",
+        "bipolar_longitudinal": "Generalisierte synchrone Spike-Wave-Entladungen in allen Kanälen. Frontozentrales Maximum erkennbar (größte Amplitude in Fp1/Fp2–F3/F4-Kette). Kein klarer Phasenumkehrpunkt.",
+        "bipolar_transverse": "Bilateral synchrone Komplexe, keine Lateralisierung. Bei strenger Synchronie erscheinen alle transversalen Kanäle phasengleich.",
+        "referential_cz": "Frontozentrale Elektroden zeigen maximale Amplitude. Gute Montage zur Beurteilung der Feldverteilung. Cz kann artefaktbehaftet sein wenn Cz nahe am Generator liegt.",
+        "referential_average": "Geeignet bei generalisierter Aktivität — Average-Referenz verteilt Signal gleichmäßig. Frontale Dominanz bleibt erkennbar.",
         "referential_mastoid": "",
         "best_montage": "bipolare Längsreihe",
         "typical_montage": "bipolare Längsreihe",
-        "pitfalls": ""
+        "pitfalls": "Im Status: Muster oft weniger regelmäßig als bei isolierter Absence — kann an GPDs erinnern. Entscheidend: Spike-Wave-Morphologie (scharfer Spike + Slow Wave) vs. breite GPD-Komplexe ohne echten Spike. Benzodiazepin-Test diagnostisch wertvoll."
       },
       "classification": "epileptiform",
       "disease_value": "hochpathologisch",
@@ -12085,25 +12089,33 @@
       "pediatric_only": false,
       "dialog_logic": {
         "key_features": [
-          "kontinuierliche GSW",
-          "≥3 Hz",
-          "bilateral synchron",
-          "anhaltend >30 s",
-          "klinisch: Bewusstseinsstümpfung"
+          "2–4 Hz generalisierte Spike-Wave",
+          "bilateral synchron, frontozentral betont",
+          "kontinuierlich >30 s bis Stunden",
+          "klinisch: Bewusstseinsstümpfung ohne ausgeprägte Motorik",
+          "rasche Benzodiazepin-Responsivität",
+          "oft bekannte IGE-Anamnese"
         ],
         "criteria_for": [
           "Kontinuierliche GSW >30 s",
-          "≥2.5–3 Hz",
-          "Bilateral synchron",
-          "Klinisch: Bewusstseinsstümpfung"
+          "2–4 Hz (typisch 2.5–3 Hz im Status)",
+          "Bilateral synchron, frontale Dominanz",
+          "Klinisch: Vigilanzminderung, Verlangsamung, Desorientierung",
+          "Ansprechen auf Benzodiazepine i.v.",
+          "Bekannte IGE (CAE/JAE/JME)"
         ],
         "criteria_against": [
-          "Kurz <30 s (→ Absence, nicht Status)",
-          "Fokal (→ fokaler SE)"
+          "Kurz <30 s → isolierte Absence (EEG_0092)",
+          "Fokal lateralisiert → fokaler NCSE",
+          "Kein Spike, breite Komplexe 0.5–2 Hz → GPDs",
+          "Negativ-positiv-negativ-Morphologie → Triphasics",
+          "Natriumkanalblocker-Einnahme bei bekannter IGE → aggravierter Status"
         ],
         "mimics": [
           "EEG_0099",
-          "EEG_0092"
+          "EEG_0092",
+          "EEG_0067",
+          "EEG_0060"
         ],
         "discriminating_questions": [
           "Wie lange hält das Muster an?",
@@ -12113,9 +12125,16 @@
       },
       "differential_diagnoses": [
         "EEG_0099",
-        "EEG_0092"
+        "EEG_0092",
+        "EEG_0067",
+        "EEG_0060"
       ],
-      "common_misinterpretations": [],
+      "common_misinterpretations": [
+        "Als psychiatrische Störung oder Delir fehlgedeutet (Patient \"verwirrt\", kein offensichtlicher Anfall)",
+        "Verwechslung mit metabolischer Enzephalopathie (Triphasics, GPDs) — EEG-Morphologie entscheidend",
+        "Phenytoin-Gabe bei unklarer Ätiologie — kontraindiziert, kann Status aggravieren",
+        "Kurze Bewusstseinspausen nicht als Absencen erkannt → kumulierend → Status"
+      ],
       "images": [
         {
           "file": "placeholder.png",
@@ -12126,9 +12145,9 @@
         }
       ],
       "teaching_pearl": "Absencenstatus = anhaltendes Absence-Muster mit klinischer Bewusstseinsstümpfung. Patient oft 'verwirrt' — subtile Präsentation! Ansprechen auf Benzodiazepine i.v. ist diagnostisch und therapeutisch.",
-      "warning": "Häufig als psychiatrische Störung oder Delir fehlgedeutet. Bei jeder unklaren Bewusstseinsstörung: EEG! Kein Phenytoin (unwirksam bei Absencenstatus).",
-      "notes": "",
-      "data_status": "partial",
+      "warning": "Häufig als Delir oder psychiatrische Störung fehlgedeutet — EEG ist diagnostisch obligat. Phenytoin und Carbamazepin sind kontraindiziert (Aggravation). Vigabatrin ebenfalls meiden. Valproat i.v. ist Mittel der Wahl nach Benzodiazepinen bei IGE-assoziiertem ASE.",
+      "notes": "Absenzstatus ist häufig subtil — Patient wirkt \"verlangsamt\" oder \"delirant\", nicht klassisch epileptisch. Praxisregel: bei jeder unklaren Bewusstseinsstörung EEG. Natriumkanalblocker (CBZ, PHT, Vigabatrin) sind klassische Auslöser bei IGE — Prüfungsstoff! Benzodiazepin-Test i.v. gleichzeitig diagnostisch und therapeutisch. EEG-fMRT und MEG-Studien belegen Beteiligung frontaler Kortexareale und des medialen Thalamus.",
+      "data_status": "complete",
       "priority_for_mvp": "mittel",
       "source_notes": [
         "Niedermeyer & da Silva, 6th ed.",
@@ -12138,12 +12157,47 @@
       "cross_references": {
         "eeg_mimics": [
           "EEG_0099",
-          "EEG_0092"
-        ]
+          "EEG_0092",
+          "EEG_0067",
+          "EEG_0060"
+        ],
+        "distinction": {
+          "vs_triphasics": "Triphasics: negativ-positiv-negativ, breit, kein echter Spike, metabolische Enzephalopathie, 0.5–2 Hz",
+          "vs_gpds": "GPDs: kein typisches Spike-Wave-Muster, 0.5–2 Hz, Intensivkontext, kein abrupter Beginn/Ende",
+          "vs_ncse_focal": "Fokaler NCSE: lateralisiert, evoluiert, kein bilateral-synchrones Generalisierungsmuster"
+        }
       },
       "spatial_distribution": "generalisiert_frontal_betont",
       "spatial_subtype": "bilateral_synchron",
-      "spatial_note": ""
+      "spatial_note": "Frontale Dominanz über F3/F4, Fz, Cz. Thalamo-kortikaler Generator breitet sich in Millisekunden bilateral aus — Oberflächen-EEG wirkt generalisiert, ist aber frontozentral betont.",
+      "etiology": {
+        "primary_syndromes": [
+          "Childhood Absence Epilepsy (CAE) — häufigste Ursache",
+          "Juvenile Absence Epilepsy (JAE)",
+          "Juvenile Myoclonic Epilepsy (JME)",
+          "Late-onset Absence Status — erstmals im höheren Erwachsenenalter"
+        ],
+        "precipitating_factors": [
+          "Schlafentzug",
+          "Alkoholkonsum",
+          "Hyperventilation",
+          "inadäquate oder abrupte Medikamentenänderung"
+        ],
+        "aggravating_drugs": [
+          "Carbamazepin — Natriumkanalblocker, verschlechtert Absencen bei IGE",
+          "Phenytoin — kontraindiziert bei generalisierten Epilepsien",
+          "Vigabatrin — GABA-Transaminase-Hemmer, kann Absencen aggravieren",
+          "Tiagabin",
+          "Gabapentin (selten)"
+        ],
+        "note": "Natriumkanalblocker sind klassische Auslöser von Absenzstatus bei bekannter IGE — wichtiger Prüfungsstoff."
+      },
+      "source": "Thalamo-kortikale Oszillationen. Reziprokes Netzwerk zwischen frontalem Kortex und medialem Thalamus (Nucleus reticularis thalami). Abnorme Synchronisation führt zu rhythmischen 2–4-Hz-Entladungen.",
+      "treatment_response": {
+        "benzodiazepines": "Meist sehr gutes Ansprechen auf Lorazepam, Diazepam, Clonazepam i.v. — klinische Aufklarung und EEG-Normalisierung in Minuten. Diagnostischer und therapeutischer Wert.",
+        "contraindicated": "Phenytoin, Carbamazepin, Vigabatrin — können Status verschlechtern",
+        "note": "Rasche Benzodiazepin-Responsivität ist ein Diagnosekriterium (Salzburger Kriterien: EEG-Verbesserung nach Therapie)"
+      }
     },
     {
       "id": "EEG_0099",
