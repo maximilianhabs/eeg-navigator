@@ -12205,7 +12205,10 @@
       "aliases": [
         "NCSE",
         "Nonconvulsive status epilepticus",
-        "Elektroenzephalographischer Status"
+        "Elektroenzephalographischer Status",
+        "Nonconvulsive SE",
+        "NCSE im Koma",
+        "Status ohne Krämpfe"
       ],
       "main_category": "Anfallsmuster",
       "subcategory": "Status epilepticus",
@@ -12218,15 +12221,16 @@
       "amplitude": {
         "label": "variabel",
         "min_uv": 20,
-        "max_uv": 400,
-        "typical_uv": 150
+        "max_uv": 500,
+        "typical_uv": 150,
+        "note": "Amplitude diagnostisch wenig hilfreich — NCSE kann mit 20 µV ebenso wie mit 500 µV auftreten. Evolution und Frequenz sind entscheidend."
       },
       "duration": {
         "label": "variabel",
-        "min_ms": null,
+        "min_ms": 300000,
         "max_ms": null,
         "typical_ms": null,
-        "note": "Anfallsdauer variabel; iktal: Sekunden bis Minuten"
+        "note": "Historisch ≥30 Minuten; heute wird bei anhaltender epileptischer Aktivität bereits nach wenigen Minuten behandelt. Unerkannte NCSEs dauern häufig Stunden bis Tage."
       },
       "polarity": "variabel",
       "localization": [
@@ -12236,24 +12240,24 @@
       ],
       "laterality": "variabel",
       "field_distribution": {
-        "description": "",
+        "description": "Lokalisation abhängig vom Subtyp: temporal (häufigste) — F7/T3, F8/T4 maximal; frontal — oft diffus, geringamplitudig, schwer abgrenzbar; generalisiert — bilateral synchron, frontozentral betont (Absenzstatus). Räumliche Ausbreitung im Verlauf ist Evidenz für Iktalität (Salzburger Kriterium).",
         "phase_reversal": "möglich",
-        "field_plausibility": "",
-        "reference_contamination_risk": ""
+        "field_plausibility": "variabel_je_subtyp",
+        "reference_contamination_risk": "variabel"
       },
-      "morphology": "Heterogenes EEG-Muster; Salzburger Kriterien: (1) Rhythmische Entladungen >2.5 Hz oder periodische Entladungen mit Evolution ODER (2) Spike-Wave-Komplexe >2.5 Hz mit klinischem Korrelat oder EEG-Verbesserung nach Therapie. Kein einzelnes definierendes EEG-Muster — klinisch-EEG-Syndrom",
-      "potential_course": "",
+      "morphology": "Heterogenes EEG-Syndrom — kein einzelnes definierendes Muster. Häufige Muster: (1) Rhythmische Deltaaktivität (RDA) 1–4 Hz fokal oder generalisiert; (2) Rhythmische Thetaaktivität 4–7 Hz (typisch temporal); (3) Fokale Spike-Wave-Serien temporal/frontotemporal; (4) LPDs mit Evolution (LPD+F, LPD+R); (5) Generalisierte Spike-Waves 2–4 Hz (Absenzstatus). Gemeinsames Merkmal: EVOLUTION (Frequenz-, Amplituden-, Morphologie- oder Ausbreitungsänderung).",
+      "potential_course": "Evolution ist das wichtigste EEG-Merkmal: z.B. 1 Hz Delta → 2 Hz Delta → 3 Hz Spike-Wave → 4 Hz Spike-Wave. Unter Benzodiazepin: Frequenzabnahme, Verschwinden rhythmischer Aktivität, Rückkehr physiologischer Hintergrundaktivität. Ohne Therapie: Stunden bis Tage; Übergang in subtilen SE mit GPDs auf flachem Hintergrund möglich.",
       "rhythmicity": "variabel",
       "periodicity": "variabel",
       "montage_behavior": {
-        "bipolar_longitudinal": "",
-        "bipolar_transverse": "",
-        "referential_cz": "",
-        "referential_average": "",
+        "bipolar_longitudinal": "Beim temporalen NCSE: Phasenumkehr in F7/T3 oder F8/T4; rhythmische Aktivität in temporaler Kette deutlich. Beim generalisiertem NCSE: keine Phasenumkehr, bilateral synchron in allen Ketten. Beim frontalen NCSE: oft frontal betont, diffus — Phasenumkehr selten klar.",
+        "bipolar_transverse": "Hilft bei Lateralisierung: temporaler NCSE zeigt Asymmetrie ipsilateral. Generalisierter NCSE: bilateral symmetrisch.",
+        "referential_cz": "Gut geeignet zur Feldbeurteilung: temporale Elektroden zeigen maximale Amplitude bei TLE-NCSE. Amplitudenanstieg temporal ist Hinweis auf fokalen Generator.",
+        "referential_average": "Vorsicht: bei generalisierter epileptischer Aktivität verteilt Average-Referenz das Signal über alle Elektroden — kann Amplituden abschwächen und Lokalisation verschleiern.",
         "referential_mastoid": "",
         "best_montage": "bipolare Längsreihe",
         "typical_montage": "bipolare Längsreihe",
-        "pitfalls": ""
+        "pitfalls": "Frontaler NCSE oft EEG-arm: Scalp-EEG zeigt in 20–40% der FLE-NCSEs kein klares iktales Muster. Evolution kann subtil sein — Trend-Analysen (Amplituden-/Frequenztrendmonitoring) hilfreich. Enzephalopathie-Muster (Triphasics, GPDs) können NCSE imitieren — Evolution und Benzodiazepin-Test entscheidend."
       },
       "classification": "epileptiform",
       "disease_value": "hochpathologisch",
@@ -12267,18 +12271,24 @@
       "pediatric_only": false,
       "dialog_logic": {
         "key_features": [
-          "klinisch-EEG-Syndrom",
-          "Salzburger Kriterien",
-          "unklare Bewusstseinsstörung",
-          "therapeutisches Ansprechen als Kriterium"
+          "Evolution (Frequenz, Amplitude, Morphologie, Ausbreitung) — wichtigstes Einzelkriterium",
+          "Epileptiforme Aktivität >2,5 Hz — Salzburger Schwelle",
+          "Klinisches Korrelat (Verwirrtheit, Aphasie, Automatismen)",
+          "Benzodiazepin-Ansprechen (EEG + klinisch)",
+          "Anhaltend ohne konvulsive Motorik"
         ],
         "criteria_for": [
-          "Rhythmische Entladungen >2.5 Hz oder periodische Muster mit Evolution",
-          "UND: klinisches Korrelat oder EEG-Ansprechen"
+          "Rhythmische/periodische Aktivität >2,5 Hz → definitiv NCSE (Salzburg)",
+          "0,5–2,5 Hz + Evolution → wahrscheinlich NCSE",
+          "0,5–2,5 Hz + klinisches Korrelat → wahrscheinlich NCSE",
+          "0,5–2,5 Hz + Benzodiazepin-Ansprechen → wahrscheinlich NCSE",
+          "Jeder unerklärte Verwirrtheitszustand mit passendem EEG"
         ],
         "criteria_against": [
-          "Kurze Entladungen <10 s ohne Korrelat (→ interiktal)",
-          "Eindeutig periodisch ohne Evolution (→ LPDs/GPDs)"
+          "Stabile Morphologie ohne Evolution → eher interiktal / Enzephalopathie",
+          "Triphasic-Morphologie ohne Spike + metabolischer Kontext → Triphasics",
+          "Fehlende EEG-Reaktion auf Benzodiazepine → eher Enzephalopathie",
+          "Kurze Entladungen <30 s ohne klinisches Korrelat → interiktal"
         ],
         "mimics": [
           "EEG_0098",
@@ -12288,14 +12298,27 @@
           "Erfüllt das Muster die Salzburger Kriterien?",
           "Gibt es klinisches Korrelat?",
           "EEG-Ansprechen auf Benzodiazepin i.v. getestet?"
+        ],
+        "three_key_findings": [
+          "(1) Evolution eines rhythmischen Musters",
+          "(2) Epileptiforme Aktivität >2,5 Hz",
+          "(3) Deutliche EEG- und klinische Besserung nach Benzodiazepinen"
         ]
       },
       "differential_diagnoses": [
         "EEG_0098",
         "EEG_0059",
-        "EEG_0060"
+        "EEG_0060",
+        "EEG_0067",
+        "EEG_0064"
       ],
-      "common_misinterpretations": [],
+      "common_misinterpretations": [
+        "Als Delir oder psychiatrische Störung fehlgedeutet — EEG ist die entscheidende Untersuchung",
+        "Frontaler NCSE übersehen da Scalp-EEG in 20–40% unauffällig",
+        "LPDs als rein interiktal eingestuft ohne Evolution zu prüfen — Anfallsrisiko 40–80%",
+        "Triphasics als NCSE behandelt ohne Benzodiazepin-Test und metabolische Ursachen auszuschließen",
+        "Binäres Denken \"Status oder nicht\" statt IIC-Konzept"
+      ],
       "images": [
         {
           "file": "placeholder.png",
@@ -12306,9 +12329,9 @@
         }
       ],
       "teaching_pearl": "NCSE ist kein EEG-Muster, sondern eine klinisch-EEG-Diagnose. Kernkriterium (Salzburg): Rhythmische oder periodische Entladungen + klinisches Korrelat ODER EEG-Ansprechen auf Therapie. Jede unklare Bewusstseinsstörung kann NCSE sein — EEG obligat.",
-      "warning": "NCSE ist eine neurologische Notfalldiagnose mit hoher Mortalität bei Verzögerung. Diagnose erfordert Salzburger Kriterien (2015/2019). Schrittweise Therapieeskalation.",
-      "notes": "",
-      "data_status": "partial",
+      "warning": "Neurologische Notfalldiagnose mit hoher Mortalität bei Verzögerung. Diagnose erfordert Salzburger Kriterien (Leitinger et al. 2015/2019). Benzodiazepin-Test i.v. ist gleichzeitig diagnostisch und therapeutisch — wenn EEG + Klinik ansprechen: Diagnose gesichert. Frontalen NCSE nicht übersehen: klinisch oft \"nur verwirrt\", EEG arm.",
+      "notes": "NCSE ist ein klinisch-elektrographisches Syndrom, kein EEG-Muster. Evolution ist das wichtigste EEG-Kriterium — Trend-Analysen im Langzeit-EEG hilfreich. Frontaler NCSE häufig unterschätzt: Scalp-EEG in 20–40% negativ. IIC-Konzept (LPDs, GPDs, LRDA, GRDA) ersetzt die binäre \"Status ja/nein\"-Frage. Drei Befunde mit höchstem diagnostischen Wert: Evolution, >2,5 Hz, Benzodiazepin-Ansprechen.",
+      "data_status": "complete",
       "priority_for_mvp": "mittel",
       "source_notes": [
         "Leitinger et al. 2015/2019 Salzburger Kriterien",
@@ -12318,12 +12341,126 @@
       "cross_references": {
         "eeg_mimics": [
           "EEG_0098",
-          "EEG_0059"
-        ]
+          "EEG_0059",
+          "EEG_0060",
+          "EEG_0067",
+          "EEG_0064"
+        ],
+        "ncse_vs_encephalopathy": {
+          "for_ncse": [
+            "Evolution",
+            "Frequenzanstieg",
+            "Spikes/Sharp Waves",
+            "räumliche Ausbreitung",
+            "Benzodiazepin-Ansprechen"
+          ],
+          "for_encephalopathy": [
+            "stabile Morphologie",
+            "keine Evolution",
+            "Triphasics",
+            "konstante GPDs",
+            "fehlende AED-Reaktion"
+          ]
+        }
       },
       "spatial_distribution": "variabel",
       "spatial_subtype": "variabel",
-      "spatial_note": ""
+      "spatial_note": "",
+      "source": "Klinisch-elektrographisches Syndrom, kein einheitlicher Generator. Pathophysiologie abhängig vom Subtyp: thalamo-kortikale Netzwerke (generalisierter NCSE), fokaler kortikaler/subkortikaler Hyperexzitabilität (fokaler NCSE), diffuse kortikale Dysfunktion (NCSE im Koma/IIC).",
+      "ncse_subtypes": {
+        "generalized": {
+          "types": [
+            "Absenzstatus (CAE/JAE/JME)",
+            "atypischer Absenzstatus (Lennox-Gastaut)"
+          ],
+          "eeg": "Generalisierte Spike-Waves 2–4 Hz, bilateral synchron, frontozentral betont",
+          "ref": "EEG_0098"
+        },
+        "focal": {
+          "types": [
+            "temporaler NCSE (häufigste)",
+            "frontaler NCSE",
+            "parietookzipitaler NCSE"
+          ],
+          "eeg": "Fokale rhythmische Aktivität, LPDs mit Evolution, repetitive Spikes, rhythmische RDA",
+          "localization": "Temporal: F7/T3-F8/T4; Frontal: Fp/F bilateral; Posterior: O1/O2-P3/P4"
+        },
+        "comatose": {
+          "types": [
+            "NCSE im Koma",
+            "subtiler SE (Treiman Stadium V)"
+          ],
+          "eeg": "GPDs, LPDs, BIPDs, Burst-Suppression mit epileptischen Komponenten, RDA",
+          "note": "Häufig Teil des Ictal-Interictal Continuum (IIC); Abgrenzung zu Enzephalopathie schwierig"
+        }
+      },
+      "ictal_interictal_continuum": {
+        "concept": "Moderne Sichtweise: nicht binär \"Status ja/nein\", sondern Spektrum. LPDs, GPDs, LRDA, GRDA, BIPDs können vollständig interiktal, eindeutig iktal oder irgendwo dazwischen liegen.",
+        "iic_patterns": [
+          "LPDs",
+          "GPDs",
+          "LRDA",
+          "GRDA",
+          "BIPDs"
+        ],
+        "toward_ictal": [
+          "Evolution",
+          "Frequenzanstieg",
+          "Plus-Merkmale (+F, +R)",
+          "klinische Korrelation",
+          "Benzodiazepin-Ansprechen"
+        ],
+        "toward_interictal": [
+          "stabile Morphologie",
+          "keine Evolution",
+          "kein klinisches Korrelat",
+          "fehlende AED-Responsivität"
+        ]
+      },
+      "salzburg_criteria": {
+        "source": "Leitinger et al. 2015, revidiert 2019",
+        "definite_ncse": "Epileptiforme Entladungen >2,5 Hz — ausreichend ohne weitere Kriterien",
+        "probable_ncse_0_5_to_2_5": [
+          "Epileptiforme Entladungen 0,5–2,5 Hz MIT mindestens einem der folgenden:",
+          "(a) Evolution (Frequenz, Amplitude, Morphologie oder räumliche Ausbreitung)",
+          "(b) Klinisches Korrelat zur EEG-Aktivität",
+          "(c) EEG-Ansprechen auf Antiepileptika mit klinischer Besserung",
+          "(d) Typische räumliche Ausbreitung"
+        ],
+        "eeg_improvement_criterion": "EEG-Verbesserung nach Benzodiazepin mit klinischer Aufklarung = Diagnosebestätigung und Therapieerfolg gleichzeitig",
+        "key_threshold": "2,5 Hz ist die diagnostische Schwelle — darüber: definitiv NCSE; darunter: weitere Kriterien nötig"
+      },
+      "localization_by_type": {
+        "most_common": "temporal (F7/T3, F8/T4)",
+        "second": "frontal (oft geringamplitudig, schwer erkennbar; 20–40% kein klares Scalp-EEG)",
+        "third": "parietookzipital (O1/O2, P3/P4; seltener)",
+        "generalized": "bilateral synchron, frontozentral (Absenzstatus)",
+        "comatose": "variabel, oft generalisiert-diffus (GPDs, LPDs, Burst-Suppression)"
+      },
+      "etiology": {
+        "generalized_ncse": [
+          "Genetisch generalisierte Epilepsien (IGE): CAE, JAE, JME",
+          "Lennox-Gastaut-Syndrom (atypischer ASE)"
+        ],
+        "focal_ncse": [
+          "Strukturelle Läsionen (Tumor, Schlaganfall, Enzephalitis)",
+          "Hippokampussklerose (mesiotemporaler SE)",
+          "Kortikale Dysplasie"
+        ],
+        "comatose_ncse": [
+          "Postanoxische Enzephalopathie",
+          "HIBI",
+          "Metabolische Enzephalopathie",
+          "Sepsis",
+          "Subarachnoidalblutung",
+          "Meningoenzephalitis"
+        ],
+        "drug_related": [
+          "Medikamentenentzug (Benzodiazepine, Barbiturate)",
+          "Toxische Enzephalopathie (Cefepim, Lithium)"
+        ],
+        "note": "Ätiologie bestimmt Prognose stärker als das EEG-Muster allein."
+      }
     },
     {
       "id": "EEG_0100",
