@@ -98,11 +98,21 @@ function EdfPanel({ example, montage, sensitivity, windowSec }: {
       const yCenter = yOffset + rowH / 2
       const color   = getRowColor(row.colorKey, isDark)
 
-      // EKG: relativer Scale (25% der physischen Spanne füllt Zeile)
+      // EKG: Signal abtasten → P95 der Absolutwerte → skalieren auf 55% der Zeilenhöhe
+      // Damit unabhängig von physMin/physMax-Geräteeinstellungen (variiert je Aufnahme)
       // EEG: klinische Sensitivität µV/mm
-      const scale = row.isEcg
-        ? (rowH * 0.6) / (row.ampRange * 0.25)
-        : eegScale
+      let scale: number
+      if (row.isEcg) {
+        const sig = signals[row.sigA]
+        const sampleStep = Math.max(1, Math.floor(sig.length / 2000))
+        const absVals: number[] = []
+        for (let i = 0; i < sig.length; i += sampleStep) absVals.push(Math.abs(sig[i]))
+        absVals.sort((a, b) => a - b)
+        const p95 = absVals[Math.floor(absVals.length * 0.95)] || row.ampRange * 0.1
+        scale = (rowH * 0.55) / p95
+      } else {
+        scale = eegScale
+      }
 
       if (rowIdx > 0 && !allRows[rowIdx - 1].isSpacer) {
         ctx.strokeStyle = row.isEcg ? (isDark ? '#2d1a1a' : '#fee2e2') : gridColor
