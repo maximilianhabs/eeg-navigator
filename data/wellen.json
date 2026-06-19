@@ -2070,6 +2070,143 @@
       "spatial_note": null
     },
     {
+      "id": "EEG_0103",
+      "name": "Hyperventilationsreaktion (HVR)",
+      "aliases": [
+        "HVR",
+        "HIHARS",
+        "Hyperventilation-Induced High-Amplitude Rhythmic Slowing",
+        "Intermittierende Verlangsamung unter Hyperventilation",
+        "Hypersynchrone Verlangsamung",
+        "HV-Synchronie",
+        "Hyperventilationsinduzierte Verlangsamung"
+      ],
+      "main_category": "Physiologische Wachmuster",
+      "subcategory": "Reaktivitätsmuster",
+      "frequency": {
+        "label": "Delta/Theta",
+        "min_hz": 0.5,
+        "max_hz": 4,
+        "typical_hz": 2,
+        "note": "Rhythmische bis halbrhythmische generalisierte Verlangsamung; frontal betont; tritt typischerweise nach 30–90 s HV auf"
+      },
+      "amplitude": {
+        "label": "groß bis sehr groß",
+        "min_uv": 100,
+        "max_uv": 400,
+        "typical_uv": 200,
+        "note": "Deutlich höher als die Grundaktivität; bei Kindern oft sehr hochamplitudig (>300 µV)"
+      },
+      "duration": {
+        "label": "intermittierend, provoziert",
+        "min_ms": null,
+        "max_ms": null,
+        "typical_ms": null,
+        "note": "Klingt nach HV-Abbruch innerhalb von ≤30 s ab (physiologisch); länger persistierende HVR gilt als pathologisch"
+      },
+      "polarity": "negativ",
+      "localization": [
+        "frontal",
+        "frontopolar",
+        "generalisiert"
+      ],
+      "laterality": "bilateral_symmetrisch",
+      "field_distribution": {
+        "description": "Generalisiert mit frontaler Betonung (Maximum Fp1/Fp2, F3/F4); okzipital meist miterfasst, aber geringer ausgeprägt",
+        "phase_reversal": "nicht_anwendbar",
+        "field_plausibility": "generalisiert_frontal_betont",
+        "reference_contamination_risk": "gering"
+      },
+      "morphology": "Rhythmische bis polymorphe hochamplitudige Delta/Theta-Wellen, generalisiert, mit frontaler Betonung. In der Doppelbanane-Montage maximum in Fp1/Fp2 und F3/F4. Gelegentlich Überlagerung mit IED (interiktale epilepsietypische Potentiale) möglich – klinisch wichtige Beobachtung.",
+      "potential_course": "Tritt nach 30–90 s Hyperventilation auf; nimmt bei anhaltender HV zu; klingt nach HV-Abbruch innerhalb von ≤30 s ab. Persistenz >1 min nach Abbruch gilt als pathologisch verlängert.",
+      "rhythmicity": "rhythmisch_bis_halbrhythmisch",
+      "periodicity": "nicht_periodisch",
+      "montage_behavior": {
+        "bipolar_longitudinal": "Generalisiert sichtbar; frontales Maximum deutlich in Fp–F-Elektroden; Amplitudenabfall nach posterior",
+        "bipolar_transverse": "Bilateral symmetrisch; frontale Ableitung zeigt höchste Amplitude",
+        "referential_cz": "Gut zur Beurteilung der Generalisierung; CZ selbst miterfasst",
+        "referential_average": "Geeignet, Amplitudenunterschiede gut beurteilbar",
+        "referential_mastoid": "Gut geeignet; frontale Betonung klar erkennbar",
+        "best_montage": "Bipolare Längsreihe (Doppelbanane)",
+        "typical_montage": "bipolare Längsreihe",
+        "pitfalls": "Asymmetrie ≥50% zwischen Hemisphären kann auf fokale Pathologie hinweisen. Überlagerung mit IED nicht verpassen – HV ist wichtigster Aktivierungsreiz für Spike-Wave-Komplexe!"
+      },
+      "classification": "physiologisch",
+      "disease_value": "kein (physiologisch); pathologisch bei Persistenz >1 min nach HV-Abbruch oder deutlicher Asymmetrie",
+      "occurrence_frequency": "sehr_haeufig",
+      "occurrence_context": [
+        "hyperventilation"
+      ],
+      "sleep_stage": null,
+      "age_group": "alle",
+      "pediatric_only": false,
+      "dialog_logic": {
+        "key_features": [
+          "unter Hyperventilation",
+          "generalisiert frontal betont",
+          "hochamplitudig",
+          "Delta/Theta-Frequenz",
+          "symmetrisch",
+          "klingt nach HV-Abbruch ab"
+        ],
+        "criteria_for": [
+          "Auftreten ausschließlich unter Hyperventilation",
+          "Generalisiert mit frontaler Betonung",
+          "Klingt ≤30 s nach HV-Abbruch vollständig ab",
+          "Bilateral symmetrisch (Seitendifferenz <50%)",
+          "Keine Klinik"
+        ],
+        "criteria_against": [
+          "Auftreten ohne HV-Provokation (→ FIRDA?)",
+          "Persistenz >1 min nach HV-Abbruch (→ pathologisch verlängerte HVR)",
+          "Ausgeprägte Asymmetrie ≥50% (→ fokale Pathologie?)",
+          "Klinische Symptome während des Musters (→ epileptischer Anfall?)"
+        ],
+        "mimics": [
+          "EEG_0009"
+        ],
+        "discriminating_questions": [
+          "Tritt die Verlangsamung ausschließlich unter aktiver Hyperventilation auf?",
+          "Klingt das Muster innerhalb von 30 s nach HV-Abbruch vollständig ab?",
+          "Ist die Verlangsamung bilateral symmetrisch?",
+          "Treten zusätzlich IED oder klinische Zeichen auf?"
+        ]
+      },
+      "differential_diagnoses": [
+        "EEG_0009",
+        "EEG_0036"
+      ],
+      "triggering_situation": [
+        "Hyperventilation (Standard-Aktivierungsmaßnahme im Routine-EEG)",
+        "Hypoglykämie kann HVR verstärken",
+        "Fieber kann HVR abschwächen"
+      ],
+      "common_misinterpretations": [
+        "Als pathologische Verlangsamung fehlinterpretiert (wenn HV-Kontext nicht dokumentiert)",
+        "Als FIRDA fehlgedeutet (FIRDA tritt ohne HV auf und hat höheren Krankheitswert)",
+        "IED die während HVR auftreten werden übersehen",
+        "Asymmetrie wird nicht bemerkt (Seitenvergleich wichtig!)"
+      ],
+      "images": [],
+      "teaching_pearl": "Die HVR ist der stärkste physiologische Aktivierungsreiz für IED: Spike-Wave-Komplexe bei genetischer generalisierter Epilepsie treten häufig erstmals unter HV auf. Niemals die HVR-Phase des EEGs überfliegen – genau hinschauen! Klingt die Verlangsamung nicht innerhalb von 30 s nach HV-Abbruch ab, ist das ein pathologisches Zeichen.",
+      "warning": "Persistenz >1 min nach HV-Abbruch = pathologische Verlangsamung. Asymmetrie ≥50% = fokale Pathologie evaluieren. Immer IED-Überlagerung aktiv suchen!",
+      "notes": "Bei Kindern bis ~12 Jahre ist die HVR besonders prominent (Amplituden oft >300 µV, ausgeprägte Bild). Mit zunehmendem Alter (>40 J.) nimmt die physiologische HVR ab – fehlende HVR bei Älteren daher nicht pathologisch. DGKN-Leitlinie: HV-Aktivierung 3 Minuten, Ableitung mindestens 1 Minute nach Abbruch.",
+      "data_status": "complete",
+      "priority_for_mvp": "hoch",
+      "source_notes": [
+        "DGKN-Leitlinie EEG",
+        "ACNS Standardized Critical Care EEG Terminology 2021",
+        "Niedermeyer & da Silva",
+        "Zschocke & Hansen – Klinische Elektroenzephalographie"
+      ],
+      "cross_references": {
+        "artifact_mimics": []
+      },
+      "spatial_distribution": "generalisiert",
+      "spatial_subtype": "frontal_betont",
+      "spatial_note": "Frontale Betonung (Fp, F) mit generalisierter Ausbreitung; okzipitale Amplitude deutlich geringer"
+    },
+    {
       "id": "EEG_0019",
       "name": "Photic Driving",
       "aliases": [
@@ -5332,7 +5469,7 @@
         "Frontale Spitztransienten des Neugeborenen",
         "Neonatale frontale Spitzwellen"
       ],
-      "main_category": "Schlaf- und Vigilanzmuster",
+      "main_category": "Neonatale und altersspezifische Muster",
       "subcategory": "Neonatale Schlafgraphoelemente",
       "frequency": {
         "label": "Delta/sehr langsam",

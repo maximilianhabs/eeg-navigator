@@ -1,8 +1,9 @@
 'use client'
 
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import { EDFParser } from './edfParser'
 import { buildMontageRows, MONTAGE_LABELS, getRowColor, type MontageId } from './montages'
+import { filterSignal, HP_OPTIONS, LP_OPTIONS, DEFAULT_HP, DEFAULT_LP } from './filters'
 import type { EdfHeader } from './edfParser'
 
 const SENSITIVITY_STEPS = [100, 50, 30, 20, 15, 10, 7, 5, 3, 1]
@@ -12,7 +13,7 @@ const PX_PER_MM = 96 / 25.4
 interface Props {
   url: string
   filename: string
-  canvasHeight?: string  // CSS value, default '420px'
+  canvasHeight?: string
 }
 
 export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' }: Props) {
@@ -23,6 +24,9 @@ export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' 
   const [sensitivity, setSensitivity]  = useState(DEFAULT_SENSITIVITY)
   const [viewStart,   setViewStart]    = useState(0)
   const [windowSec,   setWindowSec]    = useState(10)
+  const [hpFreq,      setHpFreq]       = useState<number | null>(DEFAULT_HP)
+  const [lpFreq,      setLpFreq]       = useState<number | null>(DEFAULT_LP)
+  const [notch,       setNotch]        = useState(false)
   const [loading,     setLoading]      = useState(false)
   const [error,       setError]        = useState<string | null>(null)
 
@@ -45,9 +49,17 @@ export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' 
       .finally(() => setLoading(false))
   }, [url])
 
+  const filteredSignals = useMemo(() => {
+    if (!header || signals.length === 0) return signals
+    return signals.map((sig, i) => {
+      const fs = header.signals[i].sampleRate
+      return filterSignal(sig, fs, hpFreq, lpFreq, notch)
+    })
+  }, [signals, header, hpFreq, lpFreq, notch])
+
   const draw = useCallback(() => {
     const canvas = canvasRef.current
-    if (!canvas || !header || signals.length === 0) return
+    if (!canvas || !header || filteredSignals.length === 0) return
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
@@ -100,7 +112,7 @@ export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' 
       const color   = getRowColor(row.colorKey, isDark)
       let scale: number
       if (row.isEcg) {
-        const sig = signals[row.sigA]
+        const sig = filteredSignals[row.sigA]
         const sampleStep = Math.max(1, Math.floor(sig.length / 2000))
         const absVals: number[] = []
         for (let i = 0; i < sig.length; i += sampleStep) absVals.push(Math.abs(sig[i]))
@@ -124,8 +136,8 @@ export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' 
       ctx.font = row.isEcg ? 'bold 8px system-ui' : '9px system-ui'
       ctx.textAlign = 'right'; ctx.fillText(row.label, pad.left - 3, yCenter + 3)
 
-      const dataA = signals[row.sigA]
-      const dataB = row.sigB >= 0 ? signals[row.sigB] : null
+      const dataA = filteredSignals[row.sigA]
+      const dataB = row.sigB >= 0 ? filteredSignals[row.sigB] : null
       const fs    = row.fs
       const s0    = Math.floor(viewStart * fs), s1 = Math.ceil(viewEnd * fs)
       const step  = Math.max(1, Math.floor((s1 - s0) / (plotW * 2)))
@@ -148,7 +160,7 @@ export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' 
     ctx.fillStyle = isDark ? '#1e3a5f' : '#dbeafe'
     ctx.font = '9px system-ui'; ctx.textAlign = 'right'
     ctx.fillText(MONTAGE_LABELS[montage], W - pad.right, pad.top - 6)
-  }, [header, signals, montage, sensitivity, viewStart, windowSec])
+  }, [header, filteredSignals, montage, sensitivity, viewStart, windowSec])
 
   useEffect(() => { draw() }, [draw])
   useEffect(() => {
@@ -193,6 +205,37 @@ export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' 
         <button onClick={lessAmp} title="Weniger Amplitude"
           className="w-6 h-6 rounded text-[11px] font-bold hover:opacity-80"
           style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>－</button>
+
+        <div className="w-px h-4 mx-1" style={{ background: 'var(--border)' }} />
+
+        {/* Filter */}
+        <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>HP</span>
+        <select value={hpFreq ?? 'off'} onChange={e => setHpFreq(e.target.value === 'off' ? null : Number(e.target.value))}
+          className="text-[11px] rounded px-1 py-0.5"
+          style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>
+          {HP_OPTIONS.map(o => (
+            <option key={o.label} value={o.value ?? 'off'}>{o.label}</option>
+          ))}
+        </select>
+
+        <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>TP</span>
+        <select value={lpFreq ?? 'off'} onChange={e => setLpFreq(e.target.value === 'off' ? null : Number(e.target.value))}
+          className="text-[11px] rounded px-1 py-0.5"
+          style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>
+          {LP_OPTIONS.map(o => (
+            <option key={o.label} value={o.value ?? 'off'}>{o.label}</option>
+          ))}
+        </select>
+
+        <button onClick={() => setNotch(n => !n)} title="50 Hz Netzartefakt-Filter"
+          className="px-2 py-0.5 rounded text-[10px] font-medium transition-colors"
+          style={{
+            background: notch ? 'var(--brand)' : 'var(--bg-subtle)',
+            border: '1px solid var(--border)',
+            color: notch ? '#fff' : 'var(--text-secondary)'
+          }}>
+          50 Hz
+        </button>
 
         <div className="w-px h-4 mx-1" style={{ background: 'var(--border)' }} />
 

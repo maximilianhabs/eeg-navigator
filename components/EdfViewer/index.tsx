@@ -1,14 +1,14 @@
 'use client'
 
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import { EDFParser } from './edfParser'
 import { buildMontageRows, MONTAGE_LABELS, getRowColor, type MontageId } from './montages'
+import { filterSignal, HP_OPTIONS, LP_OPTIONS, DEFAULT_HP, DEFAULT_LP } from './filters'
 import type { EdfHeader } from './edfParser'
 
-// Klinische Standard-Sensitivitätsstufen (µV/mm), von niedrig zu hoch
 const SENSITIVITY_STEPS = [100, 50, 30, 20, 15, 10, 7, 5, 3, 1]
-const DEFAULT_SENSITIVITY = 1   // µV/mm — maximale Sensitivität als Standard
-const PX_PER_MM = 96 / 25.4    // CSS-Pixel pro mm bei 96 dpi
+const DEFAULT_SENSITIVITY = 1
+const PX_PER_MM = 96 / 25.4
 
 interface EdfExample {
   filename: string; url: string; age: string; montage: string; num: string
@@ -16,8 +16,9 @@ interface EdfExample {
 
 // ── Single canvas panel ───────────────────────────────────────────────────────
 
-function EdfPanel({ example, montage, sensitivity, windowSec }: {
+function EdfPanel({ example, montage, sensitivity, windowSec, hpFreq, lpFreq, notch }: {
   example: EdfExample; montage: MontageId; sensitivity: number; windowSec: number
+  hpFreq: number | null; lpFreq: number | null; notch: boolean
 }) {
   const canvasRef                    = useRef<HTMLCanvasElement>(null)
   const [header,    setHeader]       = useState<EdfHeader | null>(null)
@@ -40,11 +41,19 @@ function EdfPanel({ example, montage, sensitivity, windowSec }: {
       .finally(() => setLoading(false))
   }, [example.url])
 
+  const filteredSignals = useMemo(() => {
+    if (!header || signals.length === 0) return signals
+    return signals.map((sig, i) => {
+      const fs = header.signals[i].sampleRate
+      return filterSignal(sig, fs, hpFreq, lpFreq, notch)
+    })
+  }, [signals, header, hpFreq, lpFreq, notch])
+
   const duration = header ? header.numRecords * header.recordDuration : 0
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current
-    if (!canvas || !header || signals.length === 0) return
+    if (!canvas || !header || filteredSignals.length === 0) return
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
@@ -71,10 +80,8 @@ function EdfPanel({ example, montage, sensitivity, windowSec }: {
     const totalWeight = allRows.reduce((s, r) => s + (r.isSpacer ? SPACER_WEIGHT : 1), 0)
     const unitH = plotH / totalWeight
 
-    // EEG scale: klinische Sensitivität µV/mm → px/µV
     const eegScale = 1 / (sensitivity * PX_PER_MM)
 
-    // Time grid
     ctx.strokeStyle = gridColor; ctx.lineWidth = 1
     for (let t = Math.ceil(viewStart); t < viewEnd; t++) {
       const x = pad.left + (t - viewStart) / windowSec * plotW
@@ -98,12 +105,9 @@ function EdfPanel({ example, montage, sensitivity, windowSec }: {
       const yCenter = yOffset + rowH / 2
       const color   = getRowColor(row.colorKey, isDark)
 
-      // EKG: Signal abtasten → P95 der Absolutwerte → skalieren auf 55% der Zeilenhöhe
-      // Damit unabhängig von physMin/physMax-Geräteeinstellungen (variiert je Aufnahme)
-      // EEG: klinische Sensitivität µV/mm
       let scale: number
       if (row.isEcg) {
-        const sig = signals[row.sigA]
+        const sig = filteredSignals[row.sigA]
         const sampleStep = Math.max(1, Math.floor(sig.length / 2000))
         const absVals: number[] = []
         for (let i = 0; i < sig.length; i += sampleStep) absVals.push(Math.abs(sig[i]))
@@ -126,8 +130,8 @@ function EdfPanel({ example, montage, sensitivity, windowSec }: {
       ctx.fillStyle = color; ctx.font = row.isEcg ? 'bold 8px system-ui' : '9px system-ui'
       ctx.textAlign = 'right'; ctx.fillText(row.label, pad.left - 3, yCenter + 3)
 
-      const dataA = signals[row.sigA]
-      const dataB = row.sigB >= 0 ? signals[row.sigB] : null
+      const dataA = filteredSignals[row.sigA]
+      const dataB = row.sigB >= 0 ? filteredSignals[row.sigB] : null
       const fs = row.fs
       const s0 = Math.floor(viewStart * fs), s1 = Math.ceil(viewEnd * fs)
       const step = Math.max(1, Math.floor((s1 - s0) / (plotW * 2)))
@@ -149,7 +153,7 @@ function EdfPanel({ example, montage, sensitivity, windowSec }: {
     ctx.textAlign = 'right'; ctx.fillText(formatTime(Math.min(viewStart + windowSec, duration)), W - pad.right, H - 3)
     ctx.fillStyle = isDark ? '#1e3a5f' : '#dbeafe'; ctx.font = '9px system-ui'; ctx.textAlign = 'right'
     ctx.fillText(MONTAGE_LABELS[montage], W - pad.right, pad.top - 6)
-  }, [header, signals, montage, sensitivity, viewStart, windowSec, duration])
+  }, [header, filteredSignals, montage, sensitivity, viewStart, windowSec, duration])
 
   useEffect(() => { draw() }, [draw])
   useEffect(() => {
@@ -201,6 +205,9 @@ export default function EdfViewer({ entityId }: { entityId: string }) {
   const [montage,      setMontage]      = useState<MontageId>('bipolar')
   const [sensitivity,  setSensitivity]  = useState(DEFAULT_SENSITIVITY)
   const [windowSec,    setWindowSec]    = useState(10)
+  const [hpFreq,       setHpFreq]       = useState<number | null>(DEFAULT_HP)
+  const [lpFreq,       setLpFreq]       = useState<number | null>(DEFAULT_LP)
+  const [notch,        setNotch]        = useState(false)
 
   const sensIdx = SENSITIVITY_STEPS.indexOf(sensitivity)
   const moreAmp = () => setSensitivity(SENSITIVITY_STEPS[Math.min(sensIdx + 1, SENSITIVITY_STEPS.length - 1)])
@@ -241,18 +248,47 @@ export default function EdfViewer({ entityId }: { entityId: string }) {
 
           {/* Sensitivität */}
           <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>Sens.</span>
-          <button onClick={moreAmp}
-            title="Mehr Amplitude (sensibler)"
+          <button onClick={moreAmp} title="Mehr Amplitude (sensibler)"
             className="w-6 h-6 rounded text-[11px] font-bold hover:opacity-80"
             style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>＋</button>
           <span className="text-[11px] font-mono tabular-nums min-w-[56px] text-center"
             style={{ color: 'var(--text-primary)' }}>
             {sensitivity} µV/mm
           </span>
-          <button onClick={lessAmp}
-            title="Weniger Amplitude (weniger sensitiv)"
+          <button onClick={lessAmp} title="Weniger Amplitude (weniger sensitiv)"
             className="w-6 h-6 rounded text-[11px] font-bold hover:opacity-80"
             style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>－</button>
+
+          <div className="w-px h-4 mx-1" style={{ background: 'var(--border)' }} />
+
+          {/* Filter */}
+          <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>HP</span>
+          <select value={hpFreq ?? 'off'} onChange={e => setHpFreq(e.target.value === 'off' ? null : Number(e.target.value))}
+            className="text-[11px] rounded px-1 py-0.5"
+            style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>
+            {HP_OPTIONS.map(o => (
+              <option key={o.label} value={o.value ?? 'off'}>{o.label}</option>
+            ))}
+          </select>
+
+          <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>TP</span>
+          <select value={lpFreq ?? 'off'} onChange={e => setLpFreq(e.target.value === 'off' ? null : Number(e.target.value))}
+            className="text-[11px] rounded px-1 py-0.5"
+            style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>
+            {LP_OPTIONS.map(o => (
+              <option key={o.label} value={o.value ?? 'off'}>{o.label}</option>
+            ))}
+          </select>
+
+          <button onClick={() => setNotch(n => !n)} title="50 Hz Netzartefakt-Filter"
+            className="px-2 py-0.5 rounded text-[10px] font-medium transition-colors"
+            style={{
+              background: notch ? 'var(--brand)' : 'var(--bg-subtle)',
+              border: '1px solid var(--border)',
+              color: notch ? '#fff' : 'var(--text-secondary)'
+            }}>
+            50 Hz
+          </button>
 
           <div className="w-px h-4 mx-1" style={{ background: 'var(--border)' }} />
 
@@ -266,7 +302,8 @@ export default function EdfViewer({ entityId }: { entityId: string }) {
 
         {/* Stacked panels */}
         {examples.map(ex => (
-          <EdfPanel key={ex.filename} example={ex} montage={montage} sensitivity={sensitivity} windowSec={windowSec} />
+          <EdfPanel key={ex.filename} example={ex} montage={montage} sensitivity={sensitivity}
+            windowSec={windowSec} hpFreq={hpFreq} lpFreq={lpFreq} notch={notch} />
         ))}
       </div>
     </div>
