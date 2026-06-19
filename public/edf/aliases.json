@@ -2,7 +2,6 @@
   "ART_041": ["EEG_0001__adult__bipolar__01.edf"],
   "EEG_0033": ["EEG_0001__adult__bipolar__01.edf"],
   "EEG_0102": ["EEG_0001__adult__bipolar__01.edf"],
-  "EEG_0025": ["EEG_0026__adult__bipolar__01.edf", "EEG_0028__adult__bipolar__01.edf"],
-  "EEG_0026": ["EEG_0025__adult__bipolar__01.edf"],
-  "EEG_0027": ["EEG_0028__adult__bipolar__01.edf"]
+  "EEG_0025": ["EEG_0026__adult__bipolar__01.edf"],
+  "EEG_0026": ["EEG_0025__adult__bipolar__01.edf"]
 }
