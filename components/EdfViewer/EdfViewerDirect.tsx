@@ -5,6 +5,10 @@ import { EDFParser } from './edfParser'
 import { buildMontageRows, MONTAGE_LABELS, getRowColor, type MontageId } from './montages'
 import type { EdfHeader } from './edfParser'
 
+const SENSITIVITY_STEPS = [100, 50, 30, 20, 15, 10, 7, 5, 3]
+const DEFAULT_SENSITIVITY = 10
+const PX_PER_MM = 96 / 25.4
+
 interface Props {
   url: string
   filename: string
@@ -12,22 +16,22 @@ interface Props {
 
 export default function EdfViewerDirect({ url, filename }: Props) {
   const canvasRef                      = useRef<HTMLCanvasElement>(null)
-  const [header,    setHeader]         = useState<EdfHeader | null>(null)
-  const [signals,   setSignals]        = useState<Float32Array[]>([])
-  const [montage,   setMontage]        = useState<MontageId>('bipolar')
-  const [gain,      setGain]           = useState(1.0)
-  const [viewStart, setViewStart]      = useState(0)
-  const [windowSec, setWindowSec]      = useState(10)
-  const [loading,   setLoading]        = useState(false)
-  const [error,     setError]          = useState<string | null>(null)
+  const [header,      setHeader]       = useState<EdfHeader | null>(null)
+  const [signals,     setSignals]      = useState<Float32Array[]>([])
+  const [montage,     setMontage]      = useState<MontageId>('bipolar')
+  const [sensitivity, setSensitivity]  = useState(DEFAULT_SENSITIVITY)
+  const [viewStart,   setViewStart]    = useState(0)
+  const [windowSec,   setWindowSec]    = useState(10)
+  const [loading,     setLoading]      = useState(false)
+  const [error,       setError]        = useState<string | null>(null)
+
+  const sensIdx = SENSITIVITY_STEPS.indexOf(sensitivity)
+  const moreAmp = () => setSensitivity(SENSITIVITY_STEPS[Math.min(sensIdx + 1, SENSITIVITY_STEPS.length - 1)])
+  const lessAmp = () => setSensitivity(SENSITIVITY_STEPS[Math.max(sensIdx - 1, 0)])
 
   useEffect(() => {
-    setLoading(true)
-    setError(null)
-    setHeader(null)
-    setSignals([])
-    setViewStart(0)
-    setGain(1.0)
+    setLoading(true); setError(null); setHeader(null); setSignals([]); setViewStart(0)
+    setSensitivity(DEFAULT_SENSITIVITY)
     fetch(url)
       .then(r => r.arrayBuffer())
       .then(buf => {
@@ -46,16 +50,14 @@ export default function EdfViewerDirect({ url, filename }: Props) {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const W = canvas.width
-    const H = canvas.height
+    const W = canvas.width, H = canvas.height
     const isDark = document.documentElement.classList.contains('dark')
     const bgColor     = isDark ? '#0d1117' : '#ffffff'
     const gridColor   = isDark ? '#1e2436' : '#f1f5f9'
     const timeColor   = isDark ? '#475569' : '#94a3b8'
     const spacerColor = isDark ? '#2d3748' : '#e2e8f0'
 
-    ctx.fillStyle = bgColor
-    ctx.fillRect(0, 0, W, H)
+    ctx.fillStyle = bgColor; ctx.fillRect(0, 0, W, H)
 
     const allRows = buildMontageRows(header, montage)
     if (allRows.length === 0) {
@@ -71,6 +73,8 @@ export default function EdfViewerDirect({ url, filename }: Props) {
     const SPACER_WEIGHT = 0.3
     const totalWeight = allRows.reduce((s, r) => s + (r.isSpacer ? SPACER_WEIGHT : 1), 0)
     const unitH = plotH / totalWeight
+
+    const eegScale = 1 / (sensitivity * PX_PER_MM)
 
     ctx.strokeStyle = gridColor; ctx.lineWidth = 1
     for (let t = Math.ceil(viewStart); t < viewEnd; t++) {
@@ -93,7 +97,9 @@ export default function EdfViewerDirect({ url, filename }: Props) {
       }
       const yCenter = yOffset + rowH / 2
       const color   = getRowColor(row.colorKey, isDark)
-      const scale   = (rowH * (row.isEcg ? 0.6 : 0.75)) / (row.ampRange * gain)
+      const scale   = row.isEcg
+        ? (rowH * 0.6) / (row.ampRange * 0.25)
+        : eegScale
 
       if (rowIdx > 0 && !allRows[rowIdx - 1].isSpacer) {
         ctx.strokeStyle = row.isEcg ? (isDark ? '#2d1a1a' : '#fee2e2') : gridColor
@@ -101,19 +107,17 @@ export default function EdfViewerDirect({ url, filename }: Props) {
         ctx.beginPath(); ctx.moveTo(pad.left, yOffset); ctx.lineTo(W - pad.right, yOffset); ctx.stroke()
       }
       if (row.isEcg) {
-        ctx.fillStyle = isDark ? 'rgba(239,68,68,0.05)' : 'rgba(239,68,68,0.05)'
+        ctx.fillStyle = 'rgba(239,68,68,0.05)'
         ctx.fillRect(pad.left, yOffset, plotW, rowH)
       }
       ctx.fillStyle = color
       ctx.font = row.isEcg ? 'bold 8px system-ui' : '9px system-ui'
-      ctx.textAlign = 'right'
-      ctx.fillText(row.label, pad.left - 3, yCenter + 3)
+      ctx.textAlign = 'right'; ctx.fillText(row.label, pad.left - 3, yCenter + 3)
 
       const dataA = signals[row.sigA]
       const dataB = row.sigB >= 0 ? signals[row.sigB] : null
       const fs    = row.fs
-      const s0    = Math.floor(viewStart * fs)
-      const s1    = Math.ceil(viewEnd * fs)
+      const s0    = Math.floor(viewStart * fs), s1 = Math.ceil(viewEnd * fs)
       const step  = Math.max(1, Math.floor((s1 - s0) / (plotW * 2)))
 
       ctx.strokeStyle = color; ctx.lineWidth = row.isEcg ? 1.1 : 0.85; ctx.beginPath()
@@ -134,18 +138,15 @@ export default function EdfViewerDirect({ url, filename }: Props) {
     ctx.fillStyle = isDark ? '#1e3a5f' : '#dbeafe'
     ctx.font = '9px system-ui'; ctx.textAlign = 'right'
     ctx.fillText(MONTAGE_LABELS[montage], W - pad.right, pad.top - 6)
-  }, [header, signals, montage, gain, viewStart, windowSec])
+  }, [header, signals, montage, sensitivity, viewStart, windowSec])
 
   useEffect(() => { draw() }, [draw])
-
   useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
+    const canvas = canvasRef.current; if (!canvas) return
     const obs = new ResizeObserver(() => {
       canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; draw()
     })
-    obs.observe(canvas)
-    return () => obs.disconnect()
+    obs.observe(canvas); return () => obs.disconnect()
   }, [draw])
 
   const duration = header ? header.numRecords * header.recordDuration : 0
@@ -157,6 +158,8 @@ export default function EdfViewerDirect({ url, filename }: Props) {
       {/* Toolbar */}
       <div className="flex items-center gap-2 px-3 py-2 flex-wrap"
         style={{ borderBottom: '1px solid var(--border)', backgroundColor: 'var(--bg-subtle)' }}>
+
+        {/* Montage */}
         <div className="flex rounded-lg overflow-hidden border text-[11px] font-medium" style={{ borderColor: 'var(--border)' }}>
           {(['bipolar', 'cz'] as MontageId[]).map(m => (
             <button key={m} onClick={() => setMontage(m)} className="px-3 py-1.5 transition-colors"
@@ -165,22 +168,37 @@ export default function EdfViewerDirect({ url, filename }: Props) {
             </button>
           ))}
         </div>
+
         <div className="w-px h-4 mx-1" style={{ background: 'var(--border)' }} />
-        <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>Gain</span>
-        <button onClick={() => setGain(g => g * 1.5)} className="w-6 h-6 rounded text-[11px] font-bold hover:opacity-80"
+
+        {/* Sensitivität */}
+        <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>Sens.</span>
+        <button onClick={moreAmp} title="Mehr Amplitude"
+          className="w-6 h-6 rounded text-[11px] font-bold hover:opacity-80"
           style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>＋</button>
-        <button onClick={() => setGain(g => g / 1.5)} className="w-6 h-6 rounded text-[11px] font-bold hover:opacity-80"
+        <span className="text-[11px] font-mono tabular-nums min-w-[56px] text-center"
+          style={{ color: 'var(--text-primary)' }}>
+          {sensitivity} µV/mm
+        </span>
+        <button onClick={lessAmp} title="Weniger Amplitude"
+          className="w-6 h-6 rounded text-[11px] font-bold hover:opacity-80"
           style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>－</button>
+
         <div className="w-px h-4 mx-1" style={{ background: 'var(--border)' }} />
-        <button onClick={() => setViewStart(s => Math.max(0, s - windowSec))} className="w-6 h-6 rounded text-[11px] hover:opacity-80"
+
+        {/* Navigation */}
+        <button onClick={() => setViewStart(s => Math.max(0, s - windowSec))}
+          className="w-6 h-6 rounded text-[11px] hover:opacity-80"
           style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>◀</button>
-        <button onClick={() => setViewStart(s => Math.min(duration - windowSec, s + windowSec))} className="w-6 h-6 rounded text-[11px] hover:opacity-80"
+        <button onClick={() => setViewStart(s => Math.min(duration - windowSec, s + windowSec))}
+          className="w-6 h-6 rounded text-[11px] hover:opacity-80"
           style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>▶</button>
         <select value={windowSec} onChange={e => setWindowSec(Number(e.target.value))} className="text-[11px] rounded px-1 py-0.5"
           style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>
           <option value={5}>5 s</option>
           <option value={10}>10 s</option>
         </select>
+
         <span className="ml-auto text-[10px] font-mono px-2 py-0.5 rounded"
           style={{ background: 'var(--bg-subtle)', color: 'var(--text-tertiary)', border: '1px solid var(--border)' }}>
           {filename}
@@ -189,13 +207,9 @@ export default function EdfViewerDirect({ url, filename }: Props) {
 
       {/* Canvas */}
       <div className="relative" style={{ height: 420 }}>
-        {loading && (
-          <div className="absolute inset-0 flex items-center justify-center text-sm"
-            style={{ color: 'var(--text-tertiary)', background: 'var(--bg-surface)' }}>Lade EEG-Daten…</div>
-        )}
-        {error && (
-          <div className="absolute inset-0 flex items-center justify-center text-sm text-red-500">Fehler: {error}</div>
-        )}
+        {loading && <div className="absolute inset-0 flex items-center justify-center text-sm"
+          style={{ color: 'var(--text-tertiary)', background: 'var(--bg-surface)' }}>Lade EEG-Daten…</div>}
+        {error && <div className="absolute inset-0 flex items-center justify-center text-sm text-red-500">Fehler: {error}</div>}
         <canvas ref={canvasRef} className="w-full h-full block" />
       </div>
 
