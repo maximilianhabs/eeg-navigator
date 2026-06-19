@@ -221,7 +221,7 @@ export default async function EntityDetailPage({ params }: Props) {
               </dl>
             </Section>
             <Section title="Auslöser & Intervention">
-              {entity.triggering_situation.length > 0 && (
+              {(entity.triggering_situation?.length ?? 0) > 0 && (
                 <div className="mb-3">
                   <p className="text-xs mb-1.5" style={{ color: 'var(--text-tertiary)' }}>Auslöser</p>
                   <div className="flex flex-wrap gap-1.5">
@@ -229,11 +229,14 @@ export default async function EntityDetailPage({ params }: Props) {
                   </div>
                 </div>
               )}
-              {entity.correction_intervention.length > 0 && (
+              {entity.correction_intervention && (Array.isArray(entity.correction_intervention) ? entity.correction_intervention.length > 0 : true) && (
                 <div>
                   <p className="text-xs mb-1.5" style={{ color: 'var(--text-tertiary)' }}>Intervention</p>
                   <ul className="text-sm space-y-1" style={{ color: 'var(--text-secondary)' }}>
-                    {entity.correction_intervention.map(c => (
+                    {(Array.isArray(entity.correction_intervention)
+                      ? entity.correction_intervention
+                      : [entity.correction_intervention]
+                    ).map(c => (
                       <li key={c} className="flex gap-1.5">
                         <span style={{ color: 'var(--text-tertiary)' }}>·</span>{c}
                       </li>
@@ -248,7 +251,7 @@ export default async function EntityDetailPage({ params }: Props) {
         {/* ── Diagnose-Logik ── */}
         <Section title="Diagnose-Logik">
           <div className="grid gap-4 sm:grid-cols-2">
-            {entity.dialog_logic.key_features.length > 0 && (
+            {(entity.dialog_logic?.key_features?.length ?? 0) > 0 && (
               <div>
                 <p className="text-xs font-bold uppercase tracking-wide mb-2" style={{ color: 'var(--text-tertiary)' }}>
                   Key Features
@@ -262,7 +265,7 @@ export default async function EntityDetailPage({ params }: Props) {
                 </ul>
               </div>
             )}
-            {entity.dialog_logic.criteria_against.length > 0 && (
+            {(entity.dialog_logic?.criteria_against?.length ?? 0) > 0 && (
               <div>
                 <p className="text-xs font-bold uppercase tracking-wide mb-2" style={{ color: 'var(--text-tertiary)' }}>
                   Dagegen spricht
@@ -278,7 +281,7 @@ export default async function EntityDetailPage({ params }: Props) {
             )}
           </div>
 
-          {entity.dialog_logic.discriminating_questions.length > 0 && (
+          {(entity.dialog_logic?.discriminating_questions?.length ?? 0) > 0 && (
             <div className="mt-4 rounded-xl px-4 py-3" style={{ backgroundColor: 'var(--bg-subtle)', border: '1px solid var(--border)' }}>
               <p className="text-xs font-bold uppercase tracking-wide mb-2" style={{ color: 'var(--text-tertiary)' }}>
                 Abgrenzungsfragen
@@ -293,7 +296,7 @@ export default async function EntityDetailPage({ params }: Props) {
         </Section>
 
         {/* ── Fehlinterpretationen ── */}
-        {entity.common_misinterpretations.length > 0 && (
+        {(entity.common_misinterpretations?.length ?? 0) > 0 && (
           <Section title="Häufige Fehlinterpretationen">
             <ul className="space-y-2">
               {entity.common_misinterpretations.map(m => (
@@ -312,7 +315,7 @@ export default async function EntityDetailPage({ params }: Props) {
         {isWave && <EdfViewer entityId={entity.id} />}
 
         {/* ── Quellen ── */}
-        {entity.source_notes.length > 0 && (
+        {(entity.source_notes?.length ?? 0) > 0 && (
           <Section title="Quellen">
             <ul className="space-y-1">
               {entity.source_notes.map(s => (
