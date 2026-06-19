@@ -17,11 +17,13 @@ export default function EEGViewerPage() {
   const [active, setActive]     = useState<EdfEntry | null>(null)
 
   useEffect(() => {
+    const param = new URLSearchParams(window.location.search).get('file')
     fetch('/api/edf/list')
       .then(r => r.json())
       .then((list: EdfEntry[]) => {
         setFiles(list)
-        if (list.length > 0) setActive(list[0])
+        const target = param ? list.find(f => f.filename === param) : null
+        setActive(target ?? (list.length > 0 ? list[0] : null))
       })
   }, [])
 

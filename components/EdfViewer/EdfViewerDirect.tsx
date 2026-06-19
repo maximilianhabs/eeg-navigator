@@ -5,8 +5,8 @@ import { EDFParser } from './edfParser'
 import { buildMontageRows, MONTAGE_LABELS, getRowColor, type MontageId } from './montages'
 import type { EdfHeader } from './edfParser'
 
-const SENSITIVITY_STEPS = [100, 50, 30, 20, 15, 10, 7, 5, 3]
-const DEFAULT_SENSITIVITY = 10
+const SENSITIVITY_STEPS = [100, 50, 30, 20, 15, 10, 7, 5, 3, 1]
+const DEFAULT_SENSITIVITY = 1
 const PX_PER_MM = 96 / 25.4
 
 interface Props {

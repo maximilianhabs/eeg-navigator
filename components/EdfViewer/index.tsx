@@ -6,8 +6,8 @@ import { buildMontageRows, MONTAGE_LABELS, getRowColor, type MontageId } from '.
 import type { EdfHeader } from './edfParser'
 
 // Klinische Standard-Sensitivitätsstufen (µV/mm), von niedrig zu hoch
-const SENSITIVITY_STEPS = [100, 50, 30, 20, 15, 10, 7, 5, 3]
-const DEFAULT_SENSITIVITY = 10  // µV/mm — guter Kompromiss für Bildschirm
+const SENSITIVITY_STEPS = [100, 50, 30, 20, 15, 10, 7, 5, 3, 1]
+const DEFAULT_SENSITIVITY = 1   // µV/mm — maximale Sensitivität als Standard
 const PX_PER_MM = 96 / 25.4    // CSS-Pixel pro mm bei 96 dpi
 
 interface EdfExample {
@@ -163,9 +163,15 @@ function EdfPanel({ example, montage, sensitivity, windowSec }: {
         <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>
           {formatTime(viewStart)} – {formatTime(Math.min(viewStart + windowSec, duration))}
         </span>
-        <span className="ml-auto text-[10px] font-mono px-1.5 py-0.5 rounded"
-          style={{ background: 'var(--bg-subtle)', color: 'var(--text-tertiary)', border: '1px solid var(--border)' }}>
-          #{example.num} · {example.age}
+        <span className="ml-auto flex items-center gap-1.5">
+          <a href={`/eeg-viewer?file=${encodeURIComponent(example.filename)}`} target="_blank" rel="noopener noreferrer"
+            title="In neuem Fenster öffnen (Vollbild)"
+            className="w-5 h-5 flex items-center justify-center rounded hover:opacity-70 text-[10px]"
+            style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>⛶</a>
+          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded"
+            style={{ background: 'var(--bg-subtle)', color: 'var(--text-tertiary)', border: '1px solid var(--border)' }}>
+            #{example.num} · {example.age}
+          </span>
         </span>
       </div>
       <div className="relative" style={{ height: 320 }}>
