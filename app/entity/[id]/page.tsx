@@ -9,8 +9,7 @@ import { isWaveEntity } from '@/lib/types'
 import type { WaveEntity, ArtifactEntity } from '@/lib/types'
 import { StatusBadge, ClassificationBadge, DiseaseValueBadge, Tag } from '@/components/Badge'
 import { label } from '@/lib/labels'
-import { ENTITY_EEG_STATE } from '@/lib/eegStates'
-import EEGMiniViewer from '@/components/EEGViewer/EEGMiniViewer'
+import EdfViewer from '@/components/EdfViewer'
 import { isAdminAuthenticated } from '@/lib/admin-auth'
 
 interface Props {
@@ -309,14 +308,8 @@ export default async function EntityDetailPage({ params }: Props) {
         {/* ── Cross-References ── */}
         <CrossRefs entity={entity} />
 
-        {/* ── EEG-Darstellung ── */}
-        {isWave && ENTITY_EEG_STATE[entity.id] && (
-          <EEGMiniViewer
-            entityId={entity.id}
-            eegState={ENTITY_EEG_STATE[entity.id]!}
-            localization={entity.localization}
-          />
-        )}
+        {/* ── EEG-Beispiel (real) ── */}
+        {isWave && <EdfViewer entityId={entity.id} />}
 
         {/* ── Quellen ── */}
         {entity.source_notes.length > 0 && (
