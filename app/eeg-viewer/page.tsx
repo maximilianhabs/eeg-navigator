@@ -13,11 +13,13 @@ interface EdfEntry {
 }
 
 export default function EEGViewerPage() {
-  const [files, setFiles]       = useState<EdfEntry[]>([])
-  const [active, setActive]     = useState<EdfEntry | null>(null)
+  const [files,      setFiles]      = useState<EdfEntry[]>([])
+  const [active,     setActive]     = useState<EdfEntry | null>(null)
+  const [fileParam,  setFileParam]  = useState<string | null>(null)
 
   useEffect(() => {
     const param = new URLSearchParams(window.location.search).get('file')
+    setFileParam(param)
     fetch('/api/edf/list')
       .then(r => r.json())
       .then((list: EdfEntry[]) => {
@@ -27,6 +29,25 @@ export default function EEGViewerPage() {
       })
   }, [])
 
+  // Fullscreen-Modus: wenn ?file= gesetzt, nur den Viewer ohne Sidebar/Header
+  if (fileParam) {
+    return (
+      <main style={{ background: 'var(--bg-base)', height: '100vh', overflow: 'hidden' }}>
+        {active ? (
+          <EdfViewerDirect
+            url={active.url}
+            filename={active.filename}
+            canvasHeight="calc(100vh - 130px)"
+          />
+        ) : (
+          <div className="flex items-center justify-center h-full text-sm"
+            style={{ color: 'var(--text-tertiary)' }}>Lade…</div>
+        )}
+      </main>
+    )
+  }
+
+  // Normal-Modus: Sidebar + Viewer
   return (
     <main className="min-h-screen" style={{ background: 'var(--bg-base)' }}>
       <div className="max-w-7xl mx-auto px-4 py-6">
@@ -71,7 +92,7 @@ export default function EEGViewerPage() {
           {/* Viewer */}
           <div className="flex-1 min-w-0">
             {active ? (
-              <EdfViewerDirect url={active.url} filename={active.filename} />
+              <EdfViewerDirect url={active.url} filename={active.filename} canvasHeight="calc(100vh - 220px)" />
             ) : (
               <div className="rounded-2xl border flex items-center justify-center h-64 text-sm"
                 style={{ borderColor: 'var(--border)', color: 'var(--text-tertiary)', background: 'var(--bg-surface)' }}>

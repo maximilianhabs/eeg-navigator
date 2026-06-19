@@ -12,9 +12,10 @@ const PX_PER_MM = 96 / 25.4
 interface Props {
   url: string
   filename: string
+  canvasHeight?: string  // CSS value, default '420px'
 }
 
-export default function EdfViewerDirect({ url, filename }: Props) {
+export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' }: Props) {
   const canvasRef                      = useRef<HTMLCanvasElement>(null)
   const [header,      setHeader]       = useState<EdfHeader | null>(null)
   const [signals,     setSignals]      = useState<Float32Array[]>([])
@@ -206,7 +207,7 @@ export default function EdfViewerDirect({ url, filename }: Props) {
       </div>
 
       {/* Canvas */}
-      <div className="relative" style={{ height: 420 }}>
+      <div className="relative" style={{ height: canvasHeight }}>
         {loading && <div className="absolute inset-0 flex items-center justify-center text-sm"
           style={{ color: 'var(--text-tertiary)', background: 'var(--bg-surface)' }}>Lade EEG-Daten…</div>}
         {error && <div className="absolute inset-0 flex items-center justify-center text-sm text-red-500">Fehler: {error}</div>}
