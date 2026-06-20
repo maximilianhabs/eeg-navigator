@@ -1,13 +1,11 @@
 'use client'
 import { useState, FormEvent } from 'react'
-import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const router = useRouter()
 
   async function submit(e: FormEvent) {
     e.preventDefault()
@@ -23,8 +21,9 @@ export default function LoginPage() {
         const d = await res.json()
         setError(d.error ?? 'Anmeldung fehlgeschlagen')
       } else {
-        router.push('/')
-        router.refresh()
+        // Hard navigation — stellt sicher dass der Session-Cookie auf iOS Safari
+        // zuverlässig im nächsten Request vorhanden ist (router.push reicht nicht)
+        window.location.href = '/'
       }
     } catch {
       setError('Verbindungsfehler — bitte erneut versuchen')
