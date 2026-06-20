@@ -130,13 +130,16 @@ export function EegThumbnail({ entityId }: { entityId: string }) {
   return (
     <>
       <div ref={ioRef} />
-      {ready && (
-        <canvas
-          ref={canvasRef}
-          className="w-full block"
-          style={{ height: '72px', background: 'var(--bg-subtle)', borderRadius: '14px 14px 0 0' }}
-        />
-      )}
+      <canvas
+        ref={canvasRef}
+        className="w-full block"
+        style={{
+          height: ready ? '72px' : '0px',
+          background: 'var(--bg-subtle)',
+          borderRadius: '14px 14px 0 0',
+          transition: 'height 0.2s ease',
+        }}
+      />
     </>
   )
 }
