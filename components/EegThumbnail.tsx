@@ -15,24 +15,12 @@ const START_SEC = 2
 const DURATION_SEC = 5
 
 export function EegThumbnail({ entityId }: { entityId: string }) {
-  const ioRef    = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [ready, setReady] = useState(false)    // canvas drawn
-  const [skip, setSkip]   = useState(false)    // no EDF found
+  const [ready, setReady] = useState(false)
+  const [skip, setSkip]   = useState(false)
 
   useEffect(() => {
-    const el = ioRef.current
-    if (!el) return
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return
-        obs.disconnect()
-        load()
-      },
-      { rootMargin: '300px' }
-    )
-    obs.observe(el)
-    return () => obs.disconnect()
+    load()
   }, [entityId])
 
   async function load() {
@@ -47,7 +35,6 @@ export function EegThumbnail({ entityId }: { entityId: string }) {
       const parser = new EDFParser(buf)
       const header = parser.parse()
 
-      // Match channels case-insensitively
       const normalize = (s: string) => s.trim().replace(/\s/g, '').toLowerCase()
       const indices = THUMB_CHANNELS
         .map(ch => header.signals.findIndex(s => normalize(s.label) === normalize(ch)))
@@ -129,7 +116,6 @@ export function EegThumbnail({ entityId }: { entityId: string }) {
 
   return (
     <>
-      <div ref={ioRef} />
       <canvas
         ref={canvasRef}
         className="w-full block"
