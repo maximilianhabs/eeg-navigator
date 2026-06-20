@@ -5669,7 +5669,7 @@
         "field_plausibility": "fokal_mit_Ausbreitung",
         "reference_contamination_risk": "mittel"
       },
-      "morphology": "Steil, spitz, mit nachfolgender Slow Wave (Nachschwankung)",
+      "morphology": "Steil, spitz (Dauer 20–70 ms), mit obligatorischer nachfolgender Slow Wave (Nachschwankung, 100–300 ms). Fokal mit klarer Phasenumkehr in bipolarer Montage. Amplitude variabel, meist deutlich aus dem Hintergrund herausragend. Nach IFCN-Kriterien: spitze Morphologie, physiologisches Feld (mehrere Elektroden), Asymmetrie zur Nachbarschaft, nachfolgende Slow Wave. Die Kombination dieser Merkmale erreicht Spezifität >95%.",
       "potential_course": "Spike gefolgt von Slow Wave (biphasisch: Spike + Nachschwankung)",
       "rhythmicity": "arrhythmisch",
       "periodicity": "nicht_periodisch",
@@ -5747,11 +5747,18 @@
       ],
       "images": [
         {
-          "file": "placeholder_spike.png",
+          "file": "EEG_0042__adult__bipolar__01.edf",
           "montage": "bipolare Längsreihe",
-          "context": "wach/schläfrig",
-          "caption": "Epileptiformer Spike: fokales Maximum, Phasenumkehr, Slow Wave",
-          "status": "placeholder"
+          "context": "wach/schläfrig, interiktal",
+          "caption": "Spike – Beispiel 1: fokales epilepsietypisches Potenzial mit Phasenumkehr und nachfolgender Slow Wave (bipolar)",
+          "status": "edf"
+        },
+        {
+          "file": "EEG_0042__adult__bipolar__02.edf",
+          "montage": "bipolare Längsreihe",
+          "context": "wach/schläfrig, interiktal",
+          "caption": "Spike – Beispiel 2: zweites Beispiel eines fokalen Spikes, anderer Patient (bipolar)",
+          "status": "edf"
         }
       ],
       "teaching_pearl": "IFCN 1-4-6-Regel: Kriterien 1 (spitze Morphologie) + 4 (Slow Wave) + 6 (physiologisches Feld) zusammen liefern die höchste Inter-Rater-Übereinstimmung. ≥5 von 6 Kriterien → Spezifität >95%. Ein Spike ohne Slow Wave ist kein sicheres IED.",
@@ -7669,7 +7676,7 @@
         "field_plausibility": "fokal_temporal",
         "reference_contamination_risk": "gering"
       },
-      "morphology": "Rhythmische monorhythmische Delta-Wellen temporal; sinusförmig; intermittierend in Bursts; Abgrenzung zu TIDA: TIRDA rhythmisch, TIDA polymorph",
+      "morphology": "Rhythmische, monorhythmische Delta-Wellen (1–3 Hz) über der temporalen Region, sinusförmig bis spitz-sinusförmig, intermittierend in Bursts von mehreren Sekunden. Fokal mit temporalem Maximum (T3/T4, F7/F8). Abgrenzung zu TIDA (polymorphes temporales Delta): TIRDA ist streng rhythmisch und deutlich stärker epileptogen. Hohe Assoziation mit Temporallappenepilepsie (TLE) — in bis zu 70% bei TLE-Patienten nachweisbar.",
       "potential_course": "Intermittierend; bei Schläfrigkeit zunehmend",
       "rhythmicity": "rhythmisch",
       "periodicity": "nicht_periodisch",
@@ -7728,11 +7735,11 @@
       ],
       "images": [
         {
-          "file": "placeholder_tirda.png",
+          "file": "EEG_0056__adult__bipolar__01.edf",
           "montage": "bipolare Längsreihe",
-          "context": "Temporallappenepilepsie",
-          "caption": "TIRDA: rhythmische temporale Delta-Bursts, fokal",
-          "status": "placeholder"
+          "context": "Temporallappenepilepsie, interiktal/iktal-nah",
+          "caption": "TIRDA: temporale intermittierende rhythmische Delta-Aktivität — fokal temporal, rhythmische Bursts, hochepileptogen (bipolar)",
+          "status": "edf"
         }
       ],
       "teaching_pearl": "TIRDA (rhythmisch) hat hohe Assoziation mit Temporallappenepilepsie – deutlich pathologischer als TIDA (polymorph). Rhythmizität ist das entscheidende Unterscheidungsmerkmal.",
