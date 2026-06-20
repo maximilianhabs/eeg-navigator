@@ -18,6 +18,7 @@ interface Props {
 
 export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' }: Props) {
   const canvasRef                      = useRef<HTMLCanvasElement>(null)
+  const touchStartX                    = useRef<number | null>(null)
   const [header,      setHeader]       = useState<EdfHeader | null>(null)
   const [signals,     setSignals]      = useState<Float32Array[]>([])
   const [montage,     setMontage]      = useState<MontageId>('bipolar')
@@ -259,7 +260,23 @@ export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' 
       </div>
 
       {/* Canvas */}
-      <div className="relative" style={{ height: canvasHeight }}>
+      <div
+        className="relative"
+        style={{ height: canvasHeight }}
+        onTouchStart={e => { touchStartX.current = e.touches[0].clientX }}
+        onTouchEnd={e => {
+          if (touchStartX.current === null) return
+          const delta = touchStartX.current - e.changedTouches[0].clientX
+          touchStartX.current = null
+          if (Math.abs(delta) < 50) return
+          const duration = header ? header.numRecords * header.recordDuration : 0
+          if (delta > 0) {
+            setViewStart(s => Math.min(s + windowSec, Math.max(0, duration - windowSec)))
+          } else {
+            setViewStart(s => Math.max(0, s - windowSec))
+          }
+        }}
+      >
         {loading && <div className="absolute inset-0 flex items-center justify-center text-sm"
           style={{ color: 'var(--text-tertiary)', background: 'var(--bg-surface)' }}>Lade EEG-Daten…</div>}
         {error && <div className="absolute inset-0 flex items-center justify-center text-sm text-red-500">Fehler: {error}</div>}

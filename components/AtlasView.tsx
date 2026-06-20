@@ -192,7 +192,7 @@ export function AtlasView({ wellenByCategory, artefakteByCategory, alleWellen, a
               <button
                 key={mode}
                 onClick={() => setAgeMode(mode)}
-                className="rounded-lg px-3 py-1 text-xs font-semibold transition-all duration-200"
+                className="rounded-lg px-3 py-2 text-xs font-semibold transition-all duration-200 min-h-[44px] flex items-center justify-center"
                 style={ageMode === mode ? {
                   backgroundColor: mode === 'kinder' ? '#7c3aed' : mode === 'erwachsen' ? '#2563eb' : 'var(--text-primary)',
                   color: '#fff',
@@ -220,7 +220,7 @@ export function AtlasView({ wellenByCategory, artefakteByCategory, alleWellen, a
               <button
                 key={f.id}
                 onClick={() => setActiveFilter(f.id)}
-                className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${
+                className={`rounded-full px-3 py-2 text-xs font-medium transition-all min-h-[44px] flex items-center ${
                   activeFilter === f.id ? f.active : f.color
                 }`}
               >
@@ -235,7 +235,7 @@ export function AtlasView({ wellenByCategory, artefakteByCategory, alleWellen, a
               <button
                 onClick={() => setViewMode('verzeichnis')}
                 title="Kompaktansicht"
-                className="flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold transition-all duration-200"
+                className="flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-xs font-semibold transition-all duration-200 min-h-[44px]"
                 style={viewMode === 'verzeichnis'
                   ? { backgroundColor: 'var(--text-primary)', color: 'var(--bg-base)' }
                   : { color: 'var(--text-tertiary)' }}
@@ -250,7 +250,7 @@ export function AtlasView({ wellenByCategory, artefakteByCategory, alleWellen, a
               <button
                 onClick={() => setViewMode('kacheln')}
                 title="Kachelansicht"
-                className="flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold transition-all duration-200"
+                className="flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-xs font-semibold transition-all duration-200 min-h-[44px]"
                 style={viewMode === 'kacheln'
                   ? { backgroundColor: 'var(--text-primary)', color: 'var(--bg-base)' }
                   : { color: 'var(--text-tertiary)' }}
