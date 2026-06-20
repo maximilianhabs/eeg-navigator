@@ -12,19 +12,19 @@ const CLASSIFICATION_ACCENT: Record<string, string> = {
   ictal:         '#dc2626',
 }
 
-export function WaveCard({ entity }: { entity: WaveEntity }) {
+export function WaveCard({ entity, cardIndex = 0 }: { entity: WaveEntity; cardIndex?: number }) {
   const lokalisierung = entity.localization.map(label).join(', ')
   const accent = CLASSIFICATION_ACCENT[entity.classification] ?? '#64748b'
 
   return (
     <Link
       href={`/entity/${entity.id}`}
-      className="group block rounded-2xl border transition-all duration-200 hover:-translate-y-0.5 overflow-hidden"
+      className="entity-card group block rounded-2xl border transition-all duration-200 hover:-translate-y-1 overflow-hidden animate-card-enter"
       style={{
         backgroundColor: 'var(--bg-surface)',
         borderColor: 'var(--border)',
-        boxShadow: 'var(--shadow-sm)',
-      }}
+        '--card-i': cardIndex,
+      } as React.CSSProperties}
     >
       <EegThumbnail entityId={entity.id} />
       <div className="p-4">
@@ -95,18 +95,18 @@ export function WaveCard({ entity }: { entity: WaveEntity }) {
   )
 }
 
-export function ArtifactCard({ entity }: { entity: ArtifactEntity }) {
+export function ArtifactCard({ entity, cardIndex = 0 }: { entity: ArtifactEntity; cardIndex?: number }) {
   const lokalisierung = entity.localization.map(label).join(', ')
 
   return (
     <Link
       href={`/entity/${entity.id}`}
-      className="group block rounded-2xl border transition-all duration-200 hover:-translate-y-0.5 overflow-hidden"
+      className="entity-card group block rounded-2xl border transition-all duration-200 hover:-translate-y-1 overflow-hidden animate-card-enter"
       style={{
         backgroundColor: 'var(--bg-surface)',
         borderColor: 'var(--border)',
-        boxShadow: 'var(--shadow-sm)',
-      }}
+        '--card-i': cardIndex,
+      } as React.CSSProperties}
     >
       <EegThumbnail entityId={entity.id} />
       <div className="p-4">

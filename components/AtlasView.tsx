@@ -438,7 +438,7 @@ function CategoryView({
                       </h3>
                     </div>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                      {entities.map(e => <WaveCard key={e.id} entity={e} />)}
+                      {entities.map((e, i) => <WaveCard key={e.id} entity={e} cardIndex={i} />)}
                     </div>
                   </div>
                 )
@@ -472,7 +472,7 @@ function CategoryView({
                 </h3>
               </div>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {entities.map(e => <ArtifactCard key={e.id} entity={e} />)}
+                {entities.map((e, i) => <ArtifactCard key={e.id} entity={e} cardIndex={i} />)}
               </div>
             </div>
           ))}
@@ -799,7 +799,7 @@ function FilteredResults({
             </p>
           )}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {wellen.map(e => <WaveCard key={e.id} entity={e} />)}
+            {wellen.map((e, i) => <WaveCard key={e.id} entity={e} cardIndex={i} />)}
           </div>
         </div>
       )}
@@ -812,7 +812,7 @@ function FilteredResults({
             </p>
           )}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {artefakte.map(e => <ArtifactCard key={e.id} entity={e} />)}
+            {artefakte.map((e, i) => <ArtifactCard key={e.id} entity={e} cardIndex={i} />)}
           </div>
         </div>
       )}
@@ -846,7 +846,7 @@ function SearchResults({
             </p>
           )}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {results.wellen.map(e => <WaveCard key={e.id} entity={e} />)}
+            {results.wellen.map((e, i) => <WaveCard key={e.id} entity={e} cardIndex={i} />)}
           </div>
         </div>
       )}
@@ -859,7 +859,7 @@ function SearchResults({
             </p>
           )}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {results.artefakte.map(e => <ArtifactCard key={e.id} entity={e} />)}
+            {results.artefakte.map((e, i) => <ArtifactCard key={e.id} entity={e} cardIndex={i} />)}
           </div>
         </div>
       )}

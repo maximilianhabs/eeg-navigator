@@ -103,7 +103,8 @@ export function EegThumbnail({ entityId }: { entityId: string }) {
           const range = mx - mn || 1
           const scale = (rowH * 0.75) / range
 
-          ctx.strokeStyle = 'rgba(59,130,246,0.85)'
+          const isDark = document.documentElement.classList.contains('dark')
+          ctx.strokeStyle = isDark ? 'rgba(99,170,255,0.95)' : 'rgba(59,130,246,0.85)'
           ctx.lineWidth   = 1.2
           ctx.lineJoin    = 'round'
           ctx.beginPath()
@@ -129,15 +130,29 @@ export function EegThumbnail({ entityId }: { entityId: string }) {
   if (skip) return null
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="w-full block"
-      style={{
-        height: ready ? '72px' : '0px',
-        background: 'var(--bg-subtle)',
-        borderRadius: '14px 14px 0 0',
-        transition: 'height 0.2s ease',
-      }}
-    />
+    <div style={{ position: 'relative', borderRadius: '14px 14px 0 0', overflow: 'hidden' }}>
+      {!ready && (
+        <div className="skeleton" style={{ height: '72px', borderRadius: 0 }}>
+          <svg viewBox="0 0 320 72" style={{ width: '100%', height: '100%', opacity: 0.2 }}>
+            {([14, 28, 44, 58] as number[]).map((y, i) => (
+              <polyline key={i}
+                points={`36,${y} 80,${y-6} 100,${y+6} 130,${y-4} 160,${y+4} 200,${y-7} 220,${y+7} 260,${y-3} 316,${y}`}
+                fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"
+              />
+            ))}
+          </svg>
+        </div>
+      )}
+      <canvas
+        ref={canvasRef}
+        className="w-full block"
+        style={{
+          height: ready ? '72px' : '0px',
+          background: 'var(--bg-subtle)',
+          borderRadius: 0,
+          transition: 'height 0.15s ease',
+        }}
+      />
+    </div>
   )
 }
