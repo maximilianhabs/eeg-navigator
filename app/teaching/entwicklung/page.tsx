@@ -300,7 +300,7 @@ function pmaToPercent(pma: number) {
 // ─── Gruppen ─────────────────────────────────────────────────────────────────
 
 const GROUPS = [
-  { id: 'ibi',    label: 'Diskontinuität / IBI', ids: ['ibi_max','ibi_40','ibi_20','ibi_10','ibi_6','kontinuierlich'] },
+  { id: 'ibi', label: 'Diskontinuität / IBI', desc: 'IBI = Interburst-Intervall — die stille Pause zwischen zwei EEG-Bursts. Frühgeborene EEGs sind diskontinuierlich: kurze Aktivitätsbursts wechseln mit flachen Pausen ab. Mit zunehmender Reife werden die IBIs kürzer, bis das EEG kontinuierlich wird.', ids: ['ibi_max','ibi_40','ibi_20','ibi_10','ibi_6','kontinuierlich'] },
   { id: 'sync',   label: 'Synchronie',             ids: ['async','sync_80','sync_100'] },
   { id: 'react',  label: 'Reaktivität',            ids: ['no_react','react_partial','react_full'] },
   { id: 'graph',  label: 'Graphoelemente',         ids: ['temp_theta','occ_delta','delta_brush','encoches','centrotemps','multifocal_sharps'] },
@@ -589,6 +589,9 @@ export default function EntwicklungPage() {
                 {GROUPS.map(g => (
                   <div key={g.id}>
                     <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">{g.label}</p>
+                    {'desc' in g && g.desc && (
+                      <p className="text-[10px] text-slate-400 italic mb-1.5 leading-relaxed">{g.desc}</p>
+                    )}
                     <div className="space-y-0.5">
                       {g.ids.map(id => (
                         <GanttRow key={id} feature={FEAT_MAP[id]}

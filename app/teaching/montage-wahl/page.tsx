@@ -22,12 +22,14 @@ function computeField(
   return field
 }
 
-// Diffuses Feld: leichte antero-posteriore Gewichtung, ~gleichförmig
+// Diffuses Feld: anterior betont (frontal 100 µV, okzipital 70 µV)
 function computeDiffuseField(): Record<string, number> {
   const field: Record<string, number> = {}
+  const yMin = Math.min(...Object.values(ELECTRODE_COORDS).map(p => p.y))
+  const yMax = Math.max(...Object.values(ELECTRODE_COORDS).map(p => p.y))
   for (const [id, pos] of Object.entries(ELECTRODE_COORDS)) {
-    const ant = 1 - (pos.y / 440) * 0.2   // anterior leicht höher
-    field[id] = -100 * ant
+    const t = (pos.y - yMin) / (yMax - yMin)  // 0 = anterior, 1 = posterior
+    field[id] = -(100 - t * 30)               // frontal -100, okzipital -70
   }
   return field
 }
@@ -49,11 +51,11 @@ const PRESETS: Record<PresetId, {
   focal: {
     label: 'Fokaler Spike',
     sublabel: 'Maximale Negativität bei T3',
-    field: () => computeField('T3', 32),
+    field: () => computeField('T3', 72),
     chain_bp:  [{a:'Fp1',b:'F7'},{a:'F7',b:'T3'},{a:'T3',b:'T5'},{a:'T5',b:'O1'}],
     chain_ref: [{a:'Fp1',b:'Cz'},{a:'F7',b:'Cz'},{a:'T3',b:'Cz'},{a:'T5',b:'Cz'},{a:'O1',b:'Cz'}],
     ref_label: 'Cz-Referenz (links temporal)',
-    insight: 'Fokales Feld: Bipolarkette zeigt klare Phasenumkehr bei T3 mit hoher Amplitude. Cz-Referenz zeigt denselben Spike, aber die Amplitude bei T3 ist durch die entfernte Cz-Referenz ebenfalls groß. Beide Montagen gut — Bipolarmontage besser für Lokalisation.',
+    insight: 'Bipolar → Phasenumkehr bei T3: F7–T3 und T3–T5 zeigen entgegengesetzte Ausschläge (rot markiert). Alle Nachbarelektroden bekommen etwas vom Feld ab — eine isolierte Phasenumkehr ohne Feldausbreitung wäre eher ein Elektrodenartefakt! Referenz → Amplitude: T3 hat die größte Amplitude, Nachbarn sind kleiner. Beide Montagen lokalisieren — aber die Phasenumkehr in der Bipolarmontage ist präziser.',
     morph: 'spike',
   },
   diffuse: {
@@ -302,56 +304,83 @@ function VergleichsDemo() {
 // ─── Bergmodell SVG ───────────────────────────────────────────────────────────
 
 function BergmodellSVG() {
-  // Berg = Analogie Referenz vs. Bipolar
+  // Elektroden-Punkte am Hang (x, y auf Bergsilhouette, Label)
+  const refElectrodes  = [{x:80,y:148,l:'O1'},{x:108,y:108,l:'P3'},{x:148,y:68,l:'C3'},{x:188,y:108,l:'F3'},{x:216,y:148,l:'Fp1'}]
+  const bipElectrodes  = [{x:310,y:148,l:'O1'},{x:338,y:108,l:'P3'},{x:378,y:68,l:'C3'},{x:418,y:108,l:'F3'},{x:446,y:148,l:'Fp1'}]
   return (
-    <svg viewBox="0 0 500 160" className="w-full max-w-lg mx-auto">
-      {/* Boden */}
-      <line x1={10} y1={145} x2={490} y2={145} stroke="#e2e8f0" strokeWidth="1.5"/>
-
-      {/* Berg links (Referenz) */}
-      <polygon points="60,145 160,30 260,145" fill="#dbeafe" stroke="#93c5fd" strokeWidth="1.5"/>
-      {/* Absolutehöhen-Linien (Referenz: Höhenmessung vom Boden) */}
-      {[30,60,90,120].map((y,i) => (
-        <g key={i}>
-          <line x1={60+(y-30)/3.3} y1={145-(145-y)} x2={260-(y-30)/3.3} y2={145-(145-y)}
-            stroke="#93c5fd" strokeWidth="0.8" strokeDasharray="3 2" opacity="0.6"/>
-          <line x1={10} y1={145-(145-y)} x2={60+(y-30)/3.3} y2={145-(145-y)}
-            stroke="#93c5fd" strokeWidth="0.8" opacity="0.3"/>
-          <line x1={260-(y-30)/3.3} y1={145-(145-y)} x2={490} y2={145-(145-y)}
-            stroke="#93c5fd" strokeWidth="0.8" opacity="0.3"/>
-        </g>
-      ))}
-      {/* Absolute Höhen-Pfeile */}
-      <line x1={50} y1={145} x2={50} y2={30} stroke="#3b82f6" strokeWidth="1.5"
-        markerEnd="url(#arr)" opacity="0.8"/>
-      <line x1={155} y1={145} x2={155} y2={65} stroke="#3b82f6" strokeWidth="1.5" opacity="0.6"/>
-      <text x={160} y={30} fontSize="10" fill="#2563eb" fontWeight="600">Referenz</text>
-      <text x={30} y={88} fontSize="9" fill="#3b82f6" transform="rotate(-90,36,88)">abs. Höhe</text>
-
-      {/* Berg rechts (Bipolar) */}
-      <polygon points="240,145 340,30 440,145" fill="#dcfce7" stroke="#86efac" strokeWidth="1.5"/>
-      {/* Steigungsmarkierungen */}
-      {[[240,145,280,85],[280,85,340,30],[340,30,400,85],[400,85,440,145]].map(([x1,y1,x2,y2],i) => {
-        const mx=(x1+x2)/2; const my=(y1+y2)/2
-        const len=Math.sqrt((x2-x1)**2+(y2-y1)**2)
-        const slope=Math.round(Math.abs((y2-y1)/(x2-x1))*10)/10
-        return (
-          <g key={i}>
-            <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#22c55e" strokeWidth="2" opacity="0.5"/>
-            <text x={mx} y={my-6} textAnchor="middle" fontSize="8.5" fill="#15803d" fontWeight="700">
-              {slope > 0 ? '↓' : '↑'} Δ
-            </text>
-          </g>
-        )
-      })}
-      <text x={290} y={30} fontSize="10" fill="#15803d" fontWeight="600">Bipolar</text>
-      <text x={340} y={162} textAnchor="middle" fontSize="9" fill="#64748b">Steigung sichtbar</text>
-      <text x={160} y={162} textAnchor="middle" fontSize="9" fill="#64748b">Höhe sichtbar</text>
+    <svg viewBox="0 0 540 210" className="w-full max-w-2xl mx-auto">
       <defs>
-        <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-          <path d="M0,0 L6,3 L0,6 Z" fill="#3b82f6"/>
+        <marker id="arrB" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+          <path d="M0,0 L7,3.5 L0,7 Z" fill="#3b82f6"/>
+        </marker>
+        <marker id="arrG" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+          <path d="M0,0 L7,3.5 L0,7 Z" fill="#16a34a"/>
         </marker>
       </defs>
+
+      {/* Boden */}
+      <line x1={20} y1={160} x2={520} y2={160} stroke="#cbd5e1" strokeWidth="1.5"/>
+
+      {/* ── REFERENZ-BERG (links) ── */}
+      <polygon points="60,160 148,38 236,160" fill="#dbeafe" stroke="#93c5fd" strokeWidth="2"/>
+      {/* Höhenlinien */}
+      {[70,100,130].map((y,i) => {
+        const frac = (160-y)/(160-38)
+        const xl = 60 + frac*88; const xr = 236 - frac*88
+        return <line key={i} x1={xl} y1={y} x2={xr} y2={y} stroke="#93c5fd" strokeWidth="1" strokeDasharray="4 3" opacity="0.7"/>
+      })}
+      {/* Pfeil absolute Höhe */}
+      <line x1={46} y1={160} x2={46} y2={41} stroke="#3b82f6" strokeWidth="2" markerEnd="url(#arrB)"/>
+      <text x={36} y={100} textAnchor="middle" fontSize="10" fill="#2563eb" fontWeight="700" transform="rotate(-90,36,100)">Absolute Höhe</text>
+      {/* Elektroden */}
+      {refElectrodes.map(e => (
+        <g key={e.l}>
+          <circle cx={e.x} cy={e.y} r={7} fill="#3b82f6" opacity="0.85"/>
+          <text x={e.x} y={e.y} textAnchor="middle" dominantBaseline="central" fontSize="7.5" fontWeight="700" fill="white">{e.l}</text>
+        </g>
+      ))}
+      {/* Ref-Linie von Elektrode zum Boden */}
+      {refElectrodes.map(e => (
+        <line key={e.l+'l'} x1={e.x} y1={e.y+7} x2={e.x} y2={160} stroke="#3b82f6" strokeWidth="1" strokeDasharray="3 3" opacity="0.4"/>
+      ))}
+      <text x={148} y={26} textAnchor="middle" fontSize="11" fill="#1d4ed8" fontWeight="800">Referenzmontage</text>
+      <text x={148} y={178} textAnchor="middle" fontSize="9.5" fill="#64748b">Amplitude (absolute Höhe) erkennbar</text>
+
+      {/* Trennlinie */}
+      <line x1={268} y1={20} x2={268} y2={175} stroke="#e2e8f0" strokeWidth="1.5" strokeDasharray="6 4"/>
+
+      {/* ── BIPOLAR-BERG (rechts) — Mehreck, O1/P3/C3, Höhengewinn-Balken ── */}
+      {/* Mehreck: flacher Fuß, dann Steilstufe */}
+      <polygon points="285,160 325,150 370,72 415,160" fill="#f0fdf4" stroke="#bbf7d0" strokeWidth="1.5"/>
+      {/* Aktiver Hang dicker */}
+      <polyline points="285,160 325,150 370,72" fill="none" stroke="#16a34a" strokeWidth="3" strokeLinejoin="round"/>
+
+      {/* Elektroden */}
+      {([{x:285,y:160,l:'O1'},{x:325,y:150,l:'P3'},{x:370,y:72,l:'C3'}] as {x:number,y:number,l:string}[]).map(e => (
+        <g key={e.l}>
+          <circle cx={e.x} cy={e.y} r={8} fill="#16a34a" stroke="white" strokeWidth="2"/>
+          <text x={e.x} y={e.y} textAnchor="middle" dominantBaseline="central" fontSize="7.5" fontWeight="700" fill="white">{e.l}</text>
+        </g>
+      ))}
+
+      {/* Höhengewinn-Balken rechts */}
+      {/* O1→P3: kleiner Gewinn (10 px) */}
+      <line x1={325} y1={150} x2={432} y2={150} stroke="#16a34a" strokeWidth={0.8} strokeDasharray="4 3" opacity={0.4}/>
+      <rect x={432} y={150} width={14} height={10} rx={2} fill="#86efac" stroke="#16a34a" strokeWidth={1}/>
+      <text x={439} y={143} textAnchor="middle" fontSize="8" fill="#64748b">O1→P3</text>
+
+      {/* P3→C3: großer Gewinn (78 px) */}
+      <line x1={370} y1={72} x2={432} y2={72} stroke="#15803d" strokeWidth={0.8} strokeDasharray="4 3" opacity={0.4}/>
+      <rect x={432} y={72} width={14} height={78} rx={2} fill="#15803d"/>
+      <text x={439} y={65} textAnchor="middle" fontSize="8" fill="#15803d" fontWeight="700">P3→C3</text>
+
+      <text x={350} y={26} textAnchor="middle" fontSize="11" fill="#15803d" fontWeight="800">Bipolarmontage</text>
+      <text x={350} y={178} textAnchor="middle" fontSize="9.5" fill="#64748b">Höhengewinn pro Schritt = Kanalausschlag</text>
+
+      {/* Legende */}
+      <text x={270} y={200} textAnchor="middle" fontSize="9" fill="#94a3b8" fontStyle="italic">
+        Jede Elektrode = Messpunkt · Pfeil = was die Montage misst
+      </text>
     </svg>
   )
 }
@@ -435,24 +464,40 @@ export default function MontageWahlPage() {
       </div>
 
       {/* Kernthese */}
-      <div className="rounded-xl border-2 border-slate-800 bg-slate-900 p-5 text-white space-y-3">
-        <p className="text-sm font-bold text-slate-200 uppercase tracking-wider">Grundprinzip</p>
+      <div className="rounded-xl border border-slate-200 bg-white p-5 space-y-4">
+        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Grundprinzip</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="rounded-lg bg-blue-900/50 border border-blue-700 p-3">
-            <p className="text-sm font-black text-blue-300">Bipolare Kette</p>
-            <p className="text-xs text-blue-200 mt-1">= räumlicher <strong>Hochpass</strong></p>
-            <p className="text-xs text-slate-300 mt-1.5">Verstärkt lokale Kontraste (Gradienten). Unterdrückt gleichförmige Felder.</p>
-            <div className="mt-2 text-lg font-mono text-blue-400 font-black">∇V</div>
+          <div className="rounded-xl bg-blue-50 border-2 border-blue-200 p-4 space-y-2">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">⛓</span>
+              <p className="text-sm font-black text-blue-900">Bipolare Kette</p>
+            </div>
+            <p className="text-xs font-semibold text-blue-700">= räumlicher Gradientmesser</p>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Misst den <strong>Unterschied</strong> zwischen je zwei benachbarten Elektroden.
+              Gleichförmige Felder erzeugen kaum Differenz — lokale Kontraste werden sichtbar.
+            </p>
+            <div className="mt-1 rounded-lg bg-blue-100 px-3 py-1.5 text-xs font-bold text-blue-800">
+              ↳ Kennzeichen: <span className="text-red-600">Phasenumkehr</span> lokalisiert das Feldmaximum
+            </div>
           </div>
-          <div className="rounded-lg bg-amber-900/40 border border-amber-700 p-3">
-            <p className="text-sm font-black text-amber-300">Referenzmontage</p>
-            <p className="text-xs text-amber-200 mt-1">= <strong>Feld</strong>-Detektor</p>
-            <p className="text-xs text-slate-300 mt-1.5">Erhält die tatsächliche Feldverteilung und Amplitude. Zeigt auch diffuse Aktivität.</p>
-            <div className="mt-2 text-lg font-mono text-amber-400 font-black">V</div>
+          <div className="rounded-xl bg-amber-50 border-2 border-amber-200 p-4 space-y-2">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">🗺</span>
+              <p className="text-sm font-black text-amber-900">Referenzmontage</p>
+            </div>
+            <p className="text-xs font-semibold text-amber-700">= absoluter Feldmesser</p>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Misst jede Elektrode gegen eine gemeinsame (inaktive) Referenz.
+              Die <strong>tatsächliche Amplitude</strong> und räumliche Ausdehnung des Feldes bleiben erhalten.
+            </p>
+            <div className="mt-1 rounded-lg bg-amber-100 px-3 py-1.5 text-xs font-bold text-amber-800">
+              ↳ Kennzeichen: <span className="text-amber-700">Amplitude</span> zeigt die wahre Feldstärke
+            </div>
           </div>
         </div>
-        <p className="text-xs text-slate-400 italic">
-          Der erfahrene EEG-Befunder fragt nicht &ldquo;Welche Montage ist richtig?&rdquo; — sondern &ldquo;Welche Information brauche ich gerade?&rdquo;
+        <p className="text-xs text-slate-400 italic border-t border-slate-100 pt-3">
+          Der erfahrene EEG-Befunder fragt nicht „Welche Montage ist richtig?" — sondern „Welche Information brauche ich gerade?"
         </p>
       </div>
 

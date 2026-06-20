@@ -312,7 +312,7 @@ export default async function EntityDetailPage({ params }: Props) {
         <CrossRefs entity={entity} />
 
         {/* ── EEG-Beispiel (real) ── */}
-        {isWave && <EdfViewer entityId={entity.id} />}
+        <EdfViewer entityId={entity.id} />
 
         {/* ── Quellen ── */}
         {(entity.source_notes?.length ?? 0) > 0 && (
@@ -336,30 +336,30 @@ export default async function EntityDetailPage({ params }: Props) {
 
 function CrossRefs({ entity }: { entity: WaveEntity | ArtifactEntity }) {
   const hasRefs = isWaveEntity(entity)
-    ? (entity.differential_diagnoses.length > 0 || (entity.cross_references.artifact_mimics?.length ?? 0) > 0)
-    : ((entity.cross_references.eeg_mimics?.length ?? 0) > 0)
+    ? ((entity.differential_diagnoses?.length ?? 0) > 0 || (entity.cross_references?.artifact_mimics?.length ?? 0) > 0)
+    : ((entity.cross_references?.eeg_mimics?.length ?? 0) > 0)
 
   if (!hasRefs) return null
 
   return (
     <Section title="Verknüpfungen">
       <div className="space-y-4">
-        {isWaveEntity(entity) && entity.differential_diagnoses.length > 0 && (
+        {isWaveEntity(entity) && (entity.differential_diagnoses?.length ?? 0) > 0 && (
           <div>
             <p className="text-xs mb-2" style={{ color: 'var(--text-tertiary)' }}>Differentialdiagnosen (EEG)</p>
             <RefLinks ids={entity.differential_diagnoses} type="wave" />
           </div>
         )}
-        {isWaveEntity(entity) && (entity.cross_references.artifact_mimics?.length ?? 0) > 0 && (
+        {isWaveEntity(entity) && (entity.cross_references?.artifact_mimics?.length ?? 0) > 0 && (
           <div>
             <p className="text-xs mb-2" style={{ color: 'var(--text-tertiary)' }}>Artefakt-Mimics</p>
-            <RefLinks ids={entity.cross_references.artifact_mimics} type="artifact" />
+            <RefLinks ids={entity.cross_references!.artifact_mimics!} type="artifact" />
           </div>
         )}
-        {!isWaveEntity(entity) && (entity.cross_references.eeg_mimics?.length ?? 0) > 0 && (
+        {!isWaveEntity(entity) && (entity.cross_references?.eeg_mimics?.length ?? 0) > 0 && (
           <div>
             <p className="text-xs mb-2" style={{ color: 'var(--text-tertiary)' }}>EEG-Mimics (imitiert)</p>
-            <RefLinks ids={entity.cross_references.eeg_mimics} type="wave" />
+            <RefLinks ids={entity.cross_references!.eeg_mimics!} type="wave" />
           </div>
         )}
       </div>
