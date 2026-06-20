@@ -28,7 +28,8 @@ export function EegThumbnail({ entityId }: { entityId: string }) {
       const slug = entityId.toLowerCase()
       const list = await fetchEdfList()
       const entry = list.find(f => f.slug.toLowerCase() === slug)
-      if (!entry || cancelled) { setSkip(true); return }
+      if (!entry) { setSkip(true); return }
+      if (cancelled) return
 
       try {
         const buf    = await fetch(entry.url).then(r => r.arrayBuffer())
@@ -36,12 +37,12 @@ export function EegThumbnail({ entityId }: { entityId: string }) {
         const parser = new EDFParser(buf)
         const header = parser.parse()
 
-        // Paare aus Referenzsignalen: Fp2-F8 = signal(Fp2) − signal(F8)
         const validPairs = PAIRS
           .map(([a, b]) => ({ a: findChannel(header, a), b: findChannel(header, b), label: `${a}-${b}` }))
           .filter(p => p.a >= 0 && p.b >= 0)
 
-        if (validPairs.length < 2 || cancelled) { setSkip(true); return }
+        if (validPairs.length < 2) { setSkip(true); return }
+        if (cancelled) return
 
         const fs  = header.signals[validPairs[0].a].sampleRate
         const s0  = Math.floor(START_SEC * fs)
