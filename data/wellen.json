@@ -391,6 +391,149 @@
       "spatial_note": null
     },
     {
+      "id": "EEG_0003",
+      "name": "Visuelle Blockadereaktion",
+      "aliases": [
+        "Berger-Effekt",
+        "Alpha-Blockade",
+        "Visual Blocking Reaction",
+        "VBR",
+        "Alpha-Attenuation",
+        "Alpha-Reaktivität"
+      ],
+      "main_category": "Hintergrundaktivität",
+      "subcategory": "Reaktive Phänomene / Provokationsreaktionen",
+      "frequency": {
+        "label": "Alpha",
+        "min_hz": 8,
+        "max_hz": 13,
+        "typical_hz": 10,
+        "note": "Alpha-Rhythmus (8–13 Hz) blockiert bei Augenöffnung; wird durch niedrigamplitudige Beta-/Gamma-Aktivität ersetzt (Desynchronisation)"
+      },
+      "amplitude": {
+        "label": "hoch → niedrig",
+        "min_uv": 5,
+        "max_uv": 100,
+        "typical_uv": 50,
+        "note": "Alpha-Amplitude bei geschlossenen Augen typisch 20–100 µV; fällt bei Augenöffnung auf <10 µV ab (Desynchronisation)"
+      },
+      "duration": {
+        "label": "transient",
+        "min_ms": 500,
+        "max_ms": 3000,
+        "typical_ms": 1000,
+        "note": "Blockade tritt innerhalb von 0,5–1 s nach Augenöffnung auf; Alpha-Restitution nach Augenschluss innerhalb 1–3 s"
+      },
+      "polarity": "alternierend",
+      "localization": [
+        "okzipital",
+        "parietal"
+      ],
+      "laterality": "bilateral_symmetrisch",
+      "field_distribution": {
+        "description": "Okzipital/parietal betont, identisch zur Topographie des Alpha-Grundrhythmus. Bei Augenöffnung Amplitudenabfall in diesen Regionen. Symmetrisch bilateral.",
+        "phase_reversal": "nicht_anwendbar",
+        "field_plausibility": "okzipital",
+        "reference_contamination_risk": "niedrig"
+      },
+      "morphology": "Unmittelbar vor der Blockade: rhythmischer okzipitaler Alpha-Rhythmus (8–13 Hz, sinusoidal). Nach Augenöffnung: schlagartiger Amplitudenabfall und Ersatz durch niedrigamplitudige, desynchronisierte Beta-/Gamma-Aktivität (kortikale Desynchronisation). Bei Augenschluss prompt Restitution des Alpha-Rhythmus. Das EEG-Snippet zeigt typischerweise den Wechsel: Alpha an → Augenöffnung (oft mit kurzem okzipitalem Elektrodenartefakt) → Blockade → Augenschluss → Alpha-Rückkehr.",
+      "potential_course": "Physiologische, reproduzierbare Reaktion. Fehlende VBR ist ein wichtiges pathologisches Zeichen (kortikale Dysfunktion, strukturelle Läsion, tiefe Bewusstseinsminderung).",
+      "rhythmicity": "rhythmisch",
+      "periodicity": "reaktiv",
+      "montage_behavior": {
+        "bipolar_longitudinal": "Deutlicher Amplitudenabfall in posterioren Kanälen (P3-O1, P4-O2) bei Augenöffnung. Anteriore Kanäle weniger betroffen.",
+        "bipolar_transverse": "Bilateral symmetrischer Amplitudenabfall okzipital",
+        "referential_cz": "Okzipitale Elektroden (O1/O2) zeigen maximale Amplitudenänderung; Cz selbst wenig betroffen",
+        "referential_average": "Gut geeignet zur Darstellung der Topographie der Blockade",
+        "referential_mastoid": "Standard; gut zur Dokumentation des Amplitudenabfalls",
+        "best_montage": "Bipolare Längsreihe oder Mastoid-Referenz; posteriore Kanäle zeigen die Reaktion am deutlichsten",
+        "typical_montage": "bipolare Längsreihe",
+        "pitfalls": "Augenöffnungsartefakt kann okzipitales Alpha-Blockade-Onset überlagern. Horizontale Augenbewegungen erzeugen frontale Artefakte. Cave: Fehlende VBR als Normalbefund misswerten — bei bewusstseinsgeminderten Patienten ist fehlende VBR ein wichtiges pathologisches Zeichen."
+      },
+      "classification": "physiologisch",
+      "disease_value": "kein",
+      "occurrence_frequency": "ubiquitär",
+      "occurrence_context": [
+        "wach_entspannt",
+        "Augen_geschlossen_zu_offen",
+        "Provokation"
+      ],
+      "sleep_stage": "wach",
+      "age_group": "alle",
+      "pediatric_only": false,
+      "dialog_logic": {
+        "key_features": [
+          "Alpha-Blockade bei Augenöffnung (okzipital)",
+          "Sofortige Desynchronisation: Amplitudenabfall + Frequenzanstieg",
+          "Restitution des Alpha bei Augenschluss",
+          "Bilateral symmetrisch",
+          "Reproduzierbar"
+        ],
+        "criteria_for": [
+          "Okzipitaler Alpha-Rhythmus vor Augenöffnung vorhanden",
+          "Prompter Amplitudenabfall bei Augenöffnung",
+          "Restitution bei Augenschluss",
+          "Bilateral symmetrisch"
+        ],
+        "criteria_against": [
+          "Keine Alpha-Amplitude-Änderung bei Augenöffnung (→ fehlende Reaktivität = pathologisch)",
+          "Nur unilaterale Blockade (→ Hemisphärenasymmetrie prüfen)",
+          "Persistenz der Blockade nach Augenschluss >5 s (→ Eye-Closure Sensitivity, EEG_0074)"
+        ],
+        "mimics": [
+          "EEG_0001",
+          "EEG_0074"
+        ],
+        "discriminating_questions": [
+          "Blockiert der Alpha-Rhythmus bei Augenöffnung?",
+          "Kehrt er nach Augenschluss zurück?",
+          "Ist die Reaktion bilateral symmetrisch?",
+          "Treten nach Augenschluss epileptiforme Entladungen auf? (→ EEG_0074)"
+        ]
+      },
+      "differential_diagnoses": [
+        "EEG_0001",
+        "EEG_0074",
+        "EEG_0020"
+      ],
+      "common_misinterpretations": [
+        "Fehlende VBR bei Bewusstseinsstörung als Normalbefund fehlgewertet — fehlende Reaktivität ist ein wichtiges Pathologiezeichen",
+        "Augenöffnungsartefakt (frontale Wellen) mit der okzipitalen Blockadereaktion verwechselt",
+        "Eye-Closure Sensitivity (EEG_0074, epileptiforme Entladungen nach Lidschluss) mit VBR verwechselt — ECS ist das Gegenteil: Augen-ZU provoziert Entladungen",
+        "Asymmetrie der VBR übersehen — ipsilateral zu einer Läsion kann die Blockade reduziert sein"
+      ],
+      "images": [
+        {
+          "file": "EEG_0003__adult__bipolar__01.edf",
+          "montage": "bipolare Längsreihe",
+          "context": "Wach, Augen geschlossen → Öffnen → Schließen",
+          "caption": "Visuelle Blockadereaktion: Alpha bei Augenschluss, Desynchronisation bei Augenöffnung, Restitution bei Augenschluss",
+          "status": "placeholder"
+        }
+      ],
+      "teaching_pearl": "Die VBR ist der erste Test der kortikalen Reaktivität. Ein fehlender Berger-Effekt ist niemals normal — er zeigt eine Dysfunktion des visuellen Kortex oder eine tiefe Bewusstseinsstörung an. Asymmetrie der Blockade (links ≠ rechts) weist auf eine ipsilaterale hemisphärische Störung hin. Merkhilfe: 'Augen auf = Alpha weg' — bei gesunden Gehirnen immer.",
+      "warning": "Fehlende oder asymmetrische VBR ist ein wichtiger Pathologiebefund und sollte im EEG-Befund explizit erwähnt werden. Bei Intensiv-EEG (bewusstseinsgeminderte Patienten) ist die VBR-Testung obligater Bestandteil der Reaktivitätsbeurteilung.",
+      "notes": "Erstbeschreibung: Hans Berger (1929) — die Alpha-Unterdrückung bei Augenöffnung war eines der ersten dokumentierten EEG-Phänomene überhaupt, daher 'Berger-Effekt'. Pathophysiologie: Visuelle Aktivierung führt zu thalamo-kortikaler Desynchronisation über cholinerge und noradrenerge Bahnen. VBR-Stärke (Ausmaß der Alpha-Unterdrückung) ist ein Biomarker für cholinerge Integrität und korreliert mit kognitivem Zustand (Amin et al. 2023; Frontiers in Human Neuroscience 2026).",
+      "data_status": "complete",
+      "priority_for_mvp": "hoch",
+      "source_notes": [
+        "Berger H (1929): Über das Elektroenkephalogramm des Menschen. Archiv für Psychiatrie.",
+        "Frontiers in Human Neuroscience (2026): EEG alpha reactivity in cognitive aging and dementia. https://doi.org/10.3389/fnhum.2026.1665301",
+        "PMC12089117: Toward objective biomarkers in psychiatric rehabilitation: detecting the 'Berger Effect'. https://pmc.ncbi.nlm.nih.gov/articles/PMC12089117/",
+        "Niedermeyer E & da Silva FL: Electroencephalography, 6th ed.",
+        "spektrum.de/lexikon/neurowissenschaft/visuelle-blockadereaktion/13790",
+        "flexikon.doccheck.com/de/Berger-Effekt"
+      ],
+      "cross_references": {
+        "artifact_mimics": []
+      },
+      "spatial_distribution": "regional",
+      "spatial_note": "Okzipital/parietal betont — identisch zur Topographie des PDR",
+      "spatial_subtype": null,
+      "laterality_note": null,
+      "age_group_note": null
+    },
+    {
       "id": "EEG_0005",
       "name": "Langsame Alpha-Variante",
       "aliases": [
