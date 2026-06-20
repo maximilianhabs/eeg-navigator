@@ -6,7 +6,7 @@ import { buildMontageRows, MONTAGE_LABELS, getRowColor, type MontageId } from '.
 import { filterSignal, HP_OPTIONS, LP_OPTIONS, DEFAULT_HP, DEFAULT_LP } from './filters'
 import type { EdfHeader } from './edfParser'
 
-const SENSITIVITY_STEPS = [100, 50, 30, 20, 15, 10, 7, 5, 3, 1]
+const SENSITIVITY_STEPS = [100, 50, 30, 20, 15, 10, 7, 5, 3, 1, 0.5, 0.2]
 const DEFAULT_SENSITIVITY = 1
 const PX_PER_MM = 96 / 25.4
 
