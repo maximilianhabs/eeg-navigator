@@ -19,6 +19,8 @@ interface Props {
 export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' }: Props) {
   const canvasRef                      = useRef<HTMLCanvasElement>(null)
   const touchStartX                    = useRef<number | null>(null)
+  const pinchRef                       = useRef<{ dist: number; win: number } | null>(null)
+  const [showSecondary, setShowSecondary] = useState(false)
   const [header,      setHeader]       = useState<EdfHeader | null>(null)
   const [signals,     setSignals]      = useState<Float32Array[]>([])
   const [montage,     setMontage]      = useState<MontageId>('bipolar')
@@ -178,74 +180,28 @@ export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' 
     <div className="rounded-2xl border overflow-hidden"
       style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border)', boxShadow: 'var(--shadow-sm)' }}>
 
-      {/* Toolbar */}
+      {/* Toolbar — Primäre Zeile (immer sichtbar) */}
       <div className="flex items-center gap-2 px-3 py-2 flex-wrap"
-        style={{ borderBottom: '1px solid var(--border)', backgroundColor: 'var(--bg-subtle)' }}>
+        style={{ borderBottom: showSecondary ? 'none' : '1px solid var(--border)', backgroundColor: 'var(--bg-subtle)' }}>
 
         {/* Montage */}
         <div className="flex rounded-lg overflow-hidden border text-[11px] font-medium" style={{ borderColor: 'var(--border)' }}>
           {(['bipolar', 'cz'] as MontageId[]).map(m => (
             <button key={m} onClick={() => setMontage(m)} className="px-3 py-1.5 transition-colors"
               style={{ background: montage === m ? 'var(--brand)' : 'var(--bg-surface)', color: montage === m ? '#fff' : 'var(--text-secondary)' }}>
-              {m === 'bipolar' ? 'Doppelbanane' : 'CZ-Referenz'}
+              {m === 'bipolar' ? 'Doppelbanane' : 'CZ-Ref'}
             </button>
           ))}
         </div>
 
-        <div className="w-px h-4 mx-1" style={{ background: 'var(--border)' }} />
-
-        {/* Sensitivität */}
-        <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>Sens.</span>
-        <button onClick={moreAmp} title="Mehr Amplitude"
-          className="w-6 h-6 rounded text-[11px] font-bold hover:opacity-80"
-          style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>＋</button>
-        <span className="text-[11px] font-mono tabular-nums min-w-[56px] text-center"
-          style={{ color: 'var(--text-primary)' }}>
-          {sensitivity} µV/mm
-        </span>
-        <button onClick={lessAmp} title="Weniger Amplitude"
-          className="w-6 h-6 rounded text-[11px] font-bold hover:opacity-80"
-          style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>－</button>
-
-        <div className="w-px h-4 mx-1" style={{ background: 'var(--border)' }} />
-
-        {/* Filter */}
-        <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>HP</span>
-        <select value={hpFreq ?? 'off'} onChange={e => setHpFreq(e.target.value === 'off' ? null : Number(e.target.value))}
-          className="text-[11px] rounded px-1 py-0.5"
-          style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>
-          {HP_OPTIONS.map(o => (
-            <option key={o.label} value={o.value ?? 'off'}>{o.label}</option>
-          ))}
-        </select>
-
-        <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>TP</span>
-        <select value={lpFreq ?? 'off'} onChange={e => setLpFreq(e.target.value === 'off' ? null : Number(e.target.value))}
-          className="text-[11px] rounded px-1 py-0.5"
-          style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>
-          {LP_OPTIONS.map(o => (
-            <option key={o.label} value={o.value ?? 'off'}>{o.label}</option>
-          ))}
-        </select>
-
-        <button onClick={() => setNotch(n => !n)} title="50 Hz Netzartefakt-Filter"
-          className="px-2 py-0.5 rounded text-[10px] font-medium transition-colors"
-          style={{
-            background: notch ? 'var(--brand)' : 'var(--bg-subtle)',
-            border: '1px solid var(--border)',
-            color: notch ? '#fff' : 'var(--text-secondary)'
-          }}>
-          50 Hz
-        </button>
-
-        <div className="w-px h-4 mx-1" style={{ background: 'var(--border)' }} />
+        <div className="w-px h-4 mx-1 hidden md:block" style={{ background: 'var(--border)' }} />
 
         {/* Navigation */}
         <button onClick={() => setViewStart(s => Math.max(0, s - windowSec))}
-          className="w-6 h-6 rounded text-[11px] hover:opacity-80"
+          className="w-8 h-8 md:w-6 md:h-6 rounded text-[11px] hover:opacity-80"
           style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>◀</button>
         <button onClick={() => setViewStart(s => Math.min(duration - windowSec, s + windowSec))}
-          className="w-6 h-6 rounded text-[11px] hover:opacity-80"
+          className="w-8 h-8 md:w-6 md:h-6 rounded text-[11px] hover:opacity-80"
           style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>▶</button>
         <select value={windowSec} onChange={e => setWindowSec(Number(e.target.value))} className="text-[11px] rounded px-1 py-0.5"
           style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>
@@ -253,18 +209,123 @@ export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' 
           <option value={10}>10 s</option>
         </select>
 
-        <span className="ml-auto text-[10px] font-mono px-2 py-0.5 rounded"
+        {/* Desktop: Sensitivität inline */}
+        <div className="hidden md:flex items-center gap-2">
+          <div className="w-px h-4 mx-1" style={{ background: 'var(--border)' }} />
+          <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>Sens.</span>
+          <button onClick={moreAmp} title="Mehr Amplitude"
+            className="w-6 h-6 rounded text-[11px] font-bold hover:opacity-80"
+            style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>＋</button>
+          <span className="text-[11px] font-mono tabular-nums min-w-[56px] text-center" style={{ color: 'var(--text-primary)' }}>
+            {sensitivity} µV/mm
+          </span>
+          <button onClick={lessAmp} title="Weniger Amplitude"
+            className="w-6 h-6 rounded text-[11px] font-bold hover:opacity-80"
+            style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>－</button>
+          <div className="w-px h-4 mx-1" style={{ background: 'var(--border)' }} />
+          <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>HP</span>
+          <select value={hpFreq ?? 'off'} onChange={e => setHpFreq(e.target.value === 'off' ? null : Number(e.target.value))}
+            className="text-[11px] rounded px-1 py-0.5"
+            style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>
+            {HP_OPTIONS.map(o => <option key={o.label} value={o.value ?? 'off'}>{o.label}</option>)}
+          </select>
+          <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>TP</span>
+          <select value={lpFreq ?? 'off'} onChange={e => setLpFreq(e.target.value === 'off' ? null : Number(e.target.value))}
+            className="text-[11px] rounded px-1 py-0.5"
+            style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>
+            {LP_OPTIONS.map(o => <option key={o.label} value={o.value ?? 'off'}>{o.label}</option>)}
+          </select>
+          <button onClick={() => setNotch(n => !n)} title="50 Hz Netzartefakt-Filter"
+            className="px-2 py-0.5 rounded text-[10px] font-medium transition-colors"
+            style={{ background: notch ? 'var(--brand)' : 'var(--bg-subtle)', border: '1px solid var(--border)', color: notch ? '#fff' : 'var(--text-secondary)' }}>
+            50 Hz
+          </button>
+        </div>
+
+        {/* Mobile: Filter-Toggle */}
+        <button
+          className="md:hidden w-8 h-8 rounded flex items-center justify-center transition-colors"
+          onClick={() => setShowSecondary(s => !s)}
+          title="Filter & Sensitivität"
+          style={{
+            background: showSecondary ? 'var(--brand)' : 'var(--bg-subtle)',
+            border: '1px solid var(--border)',
+            color: showSecondary ? '#fff' : 'var(--text-secondary)',
+          }}>
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </button>
+
+        <span className="ml-auto hidden md:inline text-[10px] font-mono px-2 py-0.5 rounded"
           style={{ background: 'var(--bg-subtle)', color: 'var(--text-tertiary)', border: '1px solid var(--border)' }}>
           {filename}
         </span>
       </div>
 
+      {/* Toolbar — Sekundäre Zeile (mobile, ausklappbar) */}
+      {showSecondary && (
+        <div className="md:hidden flex items-center gap-2 px-3 py-2 flex-wrap"
+          style={{ borderBottom: '1px solid var(--border)', backgroundColor: 'var(--bg-subtle)' }}>
+          <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>Sens.</span>
+          <button onClick={moreAmp}
+            className="w-8 h-8 rounded text-[11px] font-bold hover:opacity-80"
+            style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>＋</button>
+          <span className="text-[11px] font-mono tabular-nums min-w-[56px] text-center" style={{ color: 'var(--text-primary)' }}>
+            {sensitivity} µV/mm
+          </span>
+          <button onClick={lessAmp}
+            className="w-8 h-8 rounded text-[11px] font-bold hover:opacity-80"
+            style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>－</button>
+          <div className="w-px h-4 mx-1" style={{ background: 'var(--border)' }} />
+          <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>HP</span>
+          <select value={hpFreq ?? 'off'} onChange={e => setHpFreq(e.target.value === 'off' ? null : Number(e.target.value))}
+            className="text-[11px] rounded px-2 py-1.5"
+            style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>
+            {HP_OPTIONS.map(o => <option key={o.label} value={o.value ?? 'off'}>{o.label}</option>)}
+          </select>
+          <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>TP</span>
+          <select value={lpFreq ?? 'off'} onChange={e => setLpFreq(e.target.value === 'off' ? null : Number(e.target.value))}
+            className="text-[11px] rounded px-2 py-1.5"
+            style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>
+            {LP_OPTIONS.map(o => <option key={o.label} value={o.value ?? 'off'}>{o.label}</option>)}
+          </select>
+          <button onClick={() => setNotch(n => !n)}
+            className="px-3 py-1.5 rounded text-[10px] font-medium transition-colors"
+            style={{ background: notch ? 'var(--brand)' : 'var(--bg-subtle)', border: '1px solid var(--border)', color: notch ? '#fff' : 'var(--text-secondary)' }}>
+            50 Hz
+          </button>
+        </div>
+      )}
+
       {/* Canvas */}
       <div
         className="relative"
         style={{ height: canvasHeight }}
-        onTouchStart={e => { touchStartX.current = e.touches[0].clientX }}
+        onTouchStart={e => {
+          if (e.touches.length === 2) {
+            // Pinch-Start: Abststand + aktuellen windowSec merken
+            const dx = e.touches[0].clientX - e.touches[1].clientX
+            const dy = e.touches[0].clientY - e.touches[1].clientY
+            pinchRef.current = { dist: Math.hypot(dx, dy), win: windowSec }
+            touchStartX.current = null
+          } else {
+            touchStartX.current = e.touches[0].clientX
+          }
+        }}
+        onTouchMove={e => {
+          if (e.touches.length !== 2 || !pinchRef.current) return
+          e.preventDefault()
+          const dx = e.touches[0].clientX - e.touches[1].clientX
+          const dy = e.touches[0].clientY - e.touches[1].clientY
+          const newDist = Math.hypot(dx, dy)
+          const ratio   = pinchRef.current.dist / newDist  // >1 = zoom in, <1 = zoom out
+          const next    = Math.max(3, Math.min(60, Math.round(pinchRef.current.win * ratio)))
+          setWindowSec(next)
+        }}
         onTouchEnd={e => {
+          pinchRef.current = null
           if (touchStartX.current === null) return
           const delta = touchStartX.current - e.changedTouches[0].clientX
           touchStartX.current = null

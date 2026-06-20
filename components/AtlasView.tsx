@@ -152,7 +152,9 @@ export function AtlasView({ wellenByCategory, artefakteByCategory, alleWellen, a
   return (
     <div className="space-y-6">
 
-      {/* Suchfeld */}
+      {/* Suchfeld — sticky auf Mobile */}
+      <div className="sticky top-0 z-20 -mx-4 px-4 pb-2 pt-1 md:static md:mx-0 md:px-0 md:pb-0 md:pt-0"
+        style={{ background: 'var(--bg-base)' }}>
       <div className="relative">
         <span className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: 'var(--text-tertiary)' }}>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -180,6 +182,7 @@ export function AtlasView({ wellenByCategory, artefakteByCategory, alleWellen, a
             ✕
           </button>
         )}
+      </div>
       </div>
 
       {/* Altersgruppen-Toggle */}
