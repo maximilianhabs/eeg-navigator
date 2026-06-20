@@ -101,13 +101,15 @@ export function ArtifactCard({ entity }: { entity: ArtifactEntity }) {
   return (
     <Link
       href={`/entity/${entity.id}`}
-      className="group block rounded-2xl border p-4 transition-all duration-200 hover:-translate-y-0.5"
+      className="group block rounded-2xl border transition-all duration-200 hover:-translate-y-0.5 overflow-hidden"
       style={{
         backgroundColor: 'var(--bg-surface)',
         borderColor: 'var(--border)',
         boxShadow: 'var(--shadow-sm)',
       }}
     >
+      <EegThumbnail entityId={entity.id} />
+      <div className="p-4">
       <div className="flex items-start gap-3">
         <div className="mt-1 w-1 self-stretch rounded-full flex-shrink-0 transition-all duration-200 group-hover:w-1.5"
           style={{ backgroundColor: '#f59e0b', minHeight: '2rem' }} />
@@ -150,6 +152,7 @@ export function ArtifactCard({ entity }: { entity: ArtifactEntity }) {
             </p>
           )}
         </div>
+      </div>
       </div>
     </Link>
   )
