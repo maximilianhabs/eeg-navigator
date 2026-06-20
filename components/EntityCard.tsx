@@ -2,6 +2,7 @@ import Link from 'next/link'
 import type { WaveEntity, ArtifactEntity } from '@/lib/types'
 import { StatusBadge, CombinedBadge } from './Badge'
 import { label } from '@/lib/labels'
+import { EegThumbnail } from './EegThumbnail'
 
 const CLASSIFICATION_ACCENT: Record<string, string> = {
   epileptiform:  '#ef4444',
@@ -18,13 +19,15 @@ export function WaveCard({ entity }: { entity: WaveEntity }) {
   return (
     <Link
       href={`/entity/${entity.id}`}
-      className="group block rounded-2xl border p-4 transition-all duration-200 hover:-translate-y-0.5"
+      className="group block rounded-2xl border transition-all duration-200 hover:-translate-y-0.5 overflow-hidden"
       style={{
         backgroundColor: 'var(--bg-surface)',
         borderColor: 'var(--border)',
         boxShadow: 'var(--shadow-sm)',
       }}
     >
+      <EegThumbnail entityId={entity.id} />
+      <div className="p-4">
       {/* Accent bar */}
       <div className="flex items-start gap-3">
         <div className="mt-1 w-1 self-stretch rounded-full flex-shrink-0 transition-all duration-200 group-hover:w-1.5"
@@ -86,6 +89,7 @@ export function WaveCard({ entity }: { entity: WaveEntity }) {
             </p>
           )}
         </div>
+      </div>
       </div>
     </Link>
   )
