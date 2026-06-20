@@ -221,7 +221,7 @@
         "mimics": [
           "EEG_0003",
           "EEG_0005",
-          "EEG_0006"
+          "EEG_0081"
         ],
         "discriminating_questions": [
           "Liegt das Maximum okzipital/parietal?",
@@ -233,7 +233,7 @@
       "differential_diagnoses": [
         "EEG_0003",
         "EEG_0005",
-        "EEG_0006",
+        "EEG_0081",
         "EEG_0014"
       ],
       "common_misinterpretations": [
@@ -511,154 +511,6 @@
       "spatial_distribution": "generalisiert",
       "spatial_subtype": null,
       "spatial_note": null
-    },
-    {
-      "id": "EEG_0006",
-      "name": "Schnelle Alpha-Variante",
-      "aliases": [
-        "Fast alpha variant",
-        "FAV",
-        "Fast-Alpha-Variante",
-        "superharmonischer Alpha-Rhythmus",
-        "fast alpha variant rhythm"
-      ],
-      "main_category": "Hintergrundaktivität",
-      "subcategory": "Alpha-Varianten",
-      "frequency": {
-        "label": "Beta-Grenzbereich",
-        "min_hz": 14,
-        "max_hz": 22,
-        "typical_hz": 18,
-        "note": "Exakt doppelte Frequenz des individuellen Alpha-Grundrhythmus (harmonisches Vielfaches 2:1); z.B. Alpha 9 Hz → FAV ~18 Hz. Liegt damit im Beta-Frequenzband."
-      },
-      "amplitude": {
-        "label": "niedrig bis mittel",
-        "min_uv": 20,
-        "max_uv": 80,
-        "typical_uv": 40,
-        "note": "Vergleichbar mit individuellem Alpha-Rhythmus; oft etwas kleiner"
-      },
-      "duration": {
-        "label": "variabel",
-        "min_ms": null,
-        "max_ms": null,
-        "typical_ms": null,
-        "note": "Intermittierend bis kontinuierlich; alterniert oft mit normalem Alpha-Rhythmus; verschwindet im Schlaf"
-      },
-      "polarity": "alternierend",
-      "localization": [
-        "okzipital",
-        "parietal"
-      ],
-      "laterality": "bilateral_symmetrisch",
-      "field_distribution": {
-        "description": "Posterior betont (okzipital/parietal), identische Topographie wie normaler Alpha-Grundrhythmus. Bilateral symmetrisch.",
-        "phase_reversal": "nicht_anwendbar",
-        "field_plausibility": "okzipital",
-        "reference_contamination_risk": "niedrig"
-      },
-      "morphology": "Rhythmische, sinusoidale okzipitale Aktivität mit exakt doppelter Frequenz des individuellen Alpha-Rhythmus. Charakteristisch ist die 'gekerbte' (notched) oder zweigeteilte (bifurcated) Wellenform: Jede Schwingung zeigt eine Einkerbung an der Spitze, die durch die Überlagerung zweier Alpha-Halbzyklen entsteht. Die Wellformen wechseln zwischen positiver und negativer Phase (alternierend, sinusoidal) – sie sind ausdrücklich NICHT rein negativ. Alterniert typischerweise mit normalem Alpha-Rhythmus.",
-      "potential_course": "Intermittierend bis kontinuierlich; blockiert bei Augenöffnung und mentaler Aktivität identisch zum normalen Alpha; verschwindet im Schlaf",
-      "rhythmicity": "rhythmisch",
-      "periodicity": "intermittierend",
-      "montage_behavior": {
-        "bipolar_longitudinal": "Okzipitales/parietales Maximum; höhere Frequenz als umgebender Alpha-Rhythmus erkennbar; Kerbenmorphologie gut sichtbar",
-        "bipolar_transverse": "Bilateral symmetrisch, posterior",
-        "referential_cz": "Maximale Amplitude okzipital (O1/O2); Frequenzvergleich mit Alpha direkt möglich",
-        "referential_average": "Gut geeignet zur Darstellung der okzipitalen Dominanz",
-        "referential_mastoid": "Standard; Mastoid-Elektrode liegt oft noch im Alpha-Feld – Vorsicht bei Amplitudenbeurteilung",
-        "best_montage": "Referenzielle Ableitung (Cz oder Average) zum Nachweis der okzipitalen Dominanz und Frequenzanalyse",
-        "typical_montage": "bipolare Längsreihe",
-        "pitfalls": "Kerbe (Notching) kann als okzipitaler Spike fehlgedeutet werden; Frequenz 16–22 Hz liegt im Beta-Bereich → kann als frontale Beta-Aktivität oder medikamenteninduziertes Beta (z.B. Benzodiazepine) fehlinterpretiert werden. Entscheidend: Beta durch Benzodiazepine ist FRONTAL betont und NICHT reaktiv auf Augenöffnung."
-      },
-      "classification": "benigne_variante",
-      "disease_value": "kein",
-      "occurrence_frequency": "selten",
-      "occurrence_context": [
-        "entspanntes Wach",
-        "Augen geschlossen"
-      ],
-      "sleep_stage": "wach",
-      "age_group": "alle",
-      "pediatric_only": false,
-      "dialog_logic": {
-        "key_features": [
-          "Frequenz exakt doppelt so hoch wie individueller Alpha-Rhythmus (2:1 harmonisch)",
-          "okzipital/parietal betont (posterior)",
-          "sinusoidal, alternierend – NICHT rein negativ",
-          "Kerbe/Notching oder bifurcated Morphologie",
-          "Blockierung bei Augenöffnen",
-          "alterniert mit normalem Alpha",
-          "verschwindet im Schlaf"
-        ],
-        "criteria_for": [
-          "Frequenz exakt 2× des individuellen Alpha (Harmonizität prüfen!)",
-          "Okzipitales/parietales Maximum",
-          "Reaktivität: Blockade bei Augenöffnen",
-          "Sinusoidal-alternierende Kurvenform, oft mit Kerbe",
-          "Simultane oder alternierende normale Alpha-Aktivität sichtbar"
-        ],
-        "criteria_against": [
-          "Keine Harmonizität zum individuellen Alpha (→ pathologische Beta-Aktivität)",
-          "Frontal dominant (→ normales Beta EEG_0002 oder Benzodiazepin-Beta)",
-          "Fehlende Reaktivität auf Augenöffnen (→ pathologisch oder medikamenteninduziert)",
-          "Persistenz im Schlaf (→ pathologisch)"
-        ],
-        "mimics": [
-          "EEG_0001",
-          "EEG_0002",
-          "EEG_0081"
-        ],
-        "discriminating_questions": [
-          "Wie hoch ist der individuelle Alpha-Rhythmus des Patienten?",
-          "Besteht ein exaktes 2:1-Frequenzverhältnis (harmonisch)?",
-          "Blockiert die Aktivität bei Augenöffnen?",
-          "Ist die Topographie okzipital oder frontal?",
-          "Nimmt der Patient Benzodiazepine oder Barbiturate ein?"
-        ]
-      },
-      "differential_diagnoses": [
-        "EEG_0001",
-        "EEG_0002",
-        "EEG_0081"
-      ],
-      "common_misinterpretations": [
-        "Polarity als rein negativ fehlbewertet – FAV ist sinusoidal/alternierend wie normales Alpha",
-        "Kerbe (Notching) als okzipitaler Spike oder epileptiformer Sharp Wave fehlgedeutet",
-        "Als pathologische okzipitale Beta-Aktivität fehlinterpretiert – Reaktivitätstest fehlt",
-        "Verwechslung mit frontalem Benzodiazepin-Beta (frontal betont, nicht reaktiv auf Augenöffnung)",
-        "Verwechslung mit frontalem Beta-Grundrhythmus (EEG_0002) – Topographie entscheidend"
-      ],
-      "images": [
-        {
-          "file": "placeholder_fast_alpha.png",
-          "montage": "bipolare Längsreihe",
-          "context": "Entspanntes Wachen, Augen geschlossen",
-          "caption": "Schnelle Alpha-Variante: okzipital, ~18 Hz, sinusoidal mit Kerbe, alterniert mit normalem Alpha",
-          "status": "placeholder"
-        }
-      ],
-      "teaching_pearl": "Schlüssel zur Diagnose: Exaktes 2:1-Frequenzverhältnis zum individuellen Alpha prüfen! Eine 18-Hz-Aktivität okzipital bei einem Patienten mit 9-Hz-Alpha ist FAV – benigne. Die Kurve ist sinusoidal-alternierend (NICHT rein negativ). Kerbe nicht als Spike werten. Blockade bei Augenöffnung bestätigt die Benignität. Frontal betonte Beta-Aktivität ohne Reaktivität spricht gegen FAV.",
-      "warning": "Bei okzipitaler Beta-Aktivität immer: (1) Reaktivitätstest (Augenöffnen), (2) individuellen Alpha-Rhythmus ermitteln, (3) Frequenzverhältnis prüfen. Nur wenn alle drei Kriterien erfüllt sind → FAV.",
-      "notes": "Pathophysiologie: FAV entsteht durch harmonische Verzerrung des kortikalen Alpha-Generators – die Asymmetrie zwischen Depolarisations- und Repolarisationsphase neuraler Entladungen erzeugt harmonische Oberwellen (2×, 3× Grundfrequenz). FAV ist seltener als die Slow Alpha Variant. Gelegentlich alternieren FAV, normales Alpha und SAV im selben EEG (tri-modale Alpha-Darstellung).",
-      "data_status": "complete",
-      "priority_for_mvp": "mittel",
-      "source_notes": [
-        "Niedermeyer & da Silva, Electroencephalography, 6th ed.",
-        "Amin U et al. (2023): Normal variants and artifacts: Importance in EEG interpretation. Epileptic Disorders. https://doi.org/10.1002/epd2.20040",
-        "Tatum WO et al. (2021): Atlas of EEG.",
-        "Kutluay E: Overcoming traps and pitfalls – normal EEG variants. PMC11233371",
-        "neupsykey.com/normal-and-benign-variants/"
-      ],
-      "cross_references": {
-        "artifact_mimics": [],
-        "eeg_mimics": [
-          "EEG_0081"
-        ]
-      },
-      "spatial_distribution": "regional",
-      "spatial_subtype": null,
-      "spatial_note": "Identische Topographie wie normaler Alpha-Grundrhythmus – posteriores Maximum"
     },
     {
       "id": "EEG_0007",
