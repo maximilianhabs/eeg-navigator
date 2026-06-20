@@ -38,8 +38,8 @@ export function EegThumbnail({ entityId }: { entityId: string }) {
   async function load() {
     const slug = entityId.toLowerCase()
     const list = await fetchEdfList()
-    const entry = list.find(f => f.slug === slug && f.montage === 'bipolar')
-               ?? list.find(f => f.slug === slug)
+    const entry = list.find(f => f.slug.toLowerCase() === slug && f.montage === 'bipolar')
+               ?? list.find(f => f.slug.toLowerCase() === slug)
     if (!entry) { setSkip(true); return }
 
     try {
