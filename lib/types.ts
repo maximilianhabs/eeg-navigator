@@ -180,7 +180,7 @@ export interface ArtefakteDB {
 export type AnyEntity = WaveEntity | ArtifactEntity
 
 export function isWaveEntity(e: AnyEntity): e is WaveEntity {
-  return 'main_category' in e
+  return !('artifact_class' in e)
 }
 
 export function isArtifactEntity(e: AnyEntity): e is ArtifactEntity {

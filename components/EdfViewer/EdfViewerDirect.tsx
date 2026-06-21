@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import { EDFParser } from './edfParser'
-import { buildMontageRows, MONTAGE_LABELS, getRowColor, type MontageId } from './montages'
+import { buildMontageRows, MONTAGE_LABELS, getRowColor, AVG_REF_SENTINEL, isStandardEegChannel, type MontageId } from './montages'
 import { filterSignal, HP_OPTIONS, LP_OPTIONS, DEFAULT_HP, DEFAULT_LP } from './filters'
 import type { EdfHeader } from './edfParser'
 
@@ -30,6 +30,7 @@ export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' 
   const [hpFreq,      setHpFreq]       = useState<number | null>(DEFAULT_HP)
   const [lpFreq,      setLpFreq]       = useState<number | null>(DEFAULT_LP)
   const [notch,       setNotch]        = useState(false)
+  const [neonMode,    setNeonMode]     = useState(false)
   const [loading,     setLoading]      = useState(false)
   const [error,       setError]        = useState<string | null>(null)
 
@@ -56,9 +57,30 @@ export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' 
     if (!header || signals.length === 0) return signals
     return signals.map((sig, i) => {
       const fs = header.signals[i].sampleRate
-      return filterSignal(sig, fs, hpFreq, lpFreq, notch)
+      const label = (header.signals[i].label || '').trim()
+      const isEkg = /ECG|EKG|CARD/i.test(label) || /^POL X1$/i.test(label)
+      return filterSignal(sig, fs, hpFreq, lpFreq, notch || isEkg)
     })
   }, [signals, header, hpFreq, lpFreq, notch])
+
+  // Average reference: Mittelwert aller Standard-10-20-EEG-Kanäle sample-weise
+  const avgRef = useMemo<Float32Array | null>(() => {
+    if (!header || filteredSignals.length === 0) return null
+    const eegIndices = header.signals
+      .map((s, i) => ({ i, label: (s.label || '').trim() }))
+      .filter(({ label }) => isStandardEegChannel(label))
+      .map(({ i }) => i)
+    if (eegIndices.length === 0) return null
+    const len = filteredSignals[eegIndices[0]].length
+    const avg = new Float32Array(len)
+    for (const i of eegIndices) {
+      const sig = filteredSignals[i]
+      for (let s = 0; s < len && s < sig.length; s++) avg[s] += sig[s]
+    }
+    const n = eegIndices.length
+    for (let s = 0; s < len; s++) avg[s] /= n
+    return avg
+  }, [filteredSignals, header])
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current
@@ -68,10 +90,10 @@ export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' 
 
     const W = canvas.width, H = canvas.height
     const isDark = document.documentElement.classList.contains('dark')
-    const bgColor     = isDark ? '#0d1117' : '#ffffff'
-    const gridColor   = isDark ? '#1e2436' : '#f1f5f9'
-    const timeColor   = isDark ? '#475569' : '#94a3b8'
-    const spacerColor = isDark ? '#2d3748' : '#e2e8f0'
+    const bgColor     = neonMode ? '#080808' : (isDark ? '#0d1117' : '#ffffff')
+    const gridColor   = neonMode ? '#1a1a1a' : (isDark ? '#1e2436' : '#f1f5f9')
+    const timeColor   = neonMode ? '#3a3a3a' : (isDark ? '#475569' : '#94a3b8')
+    const spacerColor = neonMode ? '#222222' : (isDark ? '#2d3748' : '#e2e8f0')
 
     ctx.fillStyle = bgColor; ctx.fillRect(0, 0, W, H)
 
@@ -112,7 +134,7 @@ export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' 
         ctx.setLineDash([]); yOffset += rowH; return
       }
       const yCenter = yOffset + rowH / 2
-      const color   = getRowColor(row.colorKey, isDark)
+      const color   = getRowColor(row.colorKey, isDark, neonMode)
       let scale: number
       if (row.isEcg) {
         const sig = filteredSignals[row.sigA]
@@ -132,7 +154,7 @@ export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' 
         ctx.beginPath(); ctx.moveTo(pad.left, yOffset); ctx.lineTo(W - pad.right, yOffset); ctx.stroke()
       }
       if (row.isEcg) {
-        ctx.fillStyle = 'rgba(239,68,68,0.05)'
+        ctx.fillStyle = neonMode ? 'rgba(255,51,51,0.06)' : 'rgba(239,68,68,0.05)'
         ctx.fillRect(pad.left, yOffset, plotW, rowH)
       }
       ctx.fillStyle = color
@@ -140,12 +162,13 @@ export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' 
       ctx.textAlign = 'right'; ctx.fillText(row.label, pad.left - 3, yCenter + 3)
 
       const dataA = filteredSignals[row.sigA]
-      const dataB = row.sigB >= 0 ? filteredSignals[row.sigB] : null
+      const dataB = row.sigB === AVG_REF_SENTINEL ? (avgRef ?? null)
+                  : row.sigB >= 0 ? filteredSignals[row.sigB] : null
       const fs    = row.fs
       const s0    = Math.floor(viewStart * fs), s1 = Math.ceil(viewEnd * fs)
       const step  = Math.max(1, Math.floor((s1 - s0) / (plotW * 2)))
 
-      ctx.strokeStyle = color; ctx.lineWidth = row.isEcg ? 1.1 : 0.85; ctx.beginPath()
+      ctx.strokeStyle = color; ctx.lineWidth = neonMode ? (row.isEcg ? 1.4 : 1.1) : (row.isEcg ? 1.1 : 0.85); ctx.beginPath()
       let first = true
       for (let s = s0; s < s1 && s < dataA.length; s += step) {
         const val = dataA[s] - (dataB && s < dataB.length ? dataB[s] : 0)
@@ -163,7 +186,7 @@ export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' 
     ctx.fillStyle = isDark ? '#1e3a5f' : '#dbeafe'
     ctx.font = '9px system-ui'; ctx.textAlign = 'right'
     ctx.fillText(MONTAGE_LABELS[montage], W - pad.right, pad.top - 6)
-  }, [header, filteredSignals, montage, sensitivity, viewStart, windowSec])
+  }, [header, filteredSignals, avgRef, montage, sensitivity, viewStart, windowSec, neonMode])
 
   useEffect(() => { draw() }, [draw])
   useEffect(() => {
@@ -186,10 +209,10 @@ export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' 
 
         {/* Montage */}
         <div className="flex rounded-lg overflow-hidden border text-[11px] font-medium" style={{ borderColor: 'var(--border)' }}>
-          {(['bipolar', 'cz'] as MontageId[]).map(m => (
+          {([['bipolar', 'Doppelbanane'], ['cz', 'CZ-Ref.'], ['avg', 'Avg-Ref.']] as [MontageId, string][]).map(([m, label]) => (
             <button key={m} onClick={() => setMontage(m)} className="px-3 py-1.5 transition-colors"
               style={{ background: montage === m ? 'var(--brand)' : 'var(--bg-surface)', color: montage === m ? '#fff' : 'var(--text-secondary)' }}>
-              {m === 'bipolar' ? 'Doppelbanane' : 'CZ-Ref'}
+              {label}
             </button>
           ))}
         </div>
@@ -232,13 +255,29 @@ export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' 
           <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>TP</span>
           <select value={lpFreq ?? 'off'} onChange={e => setLpFreq(e.target.value === 'off' ? null : Number(e.target.value))}
             className="text-[11px] rounded px-1 py-0.5"
-            style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>
+            style={{ background: 'var(--bg-subtle)', border: `1px solid ${lpFreq === 35 ? '#f59e0b' : 'var(--border)'}`, color: lpFreq === 35 ? '#d97706' : 'var(--text-secondary)' }}>
             {LP_OPTIONS.map(o => <option key={o.label} value={o.value ?? 'off'}>{o.label}</option>)}
           </select>
+          {lpFreq === 35 && (
+            <span className="text-[10px] font-semibold text-amber-600" title="35 Hz filtert EMG-Artefakte heraus — diese können dann wie Hirnaktivität wirken. DGKN-Standard: 70 Hz.">
+              ⚠ EMG
+            </span>
+          )}
           <button onClick={() => setNotch(n => !n)} title="50 Hz Netzartefakt-Filter"
             className="px-2 py-0.5 rounded text-[10px] font-medium transition-colors"
             style={{ background: notch ? 'var(--brand)' : 'var(--bg-subtle)', border: '1px solid var(--border)', color: notch ? '#fff' : 'var(--text-secondary)' }}>
             50 Hz
+          </button>
+          <div className="w-px h-4 mx-1" style={{ background: 'var(--border)' }} />
+          <button onClick={() => setNeonMode(n => !n)} title="Neon-Modus (schwarzer Hintergrund)"
+            className="px-2 py-0.5 rounded text-[10px] font-medium transition-all"
+            style={{
+              background: neonMode ? '#080808' : 'var(--bg-subtle)',
+              border: `1px solid ${neonMode ? '#00ff88' : 'var(--border)'}`,
+              color: neonMode ? '#00ff88' : 'var(--text-secondary)',
+              boxShadow: neonMode ? '0 0 6px rgba(0,255,136,0.4)' : 'none',
+            }}>
+            ◉ Neon
           </button>
         </div>
 
@@ -288,13 +327,28 @@ export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' 
           <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>TP</span>
           <select value={lpFreq ?? 'off'} onChange={e => setLpFreq(e.target.value === 'off' ? null : Number(e.target.value))}
             className="text-[11px] rounded px-2 py-1.5"
-            style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>
+            style={{ background: 'var(--bg-subtle)', border: `1px solid ${lpFreq === 35 ? '#f59e0b' : 'var(--border)'}`, color: lpFreq === 35 ? '#d97706' : 'var(--text-secondary)' }}>
             {LP_OPTIONS.map(o => <option key={o.label} value={o.value ?? 'off'}>{o.label}</option>)}
           </select>
+          {lpFreq === 35 && (
+            <span className="text-[10px] font-semibold text-amber-600" title="35 Hz filtert EMG-Artefakte heraus — diese können dann wie Hirnaktivität wirken. DGKN-Standard: 70 Hz.">
+              ⚠ EMG
+            </span>
+          )}
           <button onClick={() => setNotch(n => !n)}
             className="px-3 py-1.5 rounded text-[10px] font-medium transition-colors"
             style={{ background: notch ? 'var(--brand)' : 'var(--bg-subtle)', border: '1px solid var(--border)', color: notch ? '#fff' : 'var(--text-secondary)' }}>
             50 Hz
+          </button>
+          <button onClick={() => setNeonMode(n => !n)}
+            className="px-3 py-1.5 rounded text-[10px] font-medium transition-all"
+            style={{
+              background: neonMode ? '#080808' : 'var(--bg-subtle)',
+              border: `1px solid ${neonMode ? '#00ff88' : 'var(--border)'}`,
+              color: neonMode ? '#00ff88' : 'var(--text-secondary)',
+              boxShadow: neonMode ? '0 0 6px rgba(0,255,136,0.4)' : 'none',
+            }}>
+            ◉ Neon
           </button>
         </div>
       )}
@@ -338,8 +392,13 @@ export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' 
           }
         }}
       >
-        {loading && <div className="absolute inset-0 flex items-center justify-center text-sm"
-          style={{ color: 'var(--text-tertiary)', background: 'var(--bg-surface)' }}>Lade EEG-Daten…</div>}
+        {loading && (
+          <div className="absolute inset-0 flex flex-col gap-2 p-3" style={{ background: 'var(--bg-surface)' }}>
+            {Array.from({ length: 14 }).map((_, i) => (
+              <div key={i} className="skeleton flex-1 rounded" style={{ animationDelay: `${i * 50}ms` }} />
+            ))}
+          </div>
+        )}
         {error && <div className="absolute inset-0 flex items-center justify-center text-sm text-red-500">Fehler: {error}</div>}
         <canvas ref={canvasRef} className="w-full h-full block" />
       </div>

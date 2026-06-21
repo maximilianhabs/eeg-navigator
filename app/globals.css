@@ -113,6 +113,11 @@ body {
   overflow: hidden;
   background: var(--bg-subtle);
   border-radius: 8px;
+  animation: skeleton-fade-in 0.25s ease both;
+}
+@keyframes skeleton-fade-in {
+  from { opacity: 0; transform: scaleX(0.96); }
+  to   { opacity: 1; transform: scaleX(1); }
 }
 .skeleton::after {
   content: '';

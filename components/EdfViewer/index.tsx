@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import { EDFParser } from './edfParser'
-import { buildMontageRows, MONTAGE_LABELS, getRowColor, type MontageId } from './montages'
+import { buildMontageRows, MONTAGE_LABELS, getRowColor, AVG_REF_SENTINEL, isStandardEegChannel, type MontageId } from './montages'
 import { filterSignal, HP_OPTIONS, LP_OPTIONS, DEFAULT_HP, DEFAULT_LP } from './filters'
 import type { EdfHeader } from './edfParser'
 
@@ -16,9 +16,9 @@ interface EdfExample {
 
 // ── Single canvas panel ───────────────────────────────────────────────────────
 
-function EdfPanel({ example, montage, sensitivity, windowSec, hpFreq, lpFreq, notch }: {
+function EdfPanel({ example, montage, sensitivity, windowSec, hpFreq, lpFreq, notch, neonMode, entityName }: {
   example: EdfExample; montage: MontageId; sensitivity: number; windowSec: number
-  hpFreq: number | null; lpFreq: number | null; notch: boolean
+  hpFreq: number | null; lpFreq: number | null; notch: boolean; neonMode: boolean; entityName?: string
 }) {
   const canvasRef                    = useRef<HTMLCanvasElement>(null)
   const [header,    setHeader]       = useState<EdfHeader | null>(null)
@@ -45,24 +45,46 @@ function EdfPanel({ example, montage, sensitivity, windowSec, hpFreq, lpFreq, no
     if (!header || signals.length === 0) return signals
     return signals.map((sig, i) => {
       const fs = header.signals[i].sampleRate
-      return filterSignal(sig, fs, hpFreq, lpFreq, notch)
+      const label = (header.signals[i].label || '').trim()
+      const isEkg = /ECG|EKG|CARD/i.test(label) || /^POL X1$/i.test(label)
+      return filterSignal(sig, fs, hpFreq, lpFreq, notch || isEkg)
     })
   }, [signals, header, hpFreq, lpFreq, notch])
+
+  // Average reference: Mittelwert aller Standard-10-20-EEG-Kanäle sample-weise
+  const avgRef = useMemo<Float32Array | null>(() => {
+    if (!header || filteredSignals.length === 0) return null
+    const eegIndices = header.signals
+      .map((s, i) => ({ i, label: (s.label || '').trim() }))
+      .filter(({ label }) => isStandardEegChannel(label))
+      .map(({ i }) => i)
+    if (eegIndices.length === 0) return null
+    const len = filteredSignals[eegIndices[0]].length
+    const avg = new Float32Array(len)
+    for (const i of eegIndices) {
+      const sig = filteredSignals[i]
+      for (let s = 0; s < len && s < sig.length; s++) avg[s] += sig[s]
+    }
+    const n = eegIndices.length
+    for (let s = 0; s < len; s++) avg[s] /= n
+    return avg
+  }, [filteredSignals, header])
 
   const duration = header ? header.numRecords * header.recordDuration : 0
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current
     if (!canvas || !header || filteredSignals.length === 0) return
+    // avgRef wird im Loop für Average-Referenz-Montage verwendet
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
     const W = canvas.width, H = canvas.height
     const isDark = document.documentElement.classList.contains('dark')
-    const bgColor     = isDark ? '#0d1117' : '#ffffff'
-    const gridColor   = isDark ? '#1e2436' : '#f1f5f9'
-    const timeColor   = isDark ? '#475569' : '#94a3b8'
-    const spacerColor = isDark ? '#2d3748' : '#e2e8f0'
+    const bgColor     = neonMode ? '#080808' : (isDark ? '#0d1117' : '#ffffff')
+    const gridColor   = neonMode ? '#1a1a1a' : (isDark ? '#1e2436' : '#f1f5f9')
+    const timeColor   = neonMode ? '#3a3a3a' : (isDark ? '#475569' : '#94a3b8')
+    const spacerColor = neonMode ? '#222222' : (isDark ? '#2d3748' : '#e2e8f0')
 
     ctx.fillStyle = bgColor; ctx.fillRect(0, 0, W, H)
 
@@ -103,7 +125,7 @@ function EdfPanel({ example, montage, sensitivity, windowSec, hpFreq, lpFreq, no
       }
 
       const yCenter = yOffset + rowH / 2
-      const color   = getRowColor(row.colorKey, isDark)
+      const color   = getRowColor(row.colorKey, isDark, neonMode)
 
       let scale: number
       if (row.isEcg) {
@@ -124,19 +146,20 @@ function EdfPanel({ example, montage, sensitivity, windowSec, hpFreq, lpFreq, no
         ctx.beginPath(); ctx.moveTo(pad.left, yOffset); ctx.lineTo(W - pad.right, yOffset); ctx.stroke()
       }
       if (row.isEcg) {
-        ctx.fillStyle = 'rgba(239,68,68,0.05)'
+        ctx.fillStyle = neonMode ? 'rgba(255,51,51,0.06)' : 'rgba(239,68,68,0.05)'
         ctx.fillRect(pad.left, yOffset, plotW, rowH)
       }
       ctx.fillStyle = color; ctx.font = row.isEcg ? 'bold 8px system-ui' : '9px system-ui'
       ctx.textAlign = 'right'; ctx.fillText(row.label, pad.left - 3, yCenter + 3)
 
       const dataA = filteredSignals[row.sigA]
-      const dataB = row.sigB >= 0 ? filteredSignals[row.sigB] : null
+      const dataB = row.sigB === AVG_REF_SENTINEL ? (avgRef ?? null)
+                  : row.sigB >= 0 ? filteredSignals[row.sigB] : null
       const fs = row.fs
       const s0 = Math.floor(viewStart * fs), s1 = Math.ceil(viewEnd * fs)
       const step = Math.max(1, Math.floor((s1 - s0) / (plotW * 2)))
 
-      ctx.strokeStyle = color; ctx.lineWidth = row.isEcg ? 1.1 : 0.85; ctx.beginPath()
+      ctx.strokeStyle = color; ctx.lineWidth = neonMode ? (row.isEcg ? 1.4 : 1.1) : (row.isEcg ? 1.1 : 0.85); ctx.beginPath()
       let first = true
       for (let s = s0; s < s1 && s < dataA.length; s += step) {
         const val = dataA[s] - (dataB && s < dataB.length ? dataB[s] : 0)
@@ -153,7 +176,7 @@ function EdfPanel({ example, montage, sensitivity, windowSec, hpFreq, lpFreq, no
     ctx.textAlign = 'right'; ctx.fillText(formatTime(Math.min(viewStart + windowSec, duration)), W - pad.right, H - 3)
     ctx.fillStyle = isDark ? '#1e3a5f' : '#dbeafe'; ctx.font = '9px system-ui'; ctx.textAlign = 'right'
     ctx.fillText(MONTAGE_LABELS[montage], W - pad.right, pad.top - 6)
-  }, [header, filteredSignals, montage, sensitivity, viewStart, windowSec, duration])
+  }, [header, filteredSignals, avgRef, montage, sensitivity, viewStart, windowSec, duration, neonMode])
 
   useEffect(() => { draw() }, [draw])
   useEffect(() => {
@@ -178,6 +201,12 @@ function EdfPanel({ example, montage, sensitivity, windowSec, hpFreq, lpFreq, no
           {formatTime(viewStart)} – {formatTime(Math.min(viewStart + windowSec, duration))}
         </span>
         <span className="ml-auto flex items-center gap-1.5">
+          {entityName && (
+            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded truncate max-w-[180px]"
+              style={{ background: 'var(--bg-subtle)', color: 'var(--text-secondary)', border: '1px solid var(--border)' }}>
+              {entityName}
+            </span>
+          )}
           <a href={`/eeg-viewer?file=${encodeURIComponent(example.filename)}`} target="_blank" rel="noopener noreferrer"
             title="In neuem Fenster öffnen (Vollbild)"
             className="w-5 h-5 flex items-center justify-center rounded hover:opacity-70 text-[10px]"
@@ -189,8 +218,13 @@ function EdfPanel({ example, montage, sensitivity, windowSec, hpFreq, lpFreq, no
         </span>
       </div>
       <div className="relative" style={{ height: 320 }}>
-        {loading && <div className="absolute inset-0 flex items-center justify-center text-sm"
-          style={{ color: 'var(--text-tertiary)', background: 'var(--bg-surface)' }}>Lade…</div>}
+        {loading && (
+          <div className="absolute inset-0 flex flex-col gap-2 p-3" style={{ background: 'var(--bg-surface)' }}>
+            {Array.from({ length: 10 }).map((_, i) => (
+              <div key={i} className="skeleton flex-1 rounded" style={{ animationDelay: `${i * 60}ms` }} />
+            ))}
+          </div>
+        )}
         {error && <div className="absolute inset-0 flex items-center justify-center text-sm text-red-500">Fehler: {error}</div>}
         <canvas ref={canvasRef} className="w-full h-full block" />
       </div>
@@ -200,7 +234,7 @@ function EdfPanel({ example, montage, sensitivity, windowSec, hpFreq, lpFreq, no
 
 // ── Main component ────────────────────────────────────────────────────────────
 
-export default function EdfViewer({ entityId }: { entityId: string }) {
+export default function EdfViewer({ entityId, entityName }: { entityId: string; entityName?: string }) {
   const [examples,     setExamples]     = useState<EdfExample[]>([])
   const [montage,      setMontage]      = useState<MontageId>('bipolar')
   const [sensitivity,  setSensitivity]  = useState(DEFAULT_SENSITIVITY)
@@ -208,6 +242,7 @@ export default function EdfViewer({ entityId }: { entityId: string }) {
   const [hpFreq,       setHpFreq]       = useState<number | null>(DEFAULT_HP)
   const [lpFreq,       setLpFreq]       = useState<number | null>(DEFAULT_LP)
   const [notch,        setNotch]        = useState(false)
+  const [neonMode,     setNeonMode]     = useState(false)
 
   const sensIdx = SENSITIVITY_STEPS.indexOf(sensitivity)
   const moreAmp = () => setSensitivity(SENSITIVITY_STEPS[Math.min(sensIdx + 1, SENSITIVITY_STEPS.length - 1)])
@@ -236,10 +271,10 @@ export default function EdfViewer({ entityId }: { entityId: string }) {
 
           {/* Montage */}
           <div className="flex rounded-lg overflow-hidden border text-[11px] font-medium" style={{ borderColor: 'var(--border)' }}>
-            {(['bipolar', 'cz'] as MontageId[]).map(m => (
+            {([['bipolar', 'Doppelbanane'], ['cz', 'CZ-Ref.'], ['avg', 'Avg-Ref.']] as [MontageId, string][]).map(([m, label]) => (
               <button key={m} onClick={() => setMontage(m)} className="px-3 py-1.5 transition-colors"
                 style={{ background: montage === m ? 'var(--brand)' : 'var(--bg-surface)', color: montage === m ? '#fff' : 'var(--text-secondary)' }}>
-                {m === 'bipolar' ? 'Doppelbanane' : 'CZ-Referenz'}
+                {label}
               </button>
             ))}
           </div>
@@ -274,11 +309,20 @@ export default function EdfViewer({ entityId }: { entityId: string }) {
           <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>TP</span>
           <select value={lpFreq ?? 'off'} onChange={e => setLpFreq(e.target.value === 'off' ? null : Number(e.target.value))}
             className="text-[11px] rounded px-1 py-0.5"
-            style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}>
+            style={{
+              background: 'var(--bg-subtle)',
+              border: `1px solid ${lpFreq === 35 ? '#f59e0b' : 'var(--border)'}`,
+              color: lpFreq === 35 ? '#d97706' : 'var(--text-secondary)',
+            }}>
             {LP_OPTIONS.map(o => (
               <option key={o.label} value={o.value ?? 'off'}>{o.label}</option>
             ))}
           </select>
+          {lpFreq === 35 && (
+            <span className="text-[10px] font-semibold text-amber-600" title="35 Hz filtert EMG-Artefakte heraus — diese können dann wie Hirnaktivität wirken. DGKN-Standard: 70 Hz.">
+              ⚠ EMG
+            </span>
+          )}
 
           <button onClick={() => setNotch(n => !n)} title="50 Hz Netzartefakt-Filter"
             className="px-2 py-0.5 rounded text-[10px] font-medium transition-colors"
@@ -288,6 +332,20 @@ export default function EdfViewer({ entityId }: { entityId: string }) {
               color: notch ? '#fff' : 'var(--text-secondary)'
             }}>
             50 Hz
+          </button>
+
+          <div className="w-px h-4 mx-1" style={{ background: 'var(--border)' }} />
+
+          {/* Neon Night Mode */}
+          <button onClick={() => setNeonMode(n => !n)} title="Neon-Modus (schwarzer Hintergrund)"
+            className="px-2 py-0.5 rounded text-[10px] font-medium transition-all"
+            style={{
+              background: neonMode ? '#080808' : 'var(--bg-subtle)',
+              border: `1px solid ${neonMode ? '#00ff88' : 'var(--border)'}`,
+              color: neonMode ? '#00ff88' : 'var(--text-secondary)',
+              boxShadow: neonMode ? '0 0 6px rgba(0,255,136,0.4)' : 'none',
+            }}>
+            ◉ Neon
           </button>
 
           <div className="w-px h-4 mx-1" style={{ background: 'var(--border)' }} />
@@ -303,7 +361,8 @@ export default function EdfViewer({ entityId }: { entityId: string }) {
         {/* Stacked panels */}
         {examples.map(ex => (
           <EdfPanel key={ex.filename} example={ex} montage={montage} sensitivity={sensitivity}
-            windowSec={windowSec} hpFreq={hpFreq} lpFreq={lpFreq} notch={notch} />
+            windowSec={windowSec} hpFreq={hpFreq} lpFreq={lpFreq} notch={notch}
+            neonMode={neonMode} entityName={entityName} />
         ))}
       </div>
     </div>

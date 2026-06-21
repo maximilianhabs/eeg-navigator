@@ -1,7 +1,10 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import fs from 'fs'
+import path from 'path'
 import { getAllArtefakte, getAllWellen, getWellenByCategory } from '@/lib/data'
 import { AtlasView } from '@/components/AtlasView'
+import { QuickAccess } from '@/components/QuickAccess'
 
 export const metadata: Metadata = { title: 'Atlas' }
 
@@ -16,6 +19,12 @@ export default function AtlasPage() {
   }, {})
   const completeWellen = alleWellen.filter(e => e.data_status === 'complete').length
   const completeArtefakte = alleArtefakte.filter(e => e.data_status === 'complete').length
+  const edfDir = path.join(process.cwd(), 'public', 'edf')
+  const edfCount = fs.existsSync(edfDir) ? fs.readdirSync(edfDir).filter(f => f.endsWith('.edf')).length : 0
+  const allEntities = [
+    ...alleWellen.map(e => ({ id: e.id, name: e.name })),
+    ...alleArtefakte.map(e => ({ id: e.id, name: e.name })),
+  ]
 
   return (
     <div className="space-y-7">
@@ -31,6 +40,7 @@ export default function AtlasPage() {
         <div className="flex gap-2">
           <StatPill label="Wellen" value={alleWellen.length} sub={`${completeWellen} vollständig`} color="blue" />
           <StatPill label="Artefakte" value={alleArtefakte.length} sub={`${completeArtefakte} vollständig`} color="amber" />
+          <StatPill label="EDF-Snippets" value={edfCount} sub="10-Sek.-Beispiele" color="emerald" />
         </div>
       </div>
 
@@ -85,6 +95,9 @@ export default function AtlasPage() {
           }
         />
       </div>
+
+      {/* ── Quick Access: Lesezeichen + Zuletzt gesehen ── */}
+      <QuickAccess allEntities={allEntities} />
 
       {/* ── Atlas ── */}
       <div className="animate-fade-in delay-150">
@@ -161,9 +174,9 @@ function ModuleCard({ href, title, description, badge, accentColor, icon }: {
 // ─── StatPill ─────────────────────────────────────────────────────────────────
 
 function StatPill({ label, value, sub, color }: {
-  label: string; value: number; sub: string; color: 'blue' | 'amber'
+  label: string; value: number; sub: string; color: 'blue' | 'amber' | 'emerald'
 }) {
-  const accent = color === 'blue' ? '#2563eb' : '#d97706'
+  const accent = color === 'blue' ? '#2563eb' : color === 'emerald' ? '#059669' : '#d97706'
   return (
     <div className="flex items-center gap-2 rounded-xl px-3 py-2 border text-sm"
       style={{

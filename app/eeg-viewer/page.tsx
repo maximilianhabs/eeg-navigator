@@ -7,6 +7,7 @@ interface EdfEntry {
   filename: string
   url: string
   slug: string
+  entityName: string | null
   age: string
   montage: string
   num: string
@@ -80,10 +81,10 @@ export default function EEGViewerPage() {
                   borderLeft: active?.filename === f.filename ? '3px solid var(--brand)' : '3px solid transparent',
                 }}>
                 <div className="text-[11px] font-medium truncate" style={{ color: 'var(--text-primary)' }}>
-                  {f.slug}
+                  {f.entityName ?? f.slug}
                 </div>
-                <div className="text-[10px] mt-0.5" style={{ color: 'var(--text-tertiary)' }}>
-                  {f.age} · {f.montage} · #{f.num}
+                <div className="text-[10px] mt-0.5 truncate" style={{ color: 'var(--text-tertiary)' }}>
+                  {f.slug} · {f.age} · #{f.num}
                 </div>
               </button>
             ))}

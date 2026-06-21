@@ -5,7 +5,8 @@
       "name": "eeg-navigator",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev", "--", "--port", "5100"],
-      "port": 5100
+      "port": 5100,
+      "autoPort": false
     }
   ]
 }

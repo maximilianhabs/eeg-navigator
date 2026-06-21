@@ -81,9 +81,9 @@ export const HP_OPTIONS: Array<{ label: string; value: number | null }> = [
   { label: '5 Hz', value: 5 },
 ]
 
-export const LP_OPTIONS: Array<{ label: string; value: number | null }> = [
+export const LP_OPTIONS: Array<{ label: string; value: number | null; warn?: boolean }> = [
   { label: 'Aus', value: null },
-  { label: '35 Hz', value: 35 },
+  { label: '35 Hz ⚠', value: 35, warn: true },
   { label: '70 Hz', value: 70 },
   { label: '150 Hz', value: 150 },
 ]

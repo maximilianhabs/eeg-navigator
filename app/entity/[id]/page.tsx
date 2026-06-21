@@ -4,6 +4,7 @@ import Link from 'next/link'
 import {
   getWelleById, getArtefaktById,
   resolveArtifactMimics, resolveEegMimics, resolveWellenDDs,
+  getEntityCategory, getEntityNeighbors,
 } from '@/lib/data'
 import { isWaveEntity } from '@/lib/types'
 import type { WaveEntity, ArtifactEntity } from '@/lib/types'
@@ -11,6 +12,8 @@ import { StatusBadge, ClassificationBadge, DiseaseValueBadge, Tag } from '@/comp
 import { label } from '@/lib/labels'
 import EdfViewer from '@/components/EdfViewer'
 import { isAdminAuthenticated } from '@/lib/admin-auth'
+import { TrackView } from '@/components/TrackView'
+import { BookmarkButton } from '@/components/BookmarkButton'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -31,12 +34,16 @@ export default async function EntityDetailPage({ params }: Props) {
 
   const isWave = isWaveEntity(entity)
   const isAdmin = await isAdminAuthenticated()
+  const category = getEntityCategory(id)
+  const { prev, next } = getEntityNeighbors(id)
 
   return (
     <div className="max-w-4xl animate-fade-in">
+      <TrackView id={id} />
 
-      {/* ── Back + Breadcrumb ── */}
-      <div className="flex items-center gap-3 mb-4">
+      {/* ── Breadcrumb + Prev/Next ── */}
+      <div className="flex items-center gap-2 mb-4 flex-wrap">
+        {/* Breadcrumb */}
         <Link href="/"
           className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all hover:-translate-x-0.5"
           style={{ backgroundColor: 'var(--bg-subtle)', color: 'var(--text-secondary)', border: '1px solid var(--border)' }}>
@@ -45,18 +52,51 @@ export default async function EntityDetailPage({ params }: Props) {
           </svg>
           Atlas
         </Link>
-        <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>/</span>
-        <span className="text-xs font-medium truncate" style={{ color: 'var(--text-secondary)' }}>{entity.name}</span>
-        {isAdmin && (
-          <Link href={`/admin/entity/${entity.id}`}
-            className="ml-auto inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium border transition-all hover:bg-violet-50 hover:border-violet-300 hover:text-violet-700"
-            style={{ color: 'var(--text-tertiary)', borderColor: 'var(--border)' }}>
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125"/>
-            </svg>
-            Bearbeiten
-          </Link>
+        {category && (
+          <>
+            <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>/</span>
+            <span className="text-xs px-2 py-1 rounded-md" style={{ color: 'var(--text-tertiary)', backgroundColor: 'var(--bg-subtle)' }}>
+              {category}
+            </span>
+          </>
         )}
+        <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>/</span>
+        <span className="text-xs font-medium truncate max-w-[180px]" style={{ color: 'var(--text-secondary)' }}>{entity.name}</span>
+
+        {/* Bookmark + Prev/Next + Admin — rechts */}
+        <div className="ml-auto flex items-center gap-1.5">
+          <BookmarkButton id={id} name={entity.name} />
+          {prev && (
+            <Link href={`/entity/${prev}`}
+              title="Vorherige Entität"
+              className="inline-flex items-center justify-center w-7 h-7 rounded-lg border transition-all hover:-translate-x-0.5"
+              style={{ color: 'var(--text-secondary)', borderColor: 'var(--border)', backgroundColor: 'var(--bg-subtle)' }}>
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/>
+              </svg>
+            </Link>
+          )}
+          {next && (
+            <Link href={`/entity/${next}`}
+              title="Nächste Entität"
+              className="inline-flex items-center justify-center w-7 h-7 rounded-lg border transition-all hover:translate-x-0.5"
+              style={{ color: 'var(--text-secondary)', borderColor: 'var(--border)', backgroundColor: 'var(--bg-subtle)' }}>
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
+              </svg>
+            </Link>
+          )}
+          {isAdmin && (
+            <Link href={`/admin/entity/${entity.id}`}
+              className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium border transition-all hover:bg-violet-50 hover:border-violet-300 hover:text-violet-700"
+              style={{ color: 'var(--text-tertiary)', borderColor: 'var(--border)' }}>
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125"/>
+              </svg>
+              Bearbeiten
+            </Link>
+          )}
+        </div>
       </div>
 
       {/* ── Mobile Sticky EEG-Kurzinfo ── */}
@@ -312,7 +352,7 @@ export default async function EntityDetailPage({ params }: Props) {
         <CrossRefs entity={entity} />
 
         {/* ── EEG-Beispiel (real) ── */}
-        <EdfViewer entityId={entity.id} />
+        <EdfViewer entityId={entity.id} entityName={entity.name} />
 
         {/* ── Quellen ── */}
         {(entity.source_notes?.length ?? 0) > 0 && (

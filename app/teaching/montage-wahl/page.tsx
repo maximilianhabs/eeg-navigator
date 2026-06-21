@@ -524,6 +524,133 @@ export default function MontageWahlPage() {
         </div>
       </div>
 
+      {/* Average-Referenz-Montage */}
+      <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-5 space-y-4">
+        <div className="flex items-start justify-between gap-3">
+          <h2 className="text-sm font-bold text-emerald-900">Average-Referenz-Montage</h2>
+          <span className="shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200">quick &amp; dirty</span>
+        </div>
+
+        <div className="rounded-lg bg-white/70 border border-emerald-200 px-3 py-2 text-xs text-emerald-900 font-mono">
+          V<sub>Avg</sub>(El) = V(El) − <span className="text-emerald-600">1/n · Σ V(El<sub>i</sub>)</span>
+          <span className="ml-3 font-sans text-emerald-700 not-italic">n = Anzahl einbezogener Elektroden</span>
+        </div>
+
+        {/* Infografik: Virtuelle Average-Elektrode */}
+        <div className="rounded-lg bg-white/70 border border-emerald-200 p-3">
+          <svg viewBox="0 0 680 430" xmlns="http://www.w3.org/2000/svg" className="w-full" style={{ maxWidth: 680 }}>
+            <defs>
+              <marker id="arr-blue" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6 Z" fill="#3b82f6" opacity="0.8"/>
+              </marker>
+              <marker id="arr-gray" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6 Z" fill="#94a3b8" opacity="0.5"/>
+              </marker>
+              <radialGradient id="avgGr" cx="50%" cy="40%" r="55%">
+                <stop offset="0%" stopColor="#d1fae5"/>
+                <stop offset="100%" stopColor="#a7f3d0"/>
+              </radialGradient>
+              <radialGradient id="headGr" cx="50%" cy="40%" r="60%">
+                <stop offset="0%" stopColor="#f8fafc"/>
+                <stop offset="100%" stopColor="#f1f5f9"/>
+              </radialGradient>
+            </defs>
+
+            {/* HEAD */}
+            <circle cx="230" cy="200" r="155" fill="url(#headGr)" stroke="#cbd5e1" strokeWidth="2"/>
+            <path d="M218,47 L230,32 L242,47" fill="none" stroke="#cbd5e1" strokeWidth="2" strokeLinejoin="round"/>
+            <ellipse cx="72" cy="200" rx="9" ry="14" fill="#f1f5f9" stroke="#cbd5e1" strokeWidth="1.5"/>
+            <ellipse cx="388" cy="200" rx="9" ry="14" fill="#f1f5f9" stroke="#cbd5e1" strokeWidth="1.5"/>
+            <line x1="230" y1="45" x2="230" y2="355" stroke="#e2e8f0" strokeWidth="0.6" strokeDasharray="4 4"/>
+            <line x1="75" y1="200" x2="385" y2="200" stroke="#e2e8f0" strokeWidth="0.6" strokeDasharray="4 4"/>
+
+            {/* ABLEITUNGSLINIEN — linke Hemisphäre + Mittellinie */}
+            {([[196,68],[241,63],[128,128],[177,118],[241,113],[99,200],[169,200],[241,200],[128,272],[177,282],[241,287],[196,332],[241,337]] as [number,number][]).map(([x,y],i) => (
+              <line key={i} x1={x} y1={y} x2={532} y2={200} stroke="#3b82f6" strokeWidth="1" opacity="0.28" markerEnd="url(#arr-blue)"/>
+            ))}
+            {/* Rechte Hemisphäre (gestrichelt) */}
+            {([[275,68],[305,118],[354,128],[313,200],[383,200],[305,282],[354,272],[275,332]] as [number,number][]).map(([x,y],i) => (
+              <line key={i} x1={x} y1={y} x2={532} y2={200} stroke="#94a3b8" strokeWidth="0.7" opacity="0.18" strokeDasharray="4 3" markerEnd="url(#arr-gray)"/>
+            ))}
+
+            {/* ELEKTRODEN — linke Hemisphäre + Mittellinie (blau) */}
+            {(['Fp1,185,68','Fpz,230,63','F7,117,128','F3,166,118','Fz,230,113','T3,88,200','C3,158,200','Cz,230,200','T5,117,272','P3,166,282','Pz,230,287','O1,185,332','Oz,230,337'].map(s => s.split(',') as [string,string,string])).map(([name,cx,cy]) => (
+              <g key={name}>
+                <circle cx={+cx} cy={+cy} r={11} fill="#3b82f6" stroke="white" strokeWidth="1.5"/>
+                <text x={+cx} y={+cy+4} textAnchor="middle" fontSize="8.5" fill="white" fontWeight="700">{name}</text>
+              </g>
+            ))}
+            {/* Rechte Hemisphäre (blau, halbtransparent) */}
+            {(['Fp2,275,68','F4,294,118','F8,343,128','C4,302,200','T4,372,200','P4,294,282','T6,343,272','O2,275,332'].map(s => s.split(',') as [string,string,string])).map(([name,cx,cy]) => (
+              <g key={name}>
+                <circle cx={+cx} cy={+cy} r={11} fill="#3b82f6" stroke="white" strokeWidth="1.5" opacity="0.4"/>
+                <text x={+cx} y={+cy+4} textAnchor="middle" fontSize="8.5" fill="white" fontWeight="700" opacity="0.6">{name}</text>
+              </g>
+            ))}
+            {/* A1 / A2 ausgeschlossen (rot) */}
+            <circle cx="56" cy="200" r="10" fill="#ef4444" stroke="white" strokeWidth="1.5"/>
+            <text x="56" y="204" textAnchor="middle" fontSize="8" fill="white" fontWeight="700">A1</text>
+            <text x="56" y="217" textAnchor="middle" fontSize="9" fill="#ef4444" fontWeight="700">✗</text>
+            <circle cx="404" cy="200" r="10" fill="#ef4444" stroke="white" strokeWidth="1.5"/>
+            <text x="404" y="204" textAnchor="middle" fontSize="8" fill="white" fontWeight="700">A2</text>
+            <text x="404" y="217" textAnchor="middle" fontSize="9" fill="#ef4444" fontWeight="700">✗</text>
+
+            {/* AVERAGE ELEKTRODE BUBBLE (grün) */}
+            <circle cx="590" cy="200" r="72" fill="none" stroke="#34d399" strokeWidth="1.5" opacity="0.5"/>
+            <circle cx="590" cy="200" r="62" fill="url(#avgGr)" stroke="#10b981" strokeWidth="2"/>
+            {([[578,158],[590,156],[602,158],[566,172],[578,170],[590,168],[602,170],[614,172],[563,186],[575,184],[590,183],[605,184],[617,186],[566,200],[578,198],[590,197],[602,198],[614,200],[578,213],[590,212],[602,213]] as [number,number][]).map(([x,y],i) => (
+              <circle key={i} cx={x} cy={y} r={4.5} fill="#10b981" opacity="0.72"/>
+            ))}
+            <line x1="545" y1="225" x2="635" y2="225" stroke="#34d399" strokeWidth="0.8" opacity="0.7"/>
+            <text x="590" y="238" textAnchor="middle" fontSize="11" fill="#065f46" fontWeight="800" letterSpacing="0.06em">AVG</text>
+            <text x="590" y="251" textAnchor="middle" fontSize="9" fill="#047857">= Σ(19) / 19</text>
+            <text x="590" y="120" textAnchor="middle" fontSize="10" fill="#065f46" fontWeight="700">Virtuelle</text>
+            <text x="590" y="133" textAnchor="middle" fontSize="10" fill="#065f46" fontWeight="700">Referenz-</text>
+            <text x="590" y="146" textAnchor="middle" fontSize="10" fill="#065f46" fontWeight="700">Elektrode</text>
+
+            {/* LEGENDE */}
+            <rect x="8" y="362" width="664" height="62" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+            <circle cx="28" cy="380" r="6" fill="#3b82f6"/>
+            <text x="40" y="384" fontSize="10" fill="#1e293b" fontWeight="600">Einbezogene Standard-10/20-Elektroden (19 gesamt)</text>
+            <circle cx="28" cy="398" r="6" fill="#10b981"/>
+            <text x="40" y="402" fontSize="10" fill="#065f46" fontWeight="600">Virtuelle Average-Elektrode — gemeinsamer Referenzpunkt aller Kanäle</text>
+            <circle cx="320" cy="380" r="6" fill="#ef4444"/>
+            <text x="332" y="384" fontSize="10" fill="#991b1b" fontWeight="600">Ausgeschlossen: A1/A2 (Ohrmastoide) — Pulsartefakt verzerrt Mittelwert</text>
+            <rect x="320" y="392" width="340" height="14" rx="4" fill="#fef2f2" stroke="#fca5a5" strokeWidth="0.7"/>
+            <text x="326" y="403" fontSize="9" fill="#7f1d1d">POL SpO₂ · EtCO₂ · DC-Kanäle · EKG ebenfalls ausgespart (falscher Wertebereich)</text>
+          </svg>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-emerald-800">
+          <div className="space-y-1.5">
+            <p className="font-semibold">Welche Elektroden gehen in den Average?</p>
+            <p>Standard: alle <strong>19 Elektroden</strong> des 10-20-Systems (Fp1/2, F7/3/z/4/8, T3/4, C3/z/4, T5/6, P3/z/4, O1/2).</p>
+            <p><strong>A1/A2 ausschließen</strong> — Ohrmastoide sind laut (Pulsartefakt, EKG) und verzerren den Mittelwert erheblich.</p>
+            <p className="text-emerald-700">Viele Systeme erlauben eine <strong>Reduced Average</strong>: nur ein Subset (z.B. 8–12 Elektroden) wird gemittelt. Vorteil: weniger Kontamination bei schlechter Kanalqualität. Nachteil: noch schlechtere Approximation einer echten Nullreferenz. In der ICU-Überwachung werden teils nur 8–10 Elektroden verwendet (Sensitivität Anfallserkennung ≈ 65 % vs. 76 % bei vollem Montage).</p>
+          </div>
+          <div className="space-y-1.5">
+            <p className="font-semibold">Vorteile</p>
+            <ul className="space-y-0.5 list-none">
+              <li>✓ Kein einzelner Referenzkanal kontaminiert alle Ableitungen</li>
+              <li>✓ Symmetrie der Hintergrundaktivität gut beurteilbar</li>
+              <li>✓ Generalisierte Aktivität (Alpha-Topographie, NCSE-Monitoring) darstellbar</li>
+            </ul>
+            <p className="font-semibold mt-2">Nachteile</p>
+            <ul className="space-y-0.5 list-none">
+              <li>✗ <strong>Feldkontamination:</strong> Großer Fokalherd (z.B. 200 µV Temporalspike) verteilt sich als Phantom-Signal auf alle anderen Kanäle</li>
+              <li>✗ <strong>Generalisierte Entladungen</strong> dominieren den Mittelwert → alle Kanäle erscheinen gedämpft</li>
+              <li>✗ 19 Elektroden decken die Kugeloberfläche unvollständig ab → Average ≠ echte Nullreferenz</li>
+              <li>✗ Inadäquate Feldlokalisation — Amplitudenmaximum ≠ echtes Feldmaximum</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="rounded-lg bg-white/60 border border-emerald-200 px-3 py-2 text-xs text-emerald-800">
+          <strong>Geeignet für:</strong> Screening, Symmetriebeurteilung, Monitoring.{' '}
+          <strong>Nicht geeignet für:</strong> präzise Fokuslokalisation und generalisierte Entladungen als Primärmontage.
+        </div>
+      </div>
+
       {/* Konzept-Karten */}
       <div className="space-y-3">
         <h2 className="text-base font-bold text-slate-900">Die 4 Schlüsselkonzepte</h2>

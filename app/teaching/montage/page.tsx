@@ -543,18 +543,27 @@ export default function MontageLehrPage() {
         <div className="w-px h-5 bg-slate-200 hidden sm:block" />
 
         {/* Dipol */}
-        <div className="flex items-center gap-2">
-          <button onClick={() => setShowDipole(d => !d)}
-            className={`rounded-lg border px-2.5 py-1 text-xs font-semibold transition-all ${
-              showDipole ? 'border-violet-400 bg-violet-600 text-white' : 'border-slate-200 bg-white text-slate-500 hover:border-violet-300'
-            }`}>
-            ⬡ Dipol
-          </button>
-          {showDipole && dipolePartnerName && (
-            <span className="text-[10px] text-violet-600">
-              Gegenpol ~{dipolePartnerName} ({polarity === 'negativ' ? 'pos.' : 'neg.'})
-            </span>
-          )}
+        <div className="flex items-center gap-2.5">
+          <label className="flex items-center gap-2 cursor-pointer shrink-0">
+            <span className="text-xs font-semibold text-slate-500">⬡ Dipol</span>
+            <button
+              role="switch"
+              aria-checked={showDipole}
+              onClick={() => setShowDipole(d => !d)}
+              className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 focus:outline-none ${
+                showDipole ? 'border-violet-500 bg-violet-600' : 'border-slate-300 bg-slate-200'
+              }`}
+            >
+              <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 ${
+                showDipole ? 'translate-x-4' : 'translate-x-0'
+              }`}/>
+            </button>
+          </label>
+          <span className="text-[10px] text-violet-600 min-w-[120px]">
+            {showDipole && dipolePartnerName
+              ? `Gegenpol ~${dipolePartnerName} (${polarity === 'negativ' ? 'pos.' : 'neg.'})`
+              : ''}
+          </span>
         </div>
       </div>
 
