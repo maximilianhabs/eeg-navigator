@@ -1619,9 +1619,12 @@
       "name": "Mu-Rhythmus",
       "aliases": [
         "µ-Rhythmus",
+        "Rolandischer Rhythmus",
         "sensomotorischer Rhythmus",
         "arcade rhythm",
-        "comb rhythm"
+        "comb rhythm",
+        "Mu Blocking",
+        "sensorimotorischer Idling-Rhythmus"
       ],
       "main_category": "Physiologische Wachmuster",
       "subcategory": "sensomotorischer Rhythmus",
@@ -1632,10 +1635,11 @@
         "typical_hz": 10
       },
       "amplitude": {
-        "label": "klein",
+        "label": "klein bis mittel",
         "min_uv": 20,
-        "max_uv": 60,
-        "typical_uv": 40
+        "max_uv": 100,
+        "typical_uv": 40,
+        "note": "Keine festen Amplitudenkriterien; Morphologie und Reaktivität wichtiger als absolute Amplitude"
       },
       "duration": {
         "label": "kurz",
@@ -1649,13 +1653,15 @@
         "zentral"
       ],
       "laterality": "bilateral_symmetrisch",
+      "laterality": "bilateral_asynchron",
+      "laterality_note": "Häufig bilateral asynchron oder zeitweise unilateral — eine Seitenbetonung ist physiologisch und hat für sich allein keinen Krankheitswert",
       "field_distribution": {
-        "description": "Zentrales Maximum über C3/Cz/C4, Motorkortex",
+        "description": "Zentrales Maximum über C3/Cz/C4, Generator im sensorimotorischen Kortex entlang des Sulcus centralis (prä- und postzentrale Verteilung)",
         "phase_reversal": "nicht_anwendbar",
         "field_plausibility": "fokal_mit_Ausbreitung",
         "reference_contamination_risk": "mittel"
       },
-      "morphology": "Wie der griechische Buchstabe µ: bogenförmig-asymmetrisch, scharfe negative Gipfel, runde positive Anteile ('comb-like')",
+      "morphology": "Arciform (bogenförmig-asymmetrisch): eine Flanke steil, die andere flach — dadurch kammförmig ('comb-like'). Scharfe negative Gipfel und runde positive Anteile imitieren oberflächlich Sharp Waves. Kein Nachpotential (aftergoing slow wave).",
       "potential_course": "Burst-artig, Blockade bei Bewegung oder Bewegungsvorstellung",
       "rhythmicity": "rhythmisch",
       "periodicity": "nicht_periodisch",
@@ -1676,33 +1682,43 @@
         "wach_entspannt",
         "augen_offen"
       ],
+      "occurrence_context": [
+        "wach_entspannt",
+        "augen_offen",
+        "schläfrig"
+      ],
+      "occurrence_note": "Bevorzugt bei entspannter Wachheit und motorischer Ruhe; wird bei leichter Schläfrigkeit (Drowsiness) oft besonders deutlich sichtbar. Wachrhythmus — kein Schlafmuster.",
       "sleep_stage": "nicht_anwendbar",
       "age_group": "alle",
       "pediatric_only": false,
       "dialog_logic": {
         "key_features": [
-          "zentrale Lokalisation",
-          "8-13 Hz wie Alpha",
-          "charakteristische µ-Morphologie",
-          "Blockade bei Bewegung/Vorstellung – NICHT bei Augenöffnung"
+          "zentrale Lokalisation (C3/C4/Cz) — NICHT okzipital",
+          "8-13 Hz, typisch 9-11 Hz (Alpha-Band)",
+          "arciforme/kammförmige Morphologie — asymmetrische Flanken",
+          "Blockade bei Bewegung oder Bewegungsvorstellung (ERD)",
+          "KEINE Blockade bei Augenöffnung — Schlüsselmerkmal"
         ],
         "criteria_for": [
           "Zentrale Lokalisation (C3/Cz/C4)",
           "Keine Blockade bei Augenöffnung",
-          "Blockade bei kontralateralem Faustschluss oder Vorstellung"
+          "Blockade bei kontralateralem Faustschluss oder Bewegungsvorstellung",
+          "Fehlendes Nachpotential (keine aftergoing slow wave)"
         ],
         "criteria_against": [
           "Okzipitale Dominanz (→ Alpha)",
-          "Blockade bei Augenöffnung (→ Alpha)"
+          "Blockade bei Augenöffnung (→ Alpha)",
+          "Nachpotential nach scharfer Welle (→ epileptiform)"
         ],
         "mimics": [
           "EEG_0001",
           "EEG_0042"
         ],
         "discriminating_questions": [
-          "Ist das Muster zentral und nicht okzipital?",
-          "Blockiert es bei Augenöffnung? (Mu: nein)",
-          "Verschwindet es bei Faustschluss oder Bewegungsvorstellung?"
+          "Ist das Muster zentral (C3/C4) und nicht okzipital?",
+          "Blockiert es bei Augenöffnung? (Mu: nein — Alpha: ja)",
+          "Verschwindet es bei kontralateralem Faustschluss oder Bewegungsvorstellung?",
+          "Gibt es ein Nachpotential nach der scharfen Komponente? (Mu: nein)"
         ]
       },
       "differential_diagnoses": [
@@ -1710,8 +1726,9 @@
         "EEG_0042"
       ],
       "common_misinterpretations": [
-        "Verwechslung mit Alpha-Rhythmus (Lokalisation entscheidend)",
-        "Verwechslung mit zentralen Spikes (Morphologie prüfen)"
+        "Verwechslung mit Alpha-Rhythmus: Frequenz identisch — Lokalisation (zentral vs. okzipital) und Reaktivität (Bewegung vs. Augenöffnung) entscheiden",
+        "Verwechslung mit zentralen Sharp Waves / Spikes: arciforme Morphologie kann spitz wirken, fehlendes Nachpotential und Bewegungsblockierung klären die Diagnose",
+        "Verwechslung mit fokaler Epilepsie: oft unilateral und amplitudenbetont — Rhythmik, fehlende Frequenzevolution und Blockierung durch Faustschluss sprechen gegen Anfallsmuster"
       ],
       "images": [
         {
@@ -1722,9 +1739,9 @@
           "status": "placeholder"
         }
       ],
-      "teaching_pearl": "Mu = Alpha-Frequenz aber zentral und blockiert bei Bewegung, nicht bei Licht. Durch kontralateralen Faustschluss aufzuheben.",
+      "teaching_pearl": "Mu = Alpha-Frequenz, zentrale Lokalisation, arciforme Morphologie. Blockiert bei Bewegung oder Bewegungsvorstellung (ERD) — NICHT bei Augenöffnung. Klinischer Test: kontralateraler Faustschluss → Rhythmus verschwindet sofort. Kein Nachpotential → kein Spike. Physiologisch ohne Krankheitswert. Heute wichtiger Forschungsrhythmus: Motor-Imagery, BCI, Neurofeedback nach Schlaganfall.",
       "warning": null,
-      "notes": "Kann durch kontralateralen Faustschluss oder Bewegungsvorstellung blockiert werden. Kein Krankheitswert.",
+      "notes": "Häufig bilateral asynchron oder unilateral — Seitenbetonung allein hat keinen Krankheitswert. Klinischer Nachweis: kontralateraler Faustschluss oder Bewegungsvorstellung → Blockade (Event-Related Desynchronization, ERD). Keine aftergoing slow wave nach scharfen Komponenten. Moderne Bedeutung: wichtigster Marker für Motor-Imagery-BCI und Neurofeedback-Paradigmen.",
       "data_status": "complete",
       "priority_for_mvp": "mittel",
       "source_notes": [
@@ -2250,6 +2267,9 @@
       "name": "Photic Driving",
       "aliases": [
         "Photic driving response",
+        "Photic Following Response",
+        "SSVEP",
+        "Steady-State Visual Evoked Potential",
         "Photoelektrische Reaktion",
         "Fotische Antwort",
         "Driving-Reaktion"
@@ -2261,7 +2281,7 @@
         "min_hz": 1,
         "max_hz": 30,
         "typical_hz": 10,
-        "note": "Entspricht der Stimulationsfrequenz oder deren Harmonischen/Subharmonischen"
+        "note": "Entspricht der Stimulationsfrequenz oder deren Harmonischen/Subharmonischen. Stärkste Kopplung oft nahe der individuellen Alpha-Grundrhythmik (typisch 8–20 Hz)"
       },
       "amplitude": {
         "label": "variabel",
@@ -2276,18 +2296,19 @@
         "typical_ms": null,
         "note": "Während Fotostimulation; klingt nach Ende der Stimulation ab"
       },
-      "polarity": "negativ",
+      "polarity": "montageabhängig",
+      "polarity_note": "Keine diagnostische Wertigkeit; rein montageabhängig (Referenz vs. bipolar). Nicht mit Spike-Polarität vergleichbar.",
       "localization": [
         "okzipital"
       ],
       "laterality": "bilateral_symmetrisch",
       "field_distribution": {
-        "description": "Okzipitales Maximum; Ausbreitung posterior; bei starker Reaktion auch parietal",
+        "description": "Okzipitales Maximum (O1, O2, Oz); Generator: primärer visueller Kortex (V1, Sulcus calcarinus) und extrastriäre Areale (V2, V3, V4, MT); bei starker Reaktion auch parietal",
         "phase_reversal": "nicht typisch",
         "field_plausibility": "fokal_okzipital",
         "reference_contamination_risk": "gering"
       },
-      "morphology": "Okzipitale Rhythmen streng synchron zur Flickerlichtfrequenz; Harmonic (2× Stim-Frequenz) und Subharmonic (0,5× Stim-Frequenz) möglich; Amplitude wechselt mit Stimulationsfrequenz",
+      "morphology": "Sinusoidal, bogenförmig, repetitiv. Keine Spikes, keine Sharp Waves, keine epileptiforme Morphologie. Harmonische Oberwellen (2× und 3× Stimulationsfrequenz) physiologisch (Ausdruck der Nichtlinearität des visuellen Systems); Subharmonische (0,5×) möglich. Amplitude wechselt mit Stimulationsfrequenz.",
       "potential_course": "Streng an Fotostimulation gebunden; variiert mit Stimulationsfrequenz; Maximum meist bei 10–18 Hz",
       "rhythmicity": "rhythmisch",
       "periodicity": "nicht_periodisch",
@@ -2329,20 +2350,25 @@
           "Asymmetrie >50% (→ fokal?)"
         ],
         "mimics": [
-          "EEG_0049"
+          "EEG_0049",
+          "ART_016"
         ],
         "discriminating_questions": [
           "Entspricht die Frequenz der Stimulation?",
           "Endet das Muster mit der Stimulation?",
-          "Gibt es eine anteriore Ausbreitung (→ PPR)?"
+          "Gibt es eine anteriore Ausbreitung (→ PPR)?",
+          "Zeigt das Muster Spikes oder Sharp Waves (→ epileptiform)?",
+          "Ist die Aktivität frontal betont und zackig (→ Photomyoklonus ART_016)?"
         ]
       },
       "differential_diagnoses": [
-        "EEG_0049"
+        "EEG_0049",
+        "ART_016"
       ],
       "common_misinterpretations": [
         "Asymmetrische Driving-Reaktion als Hemisphärenpathologie fehlgedeutet",
-        "Verwechslung mit photoparoxysmaler Reaktion"
+        "Verwechslung mit photoparoxysmaler Reaktion (EEG_0049)",
+        "Photomyoklonische Antwort (ART_016) als Photic Driving fehlgedeutet: frontal betont, zackiger, nicht streng sinusoidal"
       ],
       "images": [
         {
@@ -2353,7 +2379,7 @@
           "status": "placeholder"
         }
       ],
-      "teaching_pearl": "Photic Driving ist die normale okzipitale Frequenzantwort auf Flickerlicht. Streng frequenzsynchron, okzipital begrenzt, endet mit Stimulation. Anteriore Ausbreitung oder Persistenz → an PPR denken.",
+      "teaching_pearl": "Photic Driving ist ein Steady-State Visual Evoked Potential (SSVEP): physiologische Resonanz des visuellen Kortex auf Flickerlicht. Streng frequenzsynchron (f_Antwort = f_Stimulus), sinusoidal, okzipital begrenzt, endet sofort mit Stimulation. Harmonische (2×, 3×) sind physiologisch. Anteriore Ausbreitung, Spikes oder Persistenz → an PPR oder Photomyoklonus denken.",
       "warning": "Anteriore Ausbreitung oder Persistenz nach Stimulation: Verdacht auf photoparoxysmale Reaktion (EEG_0049).",
       "notes": "Physiologische Reaktion des visuellen Kortex auf Flickerlicht. Stärke variiert interindividuell stark. Asymmetrie >50% kann auf okzipitale Pathologie hinweisen.",
       "data_status": "complete",
@@ -2361,14 +2387,26 @@
       "source_notes": [
         "AASM",
         "Niedermeyer & da Silva",
-        "Lüders HO, Noachtar S, Rémi J. Electroencephalography: Textbook and Atlas. Oxford University Press; 2024. ISBN 978-0-19-750233-4"
+        "Lüders HO, Noachtar S, Rémi J. Electroencephalography: Textbook and Atlas. Oxford University Press; 2024. ISBN 978-0-19-750233-4",
+        "Noachtar S et al. (1999). A glossary of terms most commonly used by the IFCN. Electroencephalogr Clin Neurophysiol.",
+        "Herrmann CS (2001). Human EEG responses to 1–100 Hz flicker: resonance phenomena in visual cortex. Exp Brain Res.",
+        "Regan D (1989). Human Brain Electrophysiology. Evoked Potentials and Evoked Magnetic Fields in Science and Medicine."
       ],
       "cross_references": {
         "artifact_mimics": []
       },
       "spatial_distribution": "fokal",
       "spatial_subtype": null,
-      "spatial_note": null
+      "spatial_note": null,
+      "edf_markers": {
+        "EEG_0019__adult__bipolar__01.edf": [
+          {
+            "t": 4.5,
+            "label": "PHOTO 6 Hz",
+            "color": "amber"
+          }
+        ]
+      }
     },
     {
       "id": "EEG_0020",
@@ -13209,6 +13247,133 @@
       "source_notes": [
         "Lüders HO, Noachtar S, Rémi J. Electroencephalography: Textbook and Atlas. Oxford University Press; 2024. ISBN 978-0-19-750233-4"
       ]
+    },
+    {
+      "id": "EEG_0104",
+      "name": "REM-Schlaf",
+      "aliases": [
+        "Rapid Eye Movement Sleep",
+        "REM Sleep",
+        "Paradoxer Schlaf",
+        "Active Sleep",
+        "R-Schlaf"
+      ],
+      "main_category": "Schlaf- und Vigilanzmuster",
+      "subcategory": "REM",
+      "frequency": {
+        "label": "gemischt",
+        "min_hz": 2,
+        "max_hz": 30,
+        "typical_hz": 5,
+        "note": "Desynchronisiertes Niedrig-Volt-EEG (LVMF); überlagert von Sägezahnwellen-Bursts (4–7 Hz, zentral) vor phasischen REMs"
+      },
+      "amplitude": {
+        "label": "klein",
+        "min_uv": 5,
+        "max_uv": 100,
+        "typical_uv": 20,
+        "note": "Hintergrundaktivität niedrigamplitudig (<50 µV); Sägezahnwellen bis ~100 µV"
+      },
+      "duration": {
+        "label": "kontinuierlich",
+        "min_ms": null,
+        "max_ms": null,
+        "typical_ms": null,
+        "note": "REM-Phasen: 10–60 min; treten zyklisch auf (~90-min-Schlafzyklus); Phasen länger gegen Morgen"
+      },
+      "polarity": "wechselnd",
+      "localization": [
+        "generalisiert"
+      ],
+      "laterality": "bilateral_symmetrisch",
+      "field_distribution": {
+        "description": "Generalisiert desynchronisiertes Hintergrundmuster. Sägezahnwellen zentral-vertex (Cz). Phasische REMs frontopolar/frontal (F7/F8 gegenphasig als Artefakt).",
+        "phase_reversal": "nicht_anwendbar",
+        "field_plausibility": "generalisiert",
+        "reference_contamination_risk": "gering"
+      },
+      "morphology": "AASM-Kriterien: (1) Niedrig-amplitudiges gemischtfrequentes EEG (LVMF, desynchronisiert, 'paradoxer Schlaf'). (2) Schnelle Augenbewegungen (REMs): conjugat, phasisch, gegenphasig F7/F8. (3) Muskelatonie: niedriges EMG-Kinn-Signal (< Wach-Baseline). Optional: Sägezahnwellen (EEG_0029) als Begleitmarker phasischer REM-Aktivität.",
+      "potential_course": "Zyklisch; erste REM-Phase ca. 70–90 min nach Schlafbeginn; Dauer nimmt im Verlauf der Nacht zu (bis 60 min). Kein LVMF-Transient, sondern Staging-Kriterium nach AASM.",
+      "rhythmicity": "arrhythmisch",
+      "periodicity": "nicht_periodisch",
+      "montage_behavior": {
+        "bipolar_longitudinal": "Diffuse niedrigamplitudige Aktivität; REMs sichtbar als gegenphasige F7/F8-Deflexionen",
+        "bipolar_transverse": "Frontale Querreihe zeigt REMs deutlich (Fp1–F7 / Fp2–F8)",
+        "referential_cz": "Sägezahnwellen bei Cz gut sichtbar",
+        "referential_average": "Diffuse Verteilung; REMs frontal",
+        "referential_mastoid": "Standard; EOG-Kanäle für REM-Nachweis obligat",
+        "best_montage": "Bipolare Längsreihe + EOG + Kinn-EMG (Polysomnographie-Standard)",
+        "typical_montage": "bipolare Längsreihe",
+        "pitfalls": "Ohne EOG und EMG kaum von N1-LVMF zu unterscheiden. REM-Atonie im EMG ist Schlüsselkriterium."
+      },
+      "classification": "physiologisch",
+      "disease_value": "kein",
+      "occurrence_frequency": "sehr_haeufig",
+      "occurrence_context": [
+        "REM-Schlaf"
+      ],
+      "sleep_stage": "REM",
+      "age_group": "alle",
+      "pediatric_only": false,
+      "dialog_logic": {
+        "key_features": [
+          "schnelle Augenbewegungen (REMs) gegenphasig F7/F8",
+          "Muskelatonie (Kinn-EMG)",
+          "desynchronisiertes LVMF",
+          "Sägezahnwellen (optional)"
+        ],
+        "criteria_for": [
+          "Phasische REMs (gegenphasig F7/F8)",
+          "Kinn-EMG niedriger als im Wachen",
+          "LVMF-Hintergrund",
+          "Kein K-Komplex, keine Spindeln"
+        ],
+        "criteria_against": [
+          "Kinn-EMG erhöht (→ eher N1 oder Wachen)",
+          "Spindeln oder K-Komplexe (→ NREM)",
+          "Fehlen jeglicher REMs"
+        ],
+        "mimics": [
+          "EEG_0102",
+          "EEG_0029"
+        ],
+        "discriminating_questions": [
+          "Sind schnelle Augenbewegungen (REMs) nachweisbar?",
+          "Ist das Kinn-EMG atoner als im Wachen?",
+          "Sind Spindeln oder K-Komplexe vorhanden (→ spricht gegen REM)?"
+        ]
+      },
+      "differential_diagnoses": [
+        "EEG_0102",
+        "EEG_0029"
+      ],
+      "common_misinterpretations": [
+        "REM wird als N1 fehlklassifiziert wenn EOG/EMG fehlen",
+        "Phasische REMs (ART_003) werden als temporale Sharp Waves fehlgedeutet",
+        "Sägezahnwellen werden als epileptiforme Spikes fehlinterpretiert"
+      ],
+      "images": [],
+      "teaching_pearl": "REM = 'paradoxer Schlaf': das EEG ähnelt dem Wach-EEG (LVMF), der Patient schläft aber tief. Diagnosestützen: phasische REMs (F7/F8 gegenphasig), Muskelatonie im Kinn-EMG, optional Sägezahnwellen bei Cz. Ohne EOG und EMG ist REM-Staging im EEG allein nicht zuverlässig möglich.",
+      "warning": "Phasische Augenbewegungen (ART_003) können als temporale Sharp Waves fehlgedeutet werden. EOG obligat.",
+      "notes": "Funktionelle Bedeutung: Traumschlaf, Gedächtniskonsolidierung (emotionale und prozedurale Inhalte), synaptisches Homeostasis-Remodeling. REM-Schlafverhaltensstörung (RBD): REM ohne Atonie, potentielles Frühzeichen einer Synukleinopathie (Parkinson, DLB, MSA).",
+      "data_status": "complete",
+      "priority_for_mvp": "hoch",
+      "reactivity": [
+        "schlaf_aktiviert"
+      ],
+      "source_notes": [
+        "Berry RB et al. AASM Manual for the Scoring of Sleep and Associated Events. Version 3.0, 2023.",
+        "Iber C et al. The AASM Manual for the Scoring of Sleep. 1st ed. 2007.",
+        "Lüders HO, Noachtar S, Rémi J. Electroencephalography: Textbook and Atlas. Oxford University Press; 2024. ISBN 978-0-19-750233-4",
+        "Niedermeyer & da Silva"
+      ],
+      "cross_references": {
+        "artifact_mimics": ["ART_003", "ART_001"],
+        "eeg_related": ["EEG_0029", "EEG_0102"]
+      },
+      "spatial_distribution": "generalisiert",
+      "spatial_subtype": null,
+      "spatial_note": null
     }
   ],
   "excluded_artifact_or_non_wave_references": [
