@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import EdfViewerDirect from '@/components/EdfViewer/EdfViewerDirect'
 
+interface EdfMarker { t: number; label: string; color?: string }
 interface EdfEntry {
   filename: string
   url: string
@@ -11,6 +12,7 @@ interface EdfEntry {
   age: string
   montage: string
   num: string
+  markers?: EdfMarker[]
 }
 
 export default function EEGViewerPage() {
@@ -38,6 +40,7 @@ export default function EEGViewerPage() {
           <EdfViewerDirect
             url={active.url}
             filename={active.filename}
+            markers={active.markers}
             canvasHeight="calc(100vh - 130px)"
           />
         ) : (
@@ -93,7 +96,7 @@ export default function EEGViewerPage() {
           {/* Viewer */}
           <div className="flex-1 min-w-0">
             {active ? (
-              <EdfViewerDirect url={active.url} filename={active.filename} canvasHeight="calc(100vh - 220px)" />
+              <EdfViewerDirect url={active.url} filename={active.filename} markers={active.markers} canvasHeight="calc(100vh - 220px)" />
             ) : (
               <div className="rounded-2xl border flex items-center justify-center h-64 text-sm"
                 style={{ borderColor: 'var(--border)', color: 'var(--text-tertiary)', background: 'var(--bg-surface)' }}>

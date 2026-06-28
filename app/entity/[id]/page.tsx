@@ -352,7 +352,7 @@ export default async function EntityDetailPage({ params }: Props) {
         <CrossRefs entity={entity} />
 
         {/* ── EEG-Beispiel (real) ── */}
-        <EdfViewer entityId={entity.id} entityName={entity.name} />
+        <EdfViewer entityId={entity.id} entityName={entity.name} defaultNotch={(entity as any).default_notch === true} />
 
         {/* ── Quellen ── */}
         {(entity.source_notes?.length ?? 0) > 0 && (

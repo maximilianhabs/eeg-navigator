@@ -4,13 +4,6 @@ import { useEffect, useRef, useState } from 'react'
 import { EDFParser } from './EdfViewer/edfParser'
 import { findChannel } from './EdfViewer/montages'
 
-// Shared fetch cache
-let listPromise: Promise<{ slug: string; url: string; montage: string }[]> | null = null
-function fetchEdfList() {
-  if (!listPromise) listPromise = fetch('/api/edf/list').then(r => r.json()).catch(() => [])
-  return listPromise
-}
-
 // Temporale Rechts-Kette bipolar
 const PAIRS: [string, string][] = [['Fp2','F8'], ['F8','T4'], ['T4','T6'], ['T6','O2']]
 const START_SEC   = 2
@@ -25,9 +18,9 @@ export function EegThumbnail({ entityId }: { entityId: string }) {
     let cancelled = false
 
     async function load() {
-      const slug = entityId.toLowerCase()
-      const list = await fetchEdfList()
-      const entry = list.find(f => f.slug.toLowerCase() === slug)
+      // Use entity-specific route so aliases are resolved
+      const list: { url: string }[] = await fetch(`/api/edf/${entityId}`).then(r => r.json()).catch(() => [])
+      const entry = list[0]
       if (!entry) { setSkip(true); return }
       if (cancelled) return
 

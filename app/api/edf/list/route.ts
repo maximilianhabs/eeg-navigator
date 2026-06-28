@@ -3,6 +3,8 @@ import fs from 'fs'
 import path from 'path'
 import { getWelleById, getArtefaktById } from '@/lib/data'
 
+export interface EdfMarker { t: number; label: string; color?: string }
+
 export async function GET() {
   const dir = path.join(process.cwd(), 'public', 'edf')
   try {
@@ -11,6 +13,8 @@ export async function GET() {
       const parts = f.replace('.edf', '').split('__')
       const slug = parts[0] ?? ''
       const entity = getWelleById(slug) ?? getArtefaktById(slug)
+      const markerMap = (entity as any)?.edf_markers as Record<string, EdfMarker[]> | undefined
+      const markers: EdfMarker[] = markerMap?.[f] ?? []
       return {
         filename: f,
         url: `/edf/${f}`,
@@ -19,6 +23,7 @@ export async function GET() {
         age: parts[1] ?? '',
         montage: parts[2] ?? '',
         num: parts[3] ?? '01',
+        markers,
       }
     })
     return NextResponse.json(entries)

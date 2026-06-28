@@ -412,13 +412,16 @@
                   },
                   "patient_context": [
                         "Blickbewegungen seitlich",
-                        "Unruhe"
+                        "Unruhe",
+                        "REM-Schlaf (phasische Augenbewegungen)"
                   ],
                   "triggering_situation": [
-                        "Seitblick links/rechts"
+                        "Seitblick links/rechts",
+                        "Phasische REM-Augenbewegungen im Schlaf"
                   ],
                   "vigilance_context": [
-                        "wach"
+                        "wach",
+                        "REM"
                   ],
                   "auxiliary_channels": [
                         "EOG (horizontal)",
@@ -1728,6 +1731,7 @@
                   "notes": "Untertypen: (1) Elektroden-Pop — plötzlicher DC-Potenzialsprung → Hochpassfilter des Verstärkers erzeugt exponentiellen Abfall mit τ = 1/(2π·f_HP); gegenphasig bipolar; pathognomonisch. (2) Wackelartefakt — Kabelbewegung, repetitiv, bewegungskorreliert. (3) Schlechter Kontakt / hohe Impedanz / offene Elektrode — rail-to-rail. (4) Elektrodenbrücke / Salzbrücke — bipolarer Kanal = 0.\n\nWichtig: Der exponentielle Abfall beim Pop kommt nicht vom Entladen der Elektrode selbst, sondern vom Hochpassfilter-Schritt-Response des Verstärkers (DC-Sprung → HP-Filter → Exponentialabfall).",
                   "data_status": "complete",
                   "priority_for_mvp": "hoch",
+                  "default_notch": true,
                   "source_notes": [
                         "Lüders HO, Noachtar S, Rémi J. Electroencephalography: Textbook and Atlas. Oxford University Press; 2024. ISBN 978-0-19-750233-4"
                   ],

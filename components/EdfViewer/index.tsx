@@ -10,8 +10,11 @@ const SENSITIVITY_STEPS = [100, 50, 30, 20, 15, 10, 7, 5, 3, 1, 0.5, 0.2]
 const DEFAULT_SENSITIVITY = 1
 const PX_PER_MM = 96 / 25.4
 
+export interface EdfMarker { t: number; label: string; color?: string }
+
 interface EdfExample {
   filename: string; url: string; age: string; montage: string; num: string
+  markers?: EdfMarker[]
 }
 
 // ── Single canvas panel ───────────────────────────────────────────────────────
@@ -171,12 +174,41 @@ function EdfPanel({ example, montage, sensitivity, windowSec, hpFreq, lpFreq, no
       yOffset += rowH
     })
 
+    // Marker-Linien
+    const markers = example.markers ?? []
+    for (const marker of markers) {
+      if (marker.t < viewStart || marker.t > viewStart + windowSec) continue
+      const x = pad.left + (marker.t - viewStart) / windowSec * plotW
+      const markerColor = marker.color === 'amber' ? '#f59e0b'
+                        : marker.color === 'red'   ? '#ef4444'
+                        : marker.color === 'green' ? '#10b981'
+                        : '#f59e0b'
+      ctx.save()
+      ctx.strokeStyle = markerColor
+      ctx.lineWidth = 1.5
+      ctx.setLineDash([4, 3])
+      ctx.globalAlpha = 0.85
+      ctx.beginPath(); ctx.moveTo(x, pad.top); ctx.lineTo(x, H - pad.bottom); ctx.stroke()
+      ctx.restore()
+      // Label-Pill oben
+      ctx.font = 'bold 9px system-ui'
+      ctx.textAlign = 'left'
+      const tw = ctx.measureText(marker.label).width
+      const lx = Math.min(x + 4, W - pad.right - tw - 6)
+      ctx.fillStyle = markerColor
+      ctx.beginPath()
+      ctx.roundRect(lx - 2, pad.top, tw + 8, 14, 3)
+      ctx.fill()
+      ctx.fillStyle = '#ffffff'
+      ctx.fillText(marker.label, lx + 2, pad.top + 10)
+    }
+
     ctx.fillStyle = timeColor; ctx.font = '9px system-ui'
     ctx.textAlign = 'left'; ctx.fillText(formatTime(viewStart), pad.left, H - 3)
     ctx.textAlign = 'right'; ctx.fillText(formatTime(Math.min(viewStart + windowSec, duration)), W - pad.right, H - 3)
     ctx.fillStyle = isDark ? '#1e3a5f' : '#dbeafe'; ctx.font = '9px system-ui'; ctx.textAlign = 'right'
     ctx.fillText(MONTAGE_LABELS[montage], W - pad.right, pad.top - 6)
-  }, [header, filteredSignals, avgRef, montage, sensitivity, viewStart, windowSec, duration, neonMode])
+  }, [header, filteredSignals, avgRef, montage, sensitivity, viewStart, windowSec, duration, neonMode, example.markers])
 
   useEffect(() => { draw() }, [draw])
   useEffect(() => {
@@ -234,14 +266,14 @@ function EdfPanel({ example, montage, sensitivity, windowSec, hpFreq, lpFreq, no
 
 // ── Main component ────────────────────────────────────────────────────────────
 
-export default function EdfViewer({ entityId, entityName }: { entityId: string; entityName?: string }) {
+export default function EdfViewer({ entityId, entityName, defaultNotch = false }: { entityId: string; entityName?: string; defaultNotch?: boolean }) {
   const [examples,     setExamples]     = useState<EdfExample[]>([])
   const [montage,      setMontage]      = useState<MontageId>('bipolar')
   const [sensitivity,  setSensitivity]  = useState(DEFAULT_SENSITIVITY)
   const [windowSec,    setWindowSec]    = useState(10)
   const [hpFreq,       setHpFreq]       = useState<number | null>(DEFAULT_HP)
   const [lpFreq,       setLpFreq]       = useState<number | null>(DEFAULT_LP)
-  const [notch,        setNotch]        = useState(false)
+  const [notch,        setNotch]        = useState(defaultNotch)
   const [neonMode,     setNeonMode]     = useState(false)
 
   const sensIdx = SENSITIVITY_STEPS.indexOf(sensitivity)
@@ -324,14 +356,15 @@ export default function EdfViewer({ entityId, entityName }: { entityId: string; 
             </span>
           )}
 
-          <button onClick={() => setNotch(n => !n)} title="50 Hz Netzartefakt-Filter"
+          <button onClick={() => setNotch(n => !n)}
+            title={defaultNotch && notch ? '50 Hz Notch aktiv (für dieses Beispiel empfohlen)' : '50 Hz Netzartefakt-Filter'}
             className="px-2 py-0.5 rounded text-[10px] font-medium transition-colors"
             style={{
               background: notch ? 'var(--brand)' : 'var(--bg-subtle)',
-              border: '1px solid var(--border)',
+              border: `1px solid ${defaultNotch && notch ? 'var(--brand)' : 'var(--border)'}`,
               color: notch ? '#fff' : 'var(--text-secondary)'
             }}>
-            50 Hz
+            50 Hz{defaultNotch && notch ? ' ✓' : ''}
           </button>
 
           <div className="w-px h-4 mx-1" style={{ background: 'var(--border)' }} />

@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server'
 import fs from 'fs'
 import path from 'path'
+import { getWelleById, getArtefaktById } from '@/lib/data'
 
-function parseFilename(f: string) {
+export interface EdfMarker { t: number; label: string; color?: string }
+
+function parseFilename(f: string, markerMap?: Record<string, EdfMarker[]>) {
   const parts = f.replace('.edf', '').split('__')
   return {
     filename: f,
@@ -11,6 +14,7 @@ function parseFilename(f: string) {
     age: parts[1] ?? '',
     montage: parts[2] ?? '',
     num: parts[3] ?? '01',
+    markers: markerMap?.[f] ?? [],
   }
 }
 
@@ -34,7 +38,12 @@ export async function GET(_req: Request, { params }: { params: Promise<{ entityI
 
     // Merge, deduplicate
     const all = [...new Set([...direct, ...aliased])]
-    return NextResponse.json(all.map(parseFilename))
+
+    // Load markers from entity's edf_markers field
+    const entity = getWelleById(entityId) ?? getArtefaktById(entityId)
+    const markerMap = (entity as any)?.edf_markers as Record<string, EdfMarker[]> | undefined
+
+    return NextResponse.json(all.map(f => parseFilename(f, markerMap)))
   } catch {
     return NextResponse.json([])
   }

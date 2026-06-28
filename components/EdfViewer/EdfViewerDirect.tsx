@@ -10,13 +10,15 @@ const SENSITIVITY_STEPS = [100, 50, 30, 20, 15, 10, 7, 5, 3, 1, 0.5, 0.2]
 const DEFAULT_SENSITIVITY = 1
 const PX_PER_MM = 96 / 25.4
 
+interface EdfMarker { t: number; label: string; color?: string }
 interface Props {
   url: string
   filename: string
+  markers?: EdfMarker[]
   canvasHeight?: string
 }
 
-export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' }: Props) {
+export default function EdfViewerDirect({ url, filename, markers, canvasHeight = '420px' }: Props) {
   const canvasRef                      = useRef<HTMLCanvasElement>(null)
   const touchStartX                    = useRef<number | null>(null)
   const pinchRef                       = useRef<{ dist: number; win: number } | null>(null)
@@ -180,13 +182,33 @@ export default function EdfViewerDirect({ url, filename, canvasHeight = '420px' 
       yOffset += rowH
     })
 
+    // Marker overlays
+    for (const marker of (markers ?? [])) {
+      if (marker.t < viewStart || marker.t > viewStart + windowSec) continue
+      const x = pad.left + (marker.t - viewStart) / windowSec * plotW
+      const mc = marker.color === 'amber' ? '#f59e0b'
+               : marker.color === 'red'   ? '#ef4444'
+               : marker.color === 'green' ? '#22c55e'
+               : '#60a5fa'
+      ctx.save()
+      ctx.strokeStyle = mc; ctx.lineWidth = 1.5; ctx.setLineDash([4, 3]); ctx.globalAlpha = 0.85
+      ctx.beginPath(); ctx.moveTo(x, pad.top); ctx.lineTo(x, H - pad.bottom); ctx.stroke()
+      ctx.restore()
+      ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'left'
+      const tw = ctx.measureText(marker.label).width
+      const lx = Math.min(x + 4, W - pad.right - tw - 6)
+      ctx.fillStyle = mc
+      ctx.beginPath(); ctx.roundRect(lx - 2, pad.top, tw + 8, 14, 3); ctx.fill()
+      ctx.fillStyle = '#ffffff'; ctx.fillText(marker.label, lx + 2, pad.top + 10)
+    }
+
     ctx.fillStyle = timeColor; ctx.font = '9px system-ui'
     ctx.textAlign = 'left'; ctx.fillText(formatTime(viewStart), pad.left, H - 3)
     ctx.textAlign = 'right'; ctx.fillText(formatTime(viewEnd), W - pad.right, H - 3)
     ctx.fillStyle = isDark ? '#1e3a5f' : '#dbeafe'
     ctx.font = '9px system-ui'; ctx.textAlign = 'right'
     ctx.fillText(MONTAGE_LABELS[montage], W - pad.right, pad.top - 6)
-  }, [header, filteredSignals, avgRef, montage, sensitivity, viewStart, windowSec, neonMode])
+  }, [header, filteredSignals, avgRef, montage, sensitivity, viewStart, windowSec, neonMode, markers])
 
   useEffect(() => { draw() }, [draw])
   useEffect(() => {
