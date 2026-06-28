@@ -7601,7 +7601,8 @@
         "artifact_mimics": [
           "ART_001",
           "ART_002",
-          "ART_003"
+          "ART_003",
+          "ART_018"
         ]
       },
       "spatial_distribution": "fokal",
@@ -7728,7 +7729,9 @@
         "Lüders HO, Noachtar S, Rémi J. Electroencephalography: Textbook and Atlas. Oxford University Press; 2024. ISBN 978-0-19-750233-4"
       ],
       "cross_references": {
-        "artifact_mimics": []
+        "artifact_mimics": [
+          "ART_018"
+        ]
       },
       "spatial_distribution": "fokal",
       "spatial_subtype": null,
@@ -7849,7 +7852,9 @@
         "Lüders HO, Noachtar S, Rémi J. Electroencephalography: Textbook and Atlas. Oxford University Press; 2024. ISBN 978-0-19-750233-4"
       ],
       "cross_references": {
-        "artifact_mimics": []
+        "artifact_mimics": [
+          "ART_018"
+        ]
       },
       "spatial_distribution": "fokal",
       "spatial_subtype": null,
@@ -8089,7 +8094,9 @@
         "Lüders HO, Noachtar S, Rémi J. Electroencephalography: Textbook and Atlas. Oxford University Press; 2024. ISBN 978-0-19-750233-4"
       ],
       "cross_references": {
-        "artifact_mimics": []
+        "artifact_mimics": [
+          "ART_018"
+        ]
       },
       "spatial_distribution": "generalisiert",
       "spatial_subtype": null,
@@ -8216,7 +8223,8 @@
           "ART_014",
           "ART_017",
           "ART_022",
-          "ART_038"
+          "ART_038",
+          "ART_018"
         ]
       },
       "spatial_distribution": "fokal",
