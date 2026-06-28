@@ -361,7 +361,8 @@
       ],
       "common_misinterpretations": [
         "Vermehrte medikamentöse Beta wird als pathologisch fehlgedeutet",
-        "Breach-Rhythmus mit fokal erhöhter Beta wird als epileptiform fehlgedeutet"
+        "Breach-Rhythmus mit fokal erhöhter Beta wird als epileptiform fehlgedeutet",
+        "EMG-Artefakt wird als Beta-Aktivität fehlgedeutet – besonders wenn der Tiefpass-/Hochfrequenzfilter heruntergestellt wird (z.B. auf 35 Hz): die hochfrequenten EMG-Anteile werden weggefiltert, der Rest sieht erst recht wie frontozentrale Beta aus. Filter wieder auf 70 Hz öffnen entlarvt das Muskelartefakt."
       ],
       "images": [
         {
@@ -384,8 +385,7 @@
       ],
       "cross_references": {
         "artifact_mimics": [
-          "ART_008",
-          "ART_009"
+          "ART_008"
         ]
       },
       "spatial_distribution": "generalisiert",
@@ -5857,10 +5857,7 @@
       "cross_references": {
         "artifact_mimics": [
           "ART_004",
-          "ART_008",
-          "ART_010",
           "ART_017",
-          "ART_021",
           "ART_022"
         ]
       },
@@ -6057,9 +6054,9 @@
       ],
       "cross_references": {
         "artifact_mimics": [
+          "ART_002",
           "ART_003",
           "ART_004",
-          "ART_010",
           "ART_022"
         ]
       },
@@ -7577,7 +7574,8 @@
       },
       "differential_diagnoses": [
         "EEG_0055",
-        "EEG_0056"
+        "EEG_0056",
+        "EEG_0103"
       ],
       "common_misinterpretations": [
         "Augenartefakte können FIRDA imitieren – EOG-Elektroden prüfen"
@@ -7603,7 +7601,7 @@
         "artifact_mimics": [
           "ART_001",
           "ART_002",
-          "ART_013"
+          "ART_003"
         ]
       },
       "spatial_distribution": "fokal",
@@ -8056,7 +8054,8 @@
           "Kinder <2 Jahre (→ altersgerecht)"
         ],
         "mimics": [
-          "EEG_0004"
+          "EEG_0101",
+          "EEG_0023"
         ],
         "discriminating_questions": [
           "Ist der Patient wach?",
@@ -8065,7 +8064,8 @@
         ]
       },
       "differential_diagnoses": [
-        "EEG_0004"
+        "EEG_0101",
+        "EEG_0023"
       ],
       "common_misinterpretations": [
         "N3-Slow-Waves im Schlaf als pathologisch fehlgedeutet"
@@ -8213,10 +8213,10 @@
       ],
       "cross_references": {
         "artifact_mimics": [
+          "ART_014",
           "ART_017",
-          "ART_020",
           "ART_022",
-          "ART_034"
+          "ART_038"
         ]
       },
       "spatial_distribution": "fokal",
