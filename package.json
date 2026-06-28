@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "validate": "node scripts/validate-data.mjs"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.6",

@@ -47,6 +47,13 @@ if [ "$LOCAL" != "$REMOTE" ]; then
 fi
 green "  ✓ Lokal = origin/$BRANCH (alles gepusht)"
 
+# Datenintegrität: kaputte Querverweise, doppelte IDs, verwaiste EDF etc.
+if ! node scripts/validate-data.mjs; then
+  red "✗ Datenvalidierung fehlgeschlagen (siehe oben). Abbruch."
+  exit 1
+fi
+green "  ✓ Datenvalidierung bestanden"
+
 # ─── 2. Server: git pull (bringt Code + EDF via Bind-Mount) ─────────────────────
 blue "▶ Server: git pull"
 ssh "$SERVER" "cd $REMOTE_DIR && git pull origin $BRANCH"
