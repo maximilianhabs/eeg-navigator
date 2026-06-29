@@ -499,7 +499,8 @@
       "differential_diagnoses": [
         "EEG_0001",
         "EEG_0074",
-        "EEG_0020"
+        "EEG_0020",
+        "EEG_0105"
       ],
       "common_misinterpretations": [
         "Fehlende VBR bei Bewusstseinsstörung als Normalbefund fehlgewertet — fehlende Reaktivität ist ein wichtiges Pathologiezeichen",
@@ -13389,6 +13390,145 @@
       "spatial_distribution": "generalisiert",
       "spatial_subtype": null,
       "spatial_note": null
+    },
+    {
+      "id": "EEG_0105",
+      "name": "Paradoxe Alphaaktivierung",
+      "aliases": [
+        "Paradoxes Alpha",
+        "Paradoxical Alpha",
+        "Paradoxical Alpha Rhythm",
+        "Paradoxe Alpha-Reaktion",
+        "Alerting-Alpha",
+        "Paradoxe Alpha-Aktivierung"
+      ],
+      "main_category": "Hintergrundaktivität",
+      "additional_categories": [
+        "Reaktivitäts- und Aktivierungsmuster"
+      ],
+      "subcategory": "Reaktive Phänomene / Provokationsreaktionen",
+      "frequency": {
+        "label": "Alpha",
+        "min_hz": 8,
+        "max_hz": 13,
+        "typical_hz": 10,
+        "note": "Frequenz im Alpha-Band des posterioren Grundrhythmus (8–13 Hz). Das paradoxe Alpha entspricht dem reaktivierten PDR, nicht einer eigenen Frequenz."
+      },
+      "amplitude": {
+        "label": "niedrig → mittel",
+        "min_uv": 10,
+        "max_uv": 70,
+        "typical_uv": 40,
+        "note": "Bei Müdigkeit mit geschlossenen Augen ist Alpha attenuiert/abwesend; beim Augenöffnen (Weckreiz) kehrt es kurzzeitig mit mittlerer Amplitude zurück."
+      },
+      "duration": {
+        "label": "transient",
+        "min_ms": 1000,
+        "max_ms": 5000,
+        "typical_ms": 2000,
+        "note": "Kurzzeitige Alpha-Aktivierung für wenige Sekunden nach Augenöffnung, bis Vigilanz weiter steigt oder visuelle Fixation einsetzt."
+      },
+      "polarity": "alternierend",
+      "localization": [
+        "okzipital",
+        "parietal"
+      ],
+      "laterality": "bilateral_symmetrisch",
+      "field_distribution": {
+        "description": "Okzipital/parietal betont, identische Topographie wie der posteriore dominante Rhythmus (PDR). Bilateral symmetrisch. NICHT anterior/diffus — das unterscheidet es vom Alpha-Koma.",
+        "phase_reversal": "nicht_anwendbar",
+        "field_plausibility": "okzipital",
+        "reference_contamination_risk": "niedrig"
+      },
+      "morphology": "Sinusoidaler okzipitaler Alpha-Rhythmus (8–13 Hz), der im Schläfrigkeitszustand bei geschlossenen Augen attenuiert oder verschwunden ist und PARADOX beim Augenöffnen kurzzeitig zurückkehrt bzw. zunimmt. Genau umgekehrt zur normalen Blockadereaktion (Berger-Effekt), bei der Augenöffnung das Alpha unterdrückt. Im 10-Sek-Snippet typisch: müdigkeitsbedingt abgeflachtes/abwesendes Alpha bei geschlossenen Augen → Augenöffnung (oft mit Lidschlag-/Augenbewegungsartefakt frontal) → kurzzeitige okzipitale Alpha-Aktivierung als Weckreaktion.",
+      "potential_course": "Benigne, reproduzierbare Weckreaktion (Alerting-Response) im Übergang von Schläfrigkeit zu Wachheit. Kein Krankheitswert. Verschwindet mit zunehmender Vigilanz oder visueller Fixation (dann wieder normale Alpha-Blockade).",
+      "rhythmicity": "rhythmisch",
+      "periodicity": "reaktiv",
+      "montage_behavior": {
+        "bipolar_longitudinal": "Kurzzeitige Alpha-Zunahme in posterioren Kanälen (P3-O1, P4-O2) UNMITTELBAR NACH Augenöffnung — gegenläufig zur erwarteten Blockade.",
+        "bipolar_transverse": "Bilateral symmetrische okzipitale Alpha-Aktivierung",
+        "referential_cz": "Okzipitale Elektroden (O1/O2) zeigen die Alpha-Reaktivierung am deutlichsten",
+        "referential_average": "Gut geeignet zur Darstellung der posterioren Topographie",
+        "referential_mastoid": "Standard; dokumentiert die okzipitale Betonung",
+        "best_montage": "Bipolare Längsreihe oder Mastoid-Referenz; posteriore Kanäle zeigen das paradoxe Alpha am deutlichsten",
+        "typical_montage": "bipolare Längsreihe",
+        "pitfalls": "Augenöffnungs-/Lidschlagartefakt (frontal) kann den Onset überlagern — das paradoxe Alpha selbst ist aber okzipital. Cave Verwechslung mit Alpha-Koma: dieses ist anterior/diffus, monoton und AREAKTIV; paradoxes Alpha ist okzipital, transient und reaktiv (verschwindet bei weiterer Vigilanzsteigerung)."
+      },
+      "classification": "physiologisch",
+      "disease_value": "kein",
+      "occurrence_frequency": "gelegentlich",
+      "occurrence_context": [
+        "schläfrig",
+        "Augen_geschlossen_zu_offen",
+        "Provokation"
+      ],
+      "sleep_stage": "wach",
+      "age_group": "alle",
+      "pediatric_only": false,
+      "dialog_logic": {
+        "key_features": [
+          "Alpha ERSCHEINT/nimmt zu bei Augenöffnung (statt zu blockieren)",
+          "Kontext Schläfrigkeit/Müdigkeit — Alpha bei geschlossenen Augen attenuiert",
+          "Okzipital betont, bilateral symmetrisch",
+          "Transient, als Weckreaktion (Alerting-Response)",
+          "Reaktiv und benigne"
+        ],
+        "criteria_for": [
+          "Vorbestehende Schläfrigkeit mit attenuiertem Alpha bei geschlossenen Augen",
+          "Alpha-Aktivierung okzipital UNMITTELBAR NACH Augenöffnung",
+          "Bilateral symmetrisch",
+          "Verschwindet bei weiterer Vigilanzsteigerung/Fixation"
+        ],
+        "criteria_against": [
+          "Anterior/diffus betontes, monotones Alpha ohne Reaktivität (→ Alpha-Koma EEG_0070)",
+          "Alpha blockiert normal bei Augenöffnung im Wachzustand (→ Visuelle Blockadereaktion EEG_0003)",
+          "Persistierendes Alpha unabhängig von Augen/Vigilanz (→ pathologisch abklären)"
+        ],
+        "mimics": [
+          "EEG_0001",
+          "EEG_0003",
+          "EEG_0070"
+        ],
+        "discriminating_questions": [
+          "War der Patient schläfrig und das Alpha bei geschlossenen Augen abgeschwächt?",
+          "Erscheint das Alpha okzipital GENAU beim Augenöffnen?",
+          "Ist es transient und reaktiv (verschwindet bei mehr Wachheit)?",
+          "Ist es okzipital (paradoxes Alpha) oder anterior/diffus und areaktiv (Alpha-Koma)?"
+        ]
+      },
+      "differential_diagnoses": [
+        "EEG_0003",
+        "EEG_0001",
+        "EEG_0070",
+        "EEG_0080"
+      ],
+      "common_misinterpretations": [
+        "Als fehlende oder gestörte Blockadereaktion fehlgedeutet — tatsächlich ist es eine benigne Weckreaktion im Schläfrigkeitszustand",
+        "Mit Alpha-Koma (EEG_0070) verwechselt — dieses ist anterior/diffus, monoton und AREAKTIV, das paradoxe Alpha okzipital, transient und reaktiv",
+        "Augenöffnungsartefakt mit der okzipitalen Alpha-Aktivierung verwechselt",
+        "Als pathologische Reaktivitätsstörung im Befund gewertet, obwohl ohne Krankheitswert"
+      ],
+      "images": [],
+      "teaching_pearl": "Normalregel im Wachen: 'Augen auf = Alpha weg' (Berger-Effekt). Bei Müdigkeit gilt die paradoxe Ausnahme: 'Augen auf = Alpha DA'. Mechanismus: im Schläfrigkeitszustand ist das Alpha bei geschlossenen Augen weggefallen; das Augenöffnen wirkt als Weckreiz (Alerting), der den Grundrhythmus kurzzeitig reaktiviert — bevor visuelle Fixation ihn wieder blockiert. Wichtigste DD: Alpha-Koma (anterior, monoton, areaktiv) — das paradoxe Alpha ist okzipital, transient und reaktiv.",
+      "warning": "Paradoxes Alpha ist benigne und sollte nicht als Reaktivitätsstörung oder als Alpha-Koma fehlinterpretiert werden. Entscheidend ist die Abgrenzung zum Alpha-Koma (areaktiv, anterior/diffus, bei bewusstseinsgemindertem Patienten).",
+      "notes": "Mechanismus: Im Drowsiness-Zustand fällt der posteriore Alpha-Grundrhythmus bei geschlossenen Augen weg (Alpha-Dropout). Augenöffnung erzeugt einen kurzen Arousal-/Alerting-Effekt, der das Alpha reaktiviert, solange noch keine visuelle Fixation erfolgt — daher 'paradox' (umgekehrt zum Berger-Effekt im Wachzustand). Benigne Normalvariante ohne pathologische Bedeutung; klinisch v.a. wichtig zur Abgrenzung vom Alpha-Koma.",
+      "data_status": "complete",
+      "priority_for_mvp": "mittel",
+      "source_notes": [
+        "Niedermeyer E & da Silva FL: Electroencephalography, 6th ed. (Paradoxical alpha: Wiederauftreten von Alpha bei Augenöffnung im Schläfrigkeitszustand als Alerting-Response).",
+        "St. Louis EK, Frey LC (Hrsg.): Electroencephalography (EEG): An Introductory Text and Atlas. American Epilepsy Society 2016. NCBI Bookshelf NBK390343 (paradoxical alpha = return of alpha with an alerting stimulus or eye opening).",
+        "IFCN Standard EEG Terminology 2017 (Alpha-Reaktivität, posteriorer dominanter Rhythmus).",
+        "Lüders HO, Noachtar S, Rémi J. Electroencephalography: Textbook and Atlas. Oxford University Press; 2024. ISBN 978-0-19-750233-4"
+      ],
+      "cross_references": {
+        "artifact_mimics": [
+          "ART_001",
+          "ART_002"
+        ]
+      },
+      "spatial_distribution": "regional",
+      "spatial_subtype": null,
+      "spatial_note": "Okzipital/parietal betont — identisch zur Topographie des PDR; klare Abgrenzung zum anterior/diffusen Alpha-Koma"
     }
   ],
   "excluded_artifact_or_non_wave_references": [
