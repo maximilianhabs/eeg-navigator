@@ -1384,7 +1384,10 @@
                         "niedrige EEG-Amplitude macht EKG-Artefakt sichtbarer",
                         "tachykard"
                   ],
-                  "triggering_situation": "Immer vorhanden; ausgeprägter bei hoher Herzfrequenz, tiefliegenden Elektroden, ungünstiger Referenz",
+                  "triggering_situation": [
+                        "Immer vorhanden",
+                        "ausgeprägter bei hoher Herzfrequenz, tiefliegenden Elektroden, ungünstiger Referenz"
+                  ],
                   "vigilance_context": [
                         "wach",
                         "schlaefrig",
@@ -1523,7 +1526,10 @@
                         "starke extrakranielle Pulsation",
                         "moeglich bei Kollateralzirkulation ueber extrakranielle Gefaesse"
                   ],
-                  "triggering_situation": "Elektrode über Arterie; MRT-EEG-Kombination (BCG ausgeprägter)",
+                  "triggering_situation": [
+                        "Elektrode über Arterie",
+                        "MRT-EEG-Kombination (BCG ausgeprägter)"
+                  ],
                   "vigilance_context": [],
                   "auxiliary_channels": [
                         "EKG",
@@ -2019,7 +2025,10 @@
                         "schlechte Erdung",
                         "elektrische Geraete in Naehe"
                   ],
-                  "triggering_situation": "Schlechte Erdung, hohe Impedanz, Nähe zu Netzgeräten; fokal bei einzelner schlechter Elektrode",
+                  "triggering_situation": [
+                        "Schlechte Erdung, hohe Impedanz, Nähe zu Netzgeräten",
+                        "fokal bei einzelner schlechter Elektrode"
+                  ],
                   "vigilance_context": [],
                   "auxiliary_channels": [
                         "Frequenzanalyse",
@@ -2450,7 +2459,11 @@
                         "stationaeres Setting",
                         "Pumpen nahe EEG-Kabeln"
                   ],
-                  "triggering_situation": "Intensivstation (ICU-EEG); aktive Pumpen/Geräte; schlechte Erdung der Geräte",
+                  "triggering_situation": [
+                        "Intensivstation (ICU-EEG)",
+                        "aktive Pumpen/Geräte",
+                        "schlechte Erdung der Geräte"
+                  ],
                   "vigilance_context": [],
                   "auxiliary_channels": [
                         "Geraete-/Zeitprotokoll",
@@ -3091,7 +3104,12 @@
                         "implantierter VNS",
                         "Epilepsiepatient"
                   ],
-                  "triggering_situation": "Implantat aktiv; VNS-Zyklen nach Timer; DBS kontinuierlich; RNS bedarfsgesteuert",
+                  "triggering_situation": [
+                        "Implantat aktiv",
+                        "VNS-Zyklen nach Timer",
+                        "DBS kontinuierlich",
+                        "RNS bedarfsgesteuert"
+                  ],
                   "vigilance_context": [],
                   "auxiliary_channels": [
                         "Anamnese",

@@ -106,6 +106,20 @@ for (const e of wellen)
     if (e[field] === undefined || e[field] === null || e[field] === '')
       err(`Pflichtfeld fehlt: ${e.id}.${field}`)
 
+// ─── 5b. Array-Felder (ERROR) ───────────────────────────────────────────────────
+// Felder, die die UI mit .map() rendert → müssen Arrays sein (sonst Render-Crash).
+// Gefangen am 2026-06-29: triggering_situation als String → "x.map is not a function".
+const ARRAY_FIELDS_WELLEN = ['aliases', 'localization', 'occurrence_context', 'differential_diagnoses', 'common_misinterpretations', 'source_notes']
+const ARRAY_FIELDS_ARTS = ['aliases', 'localization', 'triggering_situation', 'patient_context', 'vigilance_context', 'common_misinterpretations', 'source_notes']
+for (const e of wellen)
+  for (const field of ARRAY_FIELDS_WELLEN)
+    if (e[field] !== undefined && e[field] !== null && !Array.isArray(e[field]))
+      err(`Feld muss Array sein (UI rendert mit .map()): ${e.id}.${field} ist ${typeof e[field]}`)
+for (const e of arts)
+  for (const field of ARRAY_FIELDS_ARTS)
+    if (e[field] !== undefined && e[field] !== null && !Array.isArray(e[field]))
+      err(`Feld muss Array sein (UI rendert mit .map()): ${e.id}.${field} ist ${typeof e[field]}`)
+
 // ─── 6. ID-Lücken & partielle Entitäten (WARN) ──────────────────────────────────
 const nums = wellen.map(e => parseInt(e.id.split('_')[1])).filter(n => !isNaN(n)).sort((a, b) => a - b)
 const gaps = []
