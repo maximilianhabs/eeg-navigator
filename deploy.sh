@@ -2,15 +2,21 @@
 #
 # deploy.sh — sicheres Deployment des EEG-Navigators auf neuro-vibe.de
 #
-# Verhindert strukturell die Fehlerklasse vom 2026-06-28:
+# Verhindert strukturell die Fehlerklasse vom 2026-06-28/29:
 #   1. Uncommittete/ungepushte Arbeit, die nie deployed wird
-#   2. Stale data/-Volume (named volume wird von git pull NICHT aktualisiert)
+#   2. Daten-Änderungen ohne Rebuild (data/*.json wird via `import` ins Image
+#      GEBACKEN — lib/data.ts: `import wellenRaw from '@/data/wellen.json'`.
+#      docker cp ins Volume bringt NICHTS; nur `docker compose build` wirkt!)
 #   3. Divergenz lokal <-> Server bei EDF-Dateien
 #
+# WICHTIG: Jede Änderung an data/wellen.json oder data/artefakte.json braucht
+# einen REBUILD (Modus full). Nur reine EDF-Datei-Ergänzungen (Binärdatei, ohne
+# JSON-Änderung) kommen über --edf live, weil public/edf ein Bind-Mount ist und
+# die API das Verzeichnis zur Laufzeit liest.
+#
 # Aufruf:
-#   ./deploy.sh            # Code + Daten + EDF
-#   ./deploy.sh --data     # nur data/*.json neu syncen (kein Rebuild)
-#   ./deploy.sh --edf      # nur EDF-Dateien (git pull + restart, kein Rebuild)
+#   ./deploy.sh            # full: Rebuild — für Code- ODER Daten-Änderungen
+#   ./deploy.sh --edf      # nur neue EDF-Binärdateien (kein JSON) — git pull + restart
 #
 set -euo pipefail
 
@@ -25,6 +31,27 @@ green() { printf '\033[32m%s\033[0m\n' "$*"; }
 blue()  { printf '\033[34m%s\033[0m\n' "$*"; }
 
 cd "$(dirname "$0")"
+
+# ─── 0. Modus prüfen ────────────────────────────────────────────────────────────
+if [ "$MODE" != "full" ] && [ "$MODE" != "--edf" ]; then
+  if [ "$MODE" = "--data" ]; then
+    red "✗ --data gibt es nicht mehr: data/*.json wird ins Image gebacken."
+    red "→ Bei JSON-Änderungen IMMER vollen Rebuild: ./deploy.sh (ohne Argument)."
+  else
+    red "✗ Unbekannter Modus '$MODE'. Erlaubt: (ohne Argument) | --edf"
+  fi
+  exit 1
+fi
+
+# Sicherung: --edf nur wenn der zu deployende Stand KEINE data/*.json-Änderung enthält
+if [ "$MODE" = "--edf" ]; then
+  if git diff --name-only "origin/$BRANCH@{1}" "origin/$BRANCH" 2>/dev/null | grep -q '^data/.*\.json$' \
+     || git show --name-only --pretty=format: HEAD | grep -q '^data/.*\.json$'; then
+    red "✗ --edf, aber der letzte Commit ändert data/*.json — das braucht einen Rebuild."
+    red "→ Nutze ./deploy.sh (full)."
+    exit 1
+  fi
+fi
 
 # ─── 1. Pre-Flight: lokaler Zustand MUSS sauber sein ────────────────────────────
 blue "▶ Pre-Flight-Checks (lokal)"
@@ -58,32 +85,18 @@ green "  ✓ Datenvalidierung bestanden"
 blue "▶ Server: git pull"
 ssh "$SERVER" "cd $REMOTE_DIR && git pull origin $BRANCH"
 
-# ─── 3. Rebuild (nur bei full) ──────────────────────────────────────────────────
+# ─── 3. Rebuild (full) ODER Restart (--edf) ─────────────────────────────────────
+# data/*.json wird ins Image gebacken → full MUSS rebuilden, damit JSON-Änderungen
+# (Entitäten, Marker, Cross-Refs) live gehen. --edf braucht nur einen Restart, weil
+# public/edf ein Bind-Mount ist und git pull die Binärdateien schon gebracht hat.
 if [ "$MODE" = "full" ]; then
-  blue "▶ Server: docker compose build + up"
+  blue "▶ Server: docker compose build + up (bäckt data/*.json neu ins Image)"
   ssh "$SERVER" "cd $REMOTE_DIR && docker compose build && docker compose up -d"
-fi
-
-# ─── 4. data/-Volume syncen (full + --data) MIT Backup ──────────────────────────
-if [ "$MODE" = "full" ] || [ "$MODE" = "--data" ]; then
-  blue "▶ Server: data/-Volume syncen (mit Backup)"
-  ssh "$SERVER" "
-    set -e
-    TS=\$(date +%Y%m%d_%H%M%S)
-    docker exec $CONTAINER sh -c 'mkdir -p /app/data/backups && cp /app/data/wellen.json /app/data/backups/wellen_\$TS.json && cp /app/data/artefakte.json /app/data/backups/artefakte_\$TS.json'
-    echo \"  Backup: wellen_\$TS.json + artefakte_\$TS.json\"
-    docker cp $REMOTE_DIR/data/wellen.json    $CONTAINER:/app/data/wellen.json
-    docker cp $REMOTE_DIR/data/artefakte.json $CONTAINER:/app/data/artefakte.json
-    echo '  data/*.json kopiert'
-  "
-fi
-
-# ─── 5. Restart (data/edf-Modi brauchen Re-Read; full hat schon up -d) ──────────
-if [ "$MODE" != "full" ]; then
-  blue "▶ Server: docker restart (JSON wird beim Start in Speicher geladen)"
+else
+  blue "▶ Server: docker restart (EDF-Verzeichnis wird zur Laufzeit neu gelesen)"
   ssh "$SERVER" "docker restart $CONTAINER"
 fi
-sleep 10
+sleep 12
 
 # ─── 6. Verifikation: EDF-Liste lokal == Server ─────────────────────────────────
 blue "▶ Verifikation: EDF-Dateien lokal == Server"
