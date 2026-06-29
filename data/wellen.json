@@ -2405,6 +2405,13 @@
             "label": "PHOTO 6 Hz",
             "color": "amber"
           }
+        ],
+        "EEG_0019__adult__bipolar__02.edf": [
+          {
+            "t": 4,
+            "label": "PHOTO 12 Hz",
+            "color": "amber"
+          }
         ]
       }
     },
