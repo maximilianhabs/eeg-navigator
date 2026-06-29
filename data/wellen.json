@@ -13508,7 +13508,15 @@
         "Augenöffnungsartefakt mit der okzipitalen Alpha-Aktivierung verwechselt",
         "Als pathologische Reaktivitätsstörung im Befund gewertet, obwohl ohne Krankheitswert"
       ],
-      "images": [],
+      "images": [
+        {
+          "file": "EEG_0105__adult__bipolar__01.edf",
+          "montage": "bipolare Längsreihe",
+          "context": "Schläfrigkeit, Augenöffnung mit paradoxer okzipitaler Alpha-Aktivierung",
+          "caption": "Paradoxes Alpha: bei Müdigkeit attenuiertes Alpha, das beim Augenöffnen kurzzeitig zurückkehrt (Weckreaktion)",
+          "status": "edf"
+        }
+      ],
       "teaching_pearl": "Normalregel im Wachen: 'Augen auf = Alpha weg' (Berger-Effekt). Bei Müdigkeit gilt die paradoxe Ausnahme: 'Augen auf = Alpha DA'. Mechanismus: im Schläfrigkeitszustand ist das Alpha bei geschlossenen Augen weggefallen; das Augenöffnen wirkt als Weckreiz (Alerting), der den Grundrhythmus kurzzeitig reaktiviert — bevor visuelle Fixation ihn wieder blockiert. Wichtigste DD: Alpha-Koma (anterior, monoton, areaktiv) — das paradoxe Alpha ist okzipital, transient und reaktiv.",
       "warning": "Paradoxes Alpha ist benigne und sollte nicht als Reaktivitätsstörung oder als Alpha-Koma fehlinterpretiert werden. Entscheidend ist die Abgrenzung zum Alpha-Koma (areaktiv, anterior/diffus, bei bewusstseinsgemindertem Patienten).",
       "notes": "Mechanismus: Im Drowsiness-Zustand fällt der posteriore Alpha-Grundrhythmus bei geschlossenen Augen weg (Alpha-Dropout). Augenöffnung erzeugt einen kurzen Arousal-/Alerting-Effekt, der das Alpha reaktiviert, solange noch keine visuelle Fixation erfolgt — daher 'paradox' (umgekehrt zum Berger-Effekt im Wachzustand). Benigne Normalvariante ohne pathologische Bedeutung; klinisch v.a. wichtig zur Abgrenzung vom Alpha-Koma.",
