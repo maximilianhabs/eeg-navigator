@@ -120,6 +120,24 @@ for (const e of arts)
     if (e[field] !== undefined && e[field] !== null && !Array.isArray(e[field]))
       err(`Feld muss Array sein (UI rendert mit .map()): ${e.id}.${field} ist ${typeof e[field]}`)
 
+// ─── 5c. Topografie-Vokabular (ERROR) ───────────────────────────────────────────
+// Jeder localization-Wert MUSS in LOC_TO_REGIONS (data/topography.ts) gemappt sein,
+// sonst fehlt die Entität stillschweigend in der Topografie-Karte.
+try {
+  const topoSrc = readFileSync(join(root, 'data', 'topography.ts'), 'utf8')
+  const block = topoSrc.slice(topoSrc.indexOf('LOC_TO_REGIONS'), topoSrc.indexOf('export interface RegionEntities'))
+  const mapped = new Set([...block.matchAll(/'([^']+)':\s*\[/g)].map(m => m[1]))
+  const seen = new Set()
+  for (const e of wellen)
+    for (const loc of e.localization ?? [])
+      if (!mapped.has(loc) && !seen.has(loc)) {
+        seen.add(loc)
+        err(`localization '${loc}' ist nicht in LOC_TO_REGIONS gemappt (data/topography.ts) → fehlt in der Topografie-Karte`)
+      }
+} catch (e) {
+  warn(`Topografie-Vokabular nicht prüfbar: ${e.message}`)
+}
+
 // ─── 6. ID-Lücken & partielle Entitäten (WARN) ──────────────────────────────────
 const nums = wellen.map(e => parseInt(e.id.split('_')[1])).filter(n => !isNaN(n)).sort((a, b) => a - b)
 const gaps = []

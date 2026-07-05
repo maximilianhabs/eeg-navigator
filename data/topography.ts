@@ -33,9 +33,6 @@ export interface Region {
   colorHex: string           // Standardfarbe (physiologisch-Modus)
   colorHexPath: string       // Pathologisch-Modus
   description: string
-  // Entitäten getrennt nach Modus
-  physiologisch: string[]    // classification: physiologisch | benigne_variante
-  pathologisch: string[]     // classification: pathologisch | epileptiform | kontextabhaengig
 }
 
 export const REGIONS: Region[] = [
@@ -47,11 +44,6 @@ export const REGIONS: Region[] = [
     colorHex: '#c4b5fd',      // violet-300
     colorHexPath: '#f9a8d4',  // pink-300
     description: 'Äußerste Frontalregion, präfrontaler Kortex',
-    physiologisch: [],
-    pathologisch: [
-      'EEG_0046',  // 3-Hz-SWK (frontopolar-betont)
-      'EEG_0086',  // WHAM (Fp1/Fp2)
-    ],
   },
   {
     id: 'frontal',
@@ -61,24 +53,6 @@ export const REGIONS: Region[] = [
     colorHex: '#93c5fd',      // blue-300
     colorHexPath: '#fca5a5',  // red-300
     description: 'Frontallappen, dorsolateraler präfrontaler Kortex, Fz = fronto-mesial',
-    physiologisch: [
-      'EEG_0002',  // Beta-Aktivität (frontozentral)
-      'EEG_0023',  // Hypnagoge Theta-Delta-Bursts
-      'EEG_0024',  // Hypnopompe Theta-Delta-Bursts
-      'EEG_0026',  // K-Komplex (Fz)
-      'EEG_0027',  // Schlafspindeln (Fz)
-      'EEG_0041',  // Encoches frontales (Fz, neonatal)
-    ],
-    pathologisch: [
-      'EEG_0009',  // Vermehrte Beta (medikamentös)
-      'EEG_0045',  // Spike-Wave-Komplex (frontal-betont)
-      'EEG_0047',  // Langsamer SWK
-      'EEG_0050',  // Paroxysmal Fast Activity
-      'EEG_0054',  // FIRDA
-      'EEG_0067',  // Triphasische Wellen
-      'EEG_0070',  // Alpha-Koma (frontal-betont)
-      'EEG_0072',  // Beta-Koma
-    ],
   },
   {
     id: 'anterotemporal',
@@ -88,15 +62,6 @@ export const REGIONS: Region[] = [
     colorHex: '#67e8f9',      // cyan-300
     colorHexPath: '#fb923c',  // orange-400
     description: 'Vorderer Temporallappen, frontotemporal (F7/F8)',
-    physiologisch: [
-      'EEG_0030',  // Small Sharp Spikes (SSS)
-      'EEG_0031',  // Wicket Spikes
-    ],
-    pathologisch: [
-      'EEG_0042',  // Spike (fokal temporal)
-      'EEG_0043',  // Sharp Wave (temporal)
-      'EEG_0075',  // Temporale Verlangsamung des Älteren
-    ],
   },
   {
     id: 'mitteltemporal',
@@ -106,21 +71,6 @@ export const REGIONS: Region[] = [
     colorHex: '#7dd3fc',      // sky-300
     colorHexPath: '#f97316',  // orange-500
     description: 'Mittlerer Temporallappen (T3=T7, T4=T8)',
-    physiologisch: [
-      'EEG_0030',  // Small Sharp Spikes
-      'EEG_0031',  // Wicket Spikes
-      'EEG_0033',  // RMTD (Drowsiness)
-    ],
-    pathologisch: [
-      'EEG_0039',  // Intermittierende Temporale Verlangsamung
-      'EEG_0042',  // Spike
-      'EEG_0043',  // Sharp Wave
-      'EEG_0052',  // Centrotemporale Spikes (BECTS)
-      'EEG_0056',  // TIRDA
-      'EEG_0057',  // Temporale Theta-Aktivität
-      'EEG_0059',  // LPDs (temporal)
-      'EEG_0075',  // Temporale Verlangsamung des Älteren
-    ],
   },
   {
     id: 'posterotemporal',
@@ -130,16 +80,6 @@ export const REGIONS: Region[] = [
     colorHex: '#5eead4',      // teal-300
     colorHexPath: '#fdba74',  // orange-300
     description: 'Hinterer Temporallappen (T5=P7, T6=P8)',
-    physiologisch: [
-      'EEG_0028',  // POSTS
-      'EEG_0032',  // 14-und-6-Hz-positive Spikes
-      'EEG_0035',  // SREDA
-    ],
-    pathologisch: [
-      'EEG_0056',  // TIRDA
-      'EEG_0057',  // Temporale Theta-Aktivität
-      'EEG_0059',  // LPDs
-    ],
   },
   {
     id: 'zentral',
@@ -149,20 +89,6 @@ export const REGIONS: Region[] = [
     colorHex: '#86efac',      // green-300
     colorHexPath: '#fda4af',  // rose-300
     description: 'Motorischer/somatosensorischer Kortex, Rolando-Region (C3/Cz/C4)',
-    physiologisch: [
-      'EEG_0002',  // Beta-Aktivität (frontozentral)
-      'EEG_0014',  // Mu-Rhythmus (C3/C4)
-      'EEG_0025',  // Vertex-Wellen (Cz)
-      'EEG_0026',  // K-Komplex
-      'EEG_0027',  // Schlafspindeln (Cz)
-      'EEG_0029',  // Sägezahnwellen (REM)
-      'EEG_0034',  // Midline-Theta-Rhythmus (Cz)
-      'EEG_0037',  // Mitten Pattern
-    ],
-    pathologisch: [
-      'EEG_0052',  // Centrotemporale Spikes (BECTS)
-      'EEG_0071',  // Spindel-Koma
-    ],
   },
   {
     id: 'parietal',
@@ -172,21 +98,6 @@ export const REGIONS: Region[] = [
     colorHex: '#fde047',      // yellow-300
     colorHexPath: '#f9a8d4',  // pink-300
     description: 'Parietallappen, somatosensorischer Assoziationskortex (P3/Pz/P4)',
-    physiologisch: [
-      'EEG_0001',  // Alpha-Grundrhythmus (okzipitoparietal)
-      'EEG_0005',  // Langsame Alpha-Variante
-      'EEG_0007',  // Beta-Grundrhythmus
-      'EEG_0028',  // POSTS
-      'EEG_0034',  // Midline-Theta (Pz)
-      'EEG_0035',  // SREDA
-      'EEG_0036',  // FOLD (posterior)
-      'EEG_0079',  // Langsame Alpha-Variante
-      'EEG_0081',  // Schnelle Alpha-Variante
-    ],
-    pathologisch: [
-      'EEG_0010',  // Grundrhythmusverlangsamung
-      'EEG_0085',  // Bancaud-Phänomen
-    ],
   },
   {
     id: 'okzipital',
@@ -196,34 +107,6 @@ export const REGIONS: Region[] = [
     colorHex: '#fdba74',      // orange-300
     colorHexPath: '#f87171',  // red-400
     description: 'Okzipitallappen, primärer visueller Kortex (O1/Oz/O2)',
-    physiologisch: [
-      'EEG_0001',  // Alpha-Grundrhythmus
-      'EEG_0005',  // Langsame Alpha-Variante
-      'EEG_0006',  // Schnelle Alpha-Variante
-      'EEG_0007',  // Beta-Grundrhythmus
-      'EEG_0008',  // Theta-Grundrhythmus-Variante
-      'EEG_0016',  // Lambda-Wellen
-      'EEG_0017',  // Lidschlussaktivität
-      'EEG_0018',  // Shut-Eye-Waves
-      'EEG_0019',  // Photic Driving
-      'EEG_0020',  // Fixation-Off-Sensitivität
-      'EEG_0022',  // Hypnagoge Hypersynchronie
-      'EEG_0028',  // POSTS
-      'EEG_0036',  // FOLD
-      'EEG_0038',  // Occipitales Delta der Jugend
-      'EEG_0079',  // Langsame Alpha-Variante
-      'EEG_0080',  // Alpha-Squeak-Effekt
-      'EEG_0081',  // Schnelle Alpha-Variante
-      'EEG_0082',  // Posteriore Slow-Wave-Transienten
-      'EEG_0083',  // Okzipitale Slow Transients / Cone Waves
-      'EEG_0084',  // Nadelspitzen bei Blindheit
-    ],
-    pathologisch: [
-      'EEG_0010',  // Grundrhythmusverlangsamung
-      'EEG_0049',  // Photoparoxysmale Reaktion
-      'EEG_0055',  // OIRDA
-      'EEG_0085',  // Bancaud-Phänomen
-    ],
   },
   {
     id: 'generalisiert',
@@ -233,32 +116,6 @@ export const REGIONS: Region[] = [
     colorHex: '#cbd5e1',      // slate-300
     colorHexPath: '#fca5a5',  // red-300
     description: 'Bilateral diffuse Muster ohne regionalen Schwerpunkt',
-    physiologisch: [
-      'EEG_0011',  // Grundrhythmus-Suppression (durch Sedierung)
-      'EEG_0021',  // Arousal-Reaktion
-      'EEG_0077',  // Tracé alternant (neonatal physiologisch)
-      'EEG_0078',  // Tracé discontinu (neonatal physiologisch)
-    ],
-    pathologisch: [
-      'EEG_0011',  // Grundrhythmus-Suppression (pathologisch)
-      'EEG_0012',  // Asymmetrischer Grundrhythmus
-      'EEG_0013',  // Elektrozerebrale Inaktivität
-      'EEG_0044',  // Polyspikes
-      'EEG_0045',  // Spike-Wave-Komplex
-      'EEG_0046',  // 3-Hz-SWK
-      'EEG_0047',  // Langsamer SWK
-      'EEG_0048',  // Polyspike-Wave-Komplex
-      'EEG_0051',  // GPFA
-      'EEG_0053',  // Hypsarrhythmie
-      'EEG_0058',  // Slow Waves (diffus)
-      'EEG_0060',  // GPDs
-      'EEG_0064',  // GRDA
-      'EEG_0068',  // Bursts
-      'EEG_0069',  // Burst-Suppression
-      'EEG_0073',  // Burst-Attenuation
-      'EEG_0074',  // Eye-Closure Sensitivity
-      'EEG_0076',  // Delta-Brushes
-    ],
   },
 ]
 
@@ -322,8 +179,129 @@ export function getRegionById(id: RegionId): Region | undefined {
   return REGIONS.find(r => r.id === id)
 }
 
-export function getEntitiesForRegion(regionId: RegionId, mode: TopoMode): string[] {
-  const region = getRegionById(regionId)
-  if (!region) return []
-  return mode === 'physiologisch' ? region.physiologisch : region.pathologisch
+// ─── Dynamische Ableitung aus der Datenbank ──────────────────────────────────
+// Statt hartkodierter Entitätslisten (Drift-Gefahr!) wird die Region-Zuordnung
+// zur Laufzeit aus den localization- und classification-Feldern der Entitäten
+// berechnet. Neue/geänderte Entitäten erscheinen dadurch automatisch korrekt.
+//
+// LOC_TO_REGIONS ist das kontrollierte Vokabular: jeder in wellen.json
+// vorkommende localization-Wert MUSS hier stehen (validate-data.mjs prüft das).
+export const LOC_TO_REGIONS: Record<string, RegionId[]> = {
+  // generalisiert / unspezifisch-fokal → generalisiert
+  'generalisiert': ['generalisiert'],
+  'bilateral': ['generalisiert'],
+  'hemisphärisch': ['generalisiert'],
+  'variabel': ['generalisiert'],
+  'fokal_variabel': ['generalisiert'],
+  'fokal_moeglich': ['generalisiert'],
+  'fokal_oder_generalisiert': ['generalisiert'],
+  'multifokale Spikes': ['generalisiert'],
+  'bilateral_unabhängig': ['generalisiert'],
+  'unilateral': ['generalisiert'],
+  'lateral_einseitig': ['generalisiert'],
+  // frontopolar
+  'frontopolar': ['frontopolar'],
+  'Fp1': ['frontopolar'],
+  'Fp2': ['frontopolar'],
+  // frontal = ÜBERBEGRIFF → schließt frontopolar + frontal (fronto-mesial) ein.
+  // NICHT pauschal zentral: fronto-zentrale Entitäten tragen dafür ihr eigenes
+  // explizites 'zentral'/'fronto-zentral'-Token.
+  'frontal': ['frontopolar', 'frontal'],
+  'frontal_betont': ['frontopolar', 'frontal'],
+  'frontal-median': ['frontal'],   // median = Fz-spezifisch, nicht frontopolar
+  'Fz': ['frontal'],
+  'anterior': ['frontopolar', 'frontal'],
+  // fronto-zentral = eigenständiger Begriff → Anzeige NUR im Frontal-Feld (Nutzer-Entscheidung).
+  // Bleibt zugleich ein präzises Frontal-Token (schaltet die frontopolar-Verbreiterung ab).
+  'frontozentral': ['frontal'],
+  'fronto-zentral': ['frontal'],
+  // zentral (inkl. Vertex, parasagittal)
+  'zentral': ['zentral'],
+  'Cz': ['zentral'],
+  'vertex': ['zentral'],
+  'parasagittal': ['zentral'],
+  // temporal = ÜBERBEGRIFF → schließt antero-, mittel- UND posterotemporal ein.
+  // (Feinere DB-Angabe ist besser, aber generisch 'temporal' deckt alle drei ab.)
+  'temporal': ['anterotemporal', 'mitteltemporal', 'posterotemporal'],
+  'temporal_anterior': ['anterotemporal'],
+  'temporal_mittel': ['mitteltemporal'],
+  'temporal_posterior': ['posterotemporal'],
+  'posterior-temporal': ['posterotemporal'],
+  'T3': ['mitteltemporal'],
+  'T4': ['mitteltemporal'],
+  'F7': ['anterotemporal'],
+  'F8': ['anterotemporal'],
+  // parietal
+  'parietal': ['parietal'],
+  'Pz': ['parietal'],
+  'parieto-temporal': ['parietal', 'mitteltemporal'],
+  'temporoparietal': ['parietal', 'mitteltemporal'],
+  // okzipital / posterior
+  'okzipital': ['okzipital'],
+  'O1': ['okzipital'],
+  'O2': ['okzipital'],
+  'posterior': ['okzipital'],
+  'parieto-okzipital': ['parietal', 'okzipital'],
+  'okzipito-parietal': ['parietal', 'okzipital'],
+}
+
+export interface RegionEntities { physiologisch: string[]; pathologisch: string[] }
+export type RegionIndex = Record<RegionId, RegionEntities>
+
+// ── Überbegriffe & Präzision ─────────────────────────────────────────────────
+// PRINZIP: Eine konkrete Region schlägt immer den Überbegriff. Hat eine Entität
+// eine präzise Angabe (z.B. mitteltemporal, frontopolar, fronto-zentral), darf
+// der Überbegriff (temporal, frontal) sie NICHT auf die übrigen Unterregionen
+// verwässern.
+const TEMPORAL_UMBRELLA = new Set(['temporal'])
+const FRONTAL_UMBRELLA = new Set(['frontal', 'frontal_betont', 'anterior'])
+const UMBRELLA_TOKENS = new Set([...TEMPORAL_UMBRELLA, ...FRONTAL_UMBRELLA])
+// Präzise Token, deren Anwesenheit den jeweiligen Überbegriff „ausschaltet":
+const PRECISE_TEMPORAL = new Set([
+  'temporal_anterior', 'temporal_mittel', 'temporal_posterior', 'posterior-temporal',
+  'T3', 'T4', 'F7', 'F8', 'parieto-temporal', 'temporoparietal',
+])
+const PRECISE_FRONTAL = new Set([
+  'frontopolar', 'Fp1', 'Fp2', 'fronto-zentral', 'frontozentral', 'frontal-median', 'Fz',
+])
+
+// Regionen einer Entität aus ihrer localization-Liste bestimmen (Präzision schlägt Überbegriff).
+export function regionsForLocalization(locs: string[]): RegionId[] {
+  const R = new Set<RegionId>()
+  // 1. Präzise Token direkt auflösen (Überbegriffe hier überspringen)
+  for (const loc of locs)
+    if (!UMBRELLA_TOKENS.has(loc))
+      for (const rid of LOC_TO_REGIONS[loc] ?? []) R.add(rid)
+  // 2. Temporal-Überbegriff: nur breit auffächern, wenn KEIN präzises temporales Token vorliegt
+  if (locs.some(l => TEMPORAL_UMBRELLA.has(l)) && !locs.some(l => PRECISE_TEMPORAL.has(l))) {
+    R.add('anterotemporal'); R.add('mitteltemporal'); R.add('posterotemporal')
+  }
+  // 3. Frontal-Überbegriff: Heimregion 'frontal' immer; frontopolar nur ergänzen,
+  //    wenn kein präzises frontales Token (frontopolar/fronto-zentral/Fz …) vorliegt
+  if (locs.some(l => FRONTAL_UMBRELLA.has(l))) {
+    R.add('frontal')
+    if (!locs.some(l => PRECISE_FRONTAL.has(l))) R.add('frontopolar')
+  }
+  return [...R]
+}
+
+// classification → Bucket. kontextabhängig (beide Schreibweisen) erscheint in BEIDEN.
+const PHYS_CLASSES = new Set(['physiologisch', 'benigne_variante'])
+const BOTH_CLASSES = new Set(['kontextabhaengig', 'kontextabhängig'])
+
+export function buildRegionIndex(
+  waves: { id: string; localization?: string[]; classification: string }[]
+): RegionIndex {
+  const idx = {} as RegionIndex
+  REGIONS.forEach(r => { idx[r.id] = { physiologisch: [], pathologisch: [] } })
+  for (const w of waves) {
+    const regions = regionsForLocalization(w.localization ?? [])
+    const inPhys = PHYS_CLASSES.has(w.classification) || BOTH_CLASSES.has(w.classification)
+    const inPath = !PHYS_CLASSES.has(w.classification) // patho/epileptiform/kontext → pathologisch
+    regions.forEach(rid => {
+      if (inPhys && !idx[rid].physiologisch.includes(w.id)) idx[rid].physiologisch.push(w.id)
+      if (inPath && !idx[rid].pathologisch.includes(w.id)) idx[rid].pathologisch.push(w.id)
+    })
+  }
+  return idx
 }

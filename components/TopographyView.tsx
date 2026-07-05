@@ -5,6 +5,7 @@ import Link from 'next/link'
 import type { WaveEntity } from '@/lib/types'
 import {
   REGIONS, REGION_PATHS, ELECTRODE_COORDS, MIDLINE_ELECTRODES,
+  buildRegionIndex,
   type RegionId, type TopoMode,
 } from '@/data/topography'
 
@@ -61,14 +62,17 @@ export function TopographyView({ alleWellen }: Props) {
     return m
   }, [alleWellen])
 
+  // Region-Index dynamisch aus der Datenbank ableiten (keine hartkodierten Listen mehr)
+  const regionIndex = useMemo(() => buildRegionIndex(alleWellen), [alleWellen])
+
   // Entitäten für gewählte Region + Modus
   const panelEntities = useMemo((): WaveEntity[] => {
     if (!selectedRegion) return []
-    const region = REGIONS.find(r => r.id === selectedRegion)
-    if (!region) return []
-    const ids = mode === 'physiologisch' ? region.physiologisch : region.pathologisch
+    const bucket = regionIndex[selectedRegion]
+    if (!bucket) return []
+    const ids = mode === 'physiologisch' ? bucket.physiologisch : bucket.pathologisch
     return ids.map(id => wellenById[id]).filter(Boolean)
-  }, [selectedRegion, mode, wellenById])
+  }, [selectedRegion, mode, regionIndex, wellenById])
 
   const activeRegion = hoveredRegion ?? selectedRegion
 
@@ -102,7 +106,7 @@ export function TopographyView({ alleWellen }: Props) {
                 : 'text-slate-500 hover:text-slate-700'
             }`}
           >
-            ○ Physiologisch &amp; Normal
+            ○ Physiologisch
           </button>
           <button
             onClick={() => { setMode('pathologisch'); setSelected(null) }}
