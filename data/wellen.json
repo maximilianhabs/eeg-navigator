@@ -4648,11 +4648,12 @@
       "pediatric_only": false,
       "dialog_logic": {
         "key_features": [
-          "bilateral posterior-temporal",
-          "Theta 5-7 Hz",
-          "klinisch stumm",
-          "keine postiktale Verlangsamung",
-          "abrupter Beginn und Ende"
+          "bilateral posterior-temporal / parietal",
+          "Theta 5-7 Hz, scharf konturiert oder sinusoidal",
+          "klinisch stumm (Response-Testing normal)",
+          "keine postiktale Verlangsamung, Hintergrund teils erhalten",
+          "KEINE Evolution (Frequenz/Ausbreitung/Morphologie)",
+          "Beginn abrupt ODER graduell (Fehlen der Evolution wichtiger als Art des Beginns)"
         ],
         "criteria_for": [
           "Bilateral symmetrisch",
@@ -4678,7 +4679,10 @@
         "EEG_0033"
       ],
       "common_misinterpretations": [
-        "Verwechslung mit subklinischem Status epilepticus – klinische Stummheit und fehlende postiktale Verlangsamung entscheidend"
+        "Verwechslung mit subklinischem Status epilepticus – klinische Stummheit, fehlende Evolution und fehlende postiktale Verlangsamung entscheidend",
+        "Verwechslung mit Absencenstatus – dieser zeigt 2,5–4 Hz Spike-Wave-Komplexe UND Bewusstseinsstörung; SREDA hat 5–7 Hz Theta OHNE Spikes und ohne Bewusstseinsstörung",
+        "Atypische SREDA (Delta-dominiert, gekerbt, frontal/fokal, im Schlaf) wird als epileptiform überinterpretiert",
+        "Nicht bedacht, dass SREDA oft in späteren EEGs desselben Patienten reproduzierbar wiederkehrt – ein hilfreicher Bestätigungshinweis gegen einen Anfall"
       ],
       "images": [
         {
@@ -4691,11 +4695,12 @@
       ],
       "teaching_pearl": "SREDA: sieht aus wie ein Anfall, verhält sich nicht wie ein Anfall. Theta 5-7 Hz, posterior-temporal bilateral, 40-80 s, klinisch stumm, keine postiktale Verlangsamung, kein Frequency-Recruitment. Onset-Theta kann aus einzelnen Delta-Wellen entstehen - dann stabile Theta, keine weitere Evolution. DD NCSE entscheidend. Seltenste benigne Variante (0,03-0,07%). Fast ausschliesslich >50 J. Westmoreland & Klass 1981.",
       "warning": "Kann zu falsch-positiver Epilepsiediagnose führen. Klinische Beurteilung während des Musters ist entscheidend.",
-      "notes": "Selten, meist ältere Patienten. Kann durch Hyperventilation provoziert werden. Kein Krankheitswert.",
+      "notes": "Selten, klassisch mittleres bis höheres Erwachsenenalter (meist >50 J.), aber auch bei jüngeren Erwachsenen und Kindern beschrieben. Aktivierung v.a. in entspannter Wachheit und Schläfrigkeit, seltener im Schlaf; einzelne Fälle bei Hyperventilation und Schlafapnoe/Hypoxie. Atypische SREDA (Westmoreland & Klass 1997): Delta-Frequenzen bzw. Delta-Theta-Übergänge, gekerbte (notched) Wellenformen, frontale/fokale Verteilung, ungewöhnlich lange Dauer, Auftreten im Schlaf – kann dadurch deutlich epileptiform wirken. Source-Imaging deutet auf Generatoren im posterioren Gyrus cinguli, Lingualgyrus und Parietallappen. Beschrieben u.a. bei Synkopen, Migräne, transienter globaler Amnesie, vaskulären Erkrankungen, Schlafapnoe und Epilepsiepatienten – diese Assoziationen bedeuten NICHT, dass SREDA epileptisch ist; sie gilt weiterhin als benigne Variante ohne gesicherte epileptogene Bedeutung und ohne Therapieindikation.",
       "data_status": "complete",
       "priority_for_mvp": "mittel",
       "source_notes": [
-        "Westmoreland & Klass 1997",
+        "Westmoreland BF & Klass DW (1981): Erstbeschreibung der typischen SREDA.",
+        "Westmoreland BF & Klass DW (1997): Unusual variants of SREDA (atypische Formen). https://pubmed.ncbi.nlm.nih.gov/9060848/",
         "Lüders HO, Noachtar S, Rémi J. Electroencephalography: Textbook and Atlas. Oxford University Press; 2024. ISBN 978-0-19-750233-4"
       ],
       "cross_references": {
@@ -8347,7 +8352,9 @@
       "common_misinterpretations": [
         "EKG-Artefakt über Mastoiden-Referenz simuliert GPDs – häufigste Fehlerquelle",
         "Triphasische Wellen (EEG_0067) sind eine GPD-Unterform; historisch separate Begriffe führen zu Verwirrung",
-        "GPDs = Grauzone: nicht alle GPDs sind Anfallsäquivalente; kontinuierliches EEG-Monitoring und klinische Korrelation entscheidend"
+        "GPDs = Grauzone: nicht alle GPDs sind Anfallsäquivalente; kontinuierliches EEG-Monitoring und klinische Korrelation entscheidend",
+        "Triphasische Morphologie als 'nur metabolisch' fehlgedeutet – sie schließt eine epileptische Genese NICHT aus; triphasische GPDs entwickeln ähnlich häufig Anfälle wie nicht-triphasische",
+        "Mit BIPDs verwechselt: BIPDs (bilateral independent periodic discharges) haben zwei UNABHÄNGIGE, nicht zeitgekoppelte Generatoren pro Hemisphäre – GPDs sind dagegen bilateral SYNCHRON"
       ],
       "images": [
         {
@@ -8358,15 +8365,16 @@
           "status": "placeholder"
         }
       ],
-      "teaching_pearl": "GPDs = Periodizität ist das Schlüsselwort. Immer EKG-Kanal laufen lassen – ART_017 über Mastoiden ist der klassische Simulator. ACNS-Terminologie hat 'PLEDs' durch 'LPDs' und 'BiPLEDs' durch 'GPDs' ersetzt.",
-      "warning": "GPDs liegen in der Grauzone epileptiform/nicht-epileptiform ('Ictal-Interictal Continuum'). Bei Plus-Modifikatoren (z.B. GPD+F = fast overlay) erhöhtes Anfallsrisiko. Kontinuierliches EEG-Monitoring und Neurokritikexperte empfohlen.",
-      "notes": "ACNS 2021: GPDs = generalisierte periodische Entladungen. Frühere Begriffe: GPEDS (generalized periodic epileptiform discharges), BiPLEDs. Häufige Ursachen: anoxische Hirnschädigung, CJD (1-2 Hz trihasisch), schwere metabolische Enzephalopathie, Non-konvulsiver Status epilepticus. Bei CJD oft charakteristisch 1 Hz triphasisch periodisch.",
+      "teaching_pearl": "GPDs = Periodizität ist das Schlüsselwort, und es ist ein BESCHREIBUNGSBEGRIFF, keine Diagnose. Immer EKG-Kanal laufen lassen – ART_017 über Mastoiden ist der klassische Simulator. ACNS-Terminologie: 'PLEDs' → 'LPDs', 'BiPLEDs' → 'BIPDs', 'GPEDs' → 'GPDs' (NICHT BiPLEDs → GPDs!). Faustregel Frequenz: ≥ 2,5 Hz zunehmend ictal, < 2,5 Hz häufig ictal-interictal continuum – der klinische Kontext bleibt entscheidend.",
+      "warning": "GPDs liegen in der Grauzone epileptiform/nicht-epileptiform ('Ictal-Interictal Continuum'). Plus-Modifikatoren erhöhen das Anfallsrisiko: GPD+F (zusätzliche schnelle Aktivität), GPD+R (zusätzliche rhythmische Aktivität), GPD+FR (beides). NCSE-Schwelle (ACNS/Salzburg): GPDs ≥ 2,5 Hz – oder bei langsamerer Frequenz nur mit eindeutiger Evolution, klinischem Korrelat oder EEG-Besserung nach i.v.-Antikonvulsiva. Kontinuierliches EEG-Monitoring und Neurokritik-Experte empfohlen.",
+      "notes": "ACNS 2021: GPDs = generalisierte periodische Entladungen. Früherer Begriff: GPEDs (generalized periodic epileptiform discharges). Bilaterale Betonung zusätzlich beschreibbar (frontal / okzipital / midline predominant / NOS). Häufige Ursachen: anoxische Hirnschädigung (Herzstillstand/Reanimation), toxisch-metabolisch (Leber-/Nierenversagen, Sepsis, Elektrolytstörungen), Medikamente (Cefepim, Baclofen), Infektionen (Enzephalitis), NCSE, Hypothermie, CJD (charakteristisch ~1 Hz triphasisch periodisch). Prognose primär ätiologieabhängig – ungünstig: postanoxisch, Persistenz unter Sedierung, hohe Frequenz, Plus-Merkmale, fehlende Reaktivität.",
       "data_status": "complete",
       "priority_for_mvp": "hoch",
       "source_notes": [
-        "Hirsch et al. ACNS Standardized Critical Care EEG Terminology 2021",
+        "Hirsch LJ et al. American Clinical Neurophysiology Society's Standardized Critical Care EEG Terminology: 2021 Version. J Clin Neurophysiol 2021. https://pmc.ncbi.nlm.nih.gov/articles/PMC8135051/",
         "Niedermeyer & da Silva, 6th ed.",
         "Young et al. 2015",
+        "Salzburg-Kriterien für NCSE (Frequenzschwelle ≥ 2,5 Hz)",
         "Lüders HO, Noachtar S, Rémi J. Electroencephalography: Textbook and Atlas. Oxford University Press; 2024. ISBN 978-0-19-750233-4"
       ],
       "cross_references": {
@@ -9308,9 +9316,9 @@
       "duration": {
         "label": "Bursts 0.5–10 s",
         "min_ms": 500,
-        "max_ms": 10000,
+        "max_ms": 30000,
         "typical_ms": 2000,
-        "note": "Einzelne Bursts; zwischen Bursts Suppressionsphasen → Burst-Suppression (EEG_0069)"
+        "note": "ACNS-Kriterium: ein Burst muss im Mittel ≥ 0,5 s dauern UND ≥ 4 Phasen (≥ 3 Nulllinienüberschreitungen, polyphasisch) haben. Kürzer/weniger Phasen = Einzelentladung (Discharge), KEIN Burst. Typisch 0,5–10 s, möglich bis 30 s. Zwischen Bursts Suppressionsphasen → Burst-Suppression (EEG_0069)."
       },
       "polarity": "gemischt",
       "localization": [
@@ -9349,16 +9357,20 @@
       "dialog_logic": {
         "key_features": [
           "gemischte hochfrequente Aktivität",
-          "auf Suppressionshintergrund",
+          "≥ 0,5 s Dauer UND ≥ 4 Phasen (polyphasisch, ACNS)",
+          "auf Suppressionshintergrund (< 10 µV)",
           "Teil des Burst-Suppression-Musters",
           "hochpathologisch"
         ],
         "criteria_for": [
           "Abrupte hochamplitudige gemischte Aktivität",
-          "Suppressionsphasen zwischen Bursts"
+          "≥ 0,5 s und ≥ 4 Phasen (sonst Einzelentladung)",
+          "Suppressionsphasen (< 10 µV) zwischen Bursts, 50–99 % der Aufzeichnung"
         ],
         "criteria_against": [
-          "Kontinuierliche Aktivität ohne Suppressionsphasen (→ kein Burst-Suppression)"
+          "Kontinuierliche Aktivität ohne Suppressionsphasen (→ kein Burst-Suppression)",
+          "Suppression nur 10–49 % der Aufzeichnung (→ diskontinuierliches EEG, NICHT Burst-Suppression)",
+          "Ereignis < 0,5 s oder < 4 Phasen (→ Einzelentladung, kein Burst)"
         ],
         "mimics": [
           "EEG_0069"
@@ -9372,7 +9384,10 @@
         "EEG_0069"
       ],
       "common_misinterpretations": [
-        "Burst-interne Spikes als eigenständige epileptiforme Aktivität überinterpretiert"
+        "Burst-interne Spikes als eigenständige epileptiforme Aktivität überinterpretiert",
+        "Diskontinuierliches EEG (10–49 % Suppression) fälschlich als Burst-Suppression bezeichnet – Burst-Suppression verlangt 50–99 % Suppression",
+        "Einzelne Spike-/Sharp-Wave-Serie (< 0,5 s oder < 4 Phasen) als Burst gezählt",
+        "Persistierende hochgradig epileptiforme Bursts (HEBs) trotz Burst-Suppression als 'ausreichend supprimiert' fehlgewertet – hier kann weiter epileptische Aktivität bestehen"
       ],
       "images": [
         {
@@ -9383,13 +9398,13 @@
           "status": "placeholder"
         }
       ],
-      "teaching_pearl": "Bursts sind der aktive Anteil des Burst-Suppression-Musters. Interne Spikes nicht überinterpretieren. Kontext (Anästhesie, Hypoxie, Koma) entscheidet über Schwere.",
-      "warning": "Teil des hochpathologischen Burst-Suppression-Musters (EEG_0069). Kontext entscheidend (medikamentös reversibel vs. anoxisch irreversibel).",
-      "notes": "Bursts allein (ohne Suppressionsphasen) können bei schwerer Enzephalopathie vorkommen. Hauptbedeutung im Kontext von Burst-Suppression.",
+      "teaching_pearl": "Ein Burst ist KEINE Einzelentladung, sondern eine ≥ 0,5 s dauernde, ≥ 4-phasige Aktivitätsphase auf Suppressions-/Attenuationshintergrund. Die 6 klinisch wichtigsten Parameter: (1) Burst-Dauer, (2) Interburst-Intervall (IBI), (3) Burst-Suppression-Rate (BSR), (4) hochgradig epileptiforme Bursts (HEBs), (5) identische Bursts, (6) generalisiert vs. fokal. Diese bestimmen die Interpretation bei Narkosemonitoring, Statustherapie und Prognose nach Hypoxie.",
+      "warning": "Teil des hochpathologischen Burst-Suppression-Musters (EEG_0069). Kontext entscheidend (medikamentös reversibel vs. anoxisch irreversibel). Zwei prognostisch ungünstige Sonderformen (ACNS): (1) Highly Epileptiform Bursts (HEBs) – ≥ 2 epileptiforme Entladungen bzw. rhythmisch-ictal wirkendes Muster in der Mehrzahl der Bursts → weiter bestehende epileptische Aktivität möglich. (2) Identical Bursts – die ersten ≥ 0,5 s erscheinen in > 90 % der Bursts nahezu identisch → nach Hypoxie/Reanimation mit ungünstiger Prognose assoziiert.",
+      "notes": "Interburst-Intervall (IBI): Zeit zwischen zwei Bursts (Mittel/Spannweite/Regelmäßigkeit dokumentieren); längere IBIs = tiefere Hirninaktivierung. Burst-Suppression-Rate (BSR) = Suppressionsanteil/Gesamtzeit × 100: ~50–70 % leicht, 70–90 % tief, > 90 % sehr tief, > 99 % vollständige Suppression – Steuerungsgröße bei Propofol-/Barbiturat-Koma, refraktärem Status und Neuroprotektion. Ursachen: medikamentös (Propofol, Thiopental, Pentobarbital, Isofluran; therapeutisches Koma bei (super)refraktärem Status), pathologisch (postanoxisch nach Herzstillstand, Hypothermie, schwere metabolische Enzephalopathie). Pädiatrisch: frühkindliche epileptische Enzephalopathien (Ohtahara-Syndrom, EME). ACNS empfiehlt zusätzlich Dokumentation der schärfsten Komponente (blunt/sharply contoured/sharp/spikehaltig) und der Verteilung (generalized/lateralized/bilateral independent/multifocal).",
       "data_status": "complete",
       "priority_for_mvp": "mittel",
       "source_notes": [
-        "ACNS Terminology 2021",
+        "Hirsch LJ et al. ACNS Standardized Critical Care EEG Terminology: 2021 Version. J Clin Neurophysiol 2021. https://pmc.ncbi.nlm.nih.gov/articles/PMC8135051/",
         "Niedermeyer & da Silva",
         "Lüders HO, Noachtar S, Rémi J. Electroencephalography: Textbook and Atlas. Oxford University Press; 2024. ISBN 978-0-19-750233-4"
       ],
