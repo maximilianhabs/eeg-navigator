@@ -77,6 +77,7 @@ function StepContent({ stepId, value, onChange, answers }: {
           patientAnswer={answers.patient as string | undefined}
           lokalisationAnswer={answers.lokalisation as string | undefined}
           morphologieAnswer={answers.morphologie as string | undefined}
+          frequenzAnswer={answers.frequenz as string | undefined}
         />
       )
     case 'ergebnis':

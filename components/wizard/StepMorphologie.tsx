@@ -132,6 +132,101 @@ function PolaritaetsHilfe({ montage }: { montage: string }) {
   )
 }
 
+// ─── Live-Wellen-Simulator ────────────────────────────────────────────────────
+// Zeichnet aus Polarität/Amplitude/Dauer eine schematische mehrkanalige Welle.
+// Konvention: negativ = nach OBEN. Phasenumkehr zwischen den mittleren Kanälen.
+const AMP_FACTOR: Record<string, number> = {
+  sehr_klein: 0.25, klein: 0.45, mittel: 0.7, gross: 0.95, sehr_gross: 1.2, nb: 0.6, '': 0.6,
+}
+const DUR_SHAPE: Record<string, { width: number; repeats: number }> = {
+  spike:          { width: 0.10, repeats: 1 },
+  sharp:          { width: 0.20, repeats: 1 },
+  komplex:        { width: 0.44, repeats: 1 },
+  burst:          { width: 0.92, repeats: 3 },
+  kontinuierlich: { width: 1.0,  repeats: 6 },
+}
+// Schärfe je Dauer: kurz = spitze Welle, lang = runde Welle
+const DUR_SHARP: Record<string, number> = {
+  spike: 0.95, sharp: 0.6, komplex: 0.25, burst: 0.1, kontinuierlich: 0, '': 0.3,
+}
+// Dreieck-Version einer Sinuswelle → scharfe Spitze statt runder Kuppe
+const triangleOf = (x: number) => (2 / Math.PI) * Math.asin(Math.sin(x))
+// Deflektionswert (+ = oben = "negativ") einer Einzelwelle über u∈[0,1].
+// sharp∈[0,1]: 0 = runde Sinuskuppe, 1 = spitze Dreieckspitze.
+function shapeValue(pol: string, u: number, sharp: number): number {
+  let arg: number, mult: number
+  switch (pol) {
+    case 'positiv':        arg = Math.PI * u;     mult = -1; break
+    case 'biphasisch_np':  arg = 2 * Math.PI * u; mult =  1; break
+    case 'biphasisch_pn':  arg = 2 * Math.PI * u; mult = -1; break
+    case 'triphasisch':    arg = 3 * Math.PI * u; mult =  1; break
+    case 'alternierend':   arg = 2 * Math.PI * u; mult =  1; break
+    default:               arg = Math.PI * u;     mult =  1  // negativ
+  }
+  return mult * ((1 - sharp) * Math.sin(arg) + sharp * triangleOf(arg))
+}
+function WaveSimulator({ polaritaet, amplitude, dauer, montage }: { polaritaet: string; amplitude: string; dauer: string; montage: string }) {
+  const W = 300, rowH = 26, rows = 4, padTop = 14
+  const H = padTop * 2 + rowH * rows
+  const CH_LABELS = ['F', 'C', 'P', 'O']
+  // Montageabhängige Feldverteilung:
+  //  • Referenz: alle Kanäle gleichsinnig, größte Amplitude am Maximum (C), KEINE Umkehr.
+  //  • Bipolar: Phasenumkehr — bei Negativität zeigen die Spitzen am Maximum (C/P) AUFEINANDER
+  //    (oberhalb nach unten, unterhalb nach oben → Feld [−,−,+,+]).
+  const isReferential = montage.startsWith('referenz')
+  const CH_FIELD = isReferential ? [0.45, 1.0, 0.75, 0.4] : [-0.6, -1.0, 1.0, 0.6]
+  const amp = AMP_FACTOR[amplitude] ?? 0.6
+  const dur = DUR_SHAPE[dauer] ?? { width: 0.44, repeats: 1 }
+  const sharp = DUR_SHARP[dauer] ?? 0.3
+  const x0 = 0.5 - dur.width / 2, x1 = 0.5 + dur.width / 2
+  const hasSel = polaritaet || amplitude || dauer
+  const N = 200
+
+  function tracePath(ch: number): string {
+    const baseY = padTop + rowH * ch + rowH / 2
+    const maxDefl = rowH * 0.42
+    const pts: string[] = []
+    for (let i = 0; i <= N; i++) {
+      const t = i / N
+      let v = 0
+      if (t >= x0 && t <= x1) {
+        const local = (t - x0) / (x1 - x0)
+        const wv = local * dur.repeats
+        v = shapeValue(polaritaet || 'negativ', wv - Math.floor(wv), sharp)
+      }
+      const y = baseY - v * amp * CH_FIELD[ch] * maxDefl
+      pts.push(`${(t * W).toFixed(1)},${y.toFixed(1)}`)
+    }
+    return 'M ' + pts.join(' L ')
+  }
+
+  return (
+    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+      <div className="flex items-center justify-between mb-1">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Live-Vorschau</p>
+        <span className="text-[10px] text-slate-400">
+          {isReferential ? 'Referenz · negativ = oben' : 'Bipolar · Phasenumkehr'}
+        </span>
+      </div>
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" xmlns="http://www.w3.org/2000/svg">
+        {Array.from({ length: rows }).map((_, ch) => {
+          const baseY = padTop + rowH * ch + rowH / 2
+          return (
+            <g key={ch}>
+              <line x1={22} y1={baseY} x2={W} y2={baseY} stroke="#e2e8f0" strokeWidth="1" />
+              <text x={4} y={baseY + 3} fontSize="9" fill="#94a3b8">{CH_LABELS[ch]}</text>
+              {hasSel && (
+                <path d={tracePath(ch)} fill="none" stroke="#2563eb" strokeWidth="1.4" strokeLinejoin="round" />
+              )}
+            </g>
+          )
+        })}
+      </svg>
+      {!hasSel && <p className="text-[10px] text-slate-400 text-center -mt-2">Wähle Polarität, Amplitude und Dauer …</p>}
+    </div>
+  )
+}
+
 interface Props {
   value: StepAnswer
   onChange: (v: StepAnswer) => void
@@ -158,6 +253,9 @@ export default function StepMorphologie({ value, onChange, technikAnswer }: Prop
 
   return (
     <div className="space-y-7">
+
+      {/* Live-Wellen-Simulator */}
+      <WaveSimulator polaritaet={answer.polaritaet} amplitude={answer.amplitude} dauer={answer.dauer} montage={montage} />
 
       {/* Polarität */}
       <div className="space-y-3">

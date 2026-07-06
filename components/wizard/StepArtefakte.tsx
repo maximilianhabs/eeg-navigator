@@ -12,16 +12,21 @@ import type { StepAnswer } from '@/hooks/useWizardState'
 //   - vigilanz: für welche Vigilanzzustände relevant
 //   - kontext: 'intensiv' zeigt es nur bei Bewusstseinsstörung/ICU
 
+// Frequenzcharakter des Artefakts: 'hoch' = hochfrequent/dicht (EMG, 50 Hz),
+// 'langsam' = langsame Welle (Augen, Puls, Beatmung), 'scharf' = spike-/nadelartig.
+type FreqChar = 'hoch' | 'langsam' | 'scharf'
+
 interface ArtDef {
   id: string
   gruppe: 'Technisch' | 'Okulär' | 'EMG' | 'Kardio' | 'ICU'
   name: string
   key: string               // Merkmal in einem Satz
   aussehen: string          // Wie sieht's aus
-  regions?: string[]        // lokRegionen
+  regions?: string[]        // passende Lokalisationsregionen
+  freqChar?: FreqChar[]     // passender Frequenzcharakter
   vigilanz?: string[]
   kontext?: string[]        // 'bewusstseinsgestoert' etc.
-  always?: boolean
+  always?: boolean          // immer zeigen (kann jede Morphologie imitieren)
 }
 
 const ARTEFAKTE: ArtDef[] = [
@@ -32,7 +37,7 @@ const ARTEFAKTE: ArtDef[] = [
     name: '50-Hz-Netz',
     key: 'Exakt 50 Hz, einzelne Elektrode, verschwindet mit Notch',
     aussehen: 'Feine Sinusschwingung, dicht überlagert, monomorph',
-    always: true,
+    freqChar: ['hoch'],
   },
   {
     id: 'tech_elektr',
@@ -48,7 +53,7 @@ const ARTEFAKTE: ArtDef[] = [
     name: 'EKG-Artefakt',
     key: 'Streng pulsratenfrequent (~1 Hz), QRS-synchron',
     aussehen: 'Nadeln temporal oder generalisiert im Herzrhythmus',
-    always: true,
+    freqChar: ['scharf'],
   },
 
   // ── Okulär — nur wenn frontopolar / frontal / schläfrig / wach ───────────
@@ -59,6 +64,7 @@ const ARTEFAKTE: ArtDef[] = [
     key: 'Bilateral Fp1/Fp2, posterior invertiert, mit Lidschluss',
     aussehen: 'Große langsame Welle frontopolar, ~0,3–2 Hz',
     regions: ['frontopolar', 'frontal'],
+    freqChar: ['langsam'],
     vigilanz: ['wach', 'schlaefrig'],
   },
   {
@@ -68,6 +74,7 @@ const ARTEFAKTE: ArtDef[] = [
     key: 'Fp1/Fp2 gegenphasig — linkes Auge rechts = Fp1 negativ',
     aussehen: 'Gegenphasige langsame Welle F7 vs. F8',
     regions: ['frontopolar', 'frontal', 'temporal_anterior'],
+    freqChar: ['langsam'],
     vigilanz: ['wach', 'schlaefrig'],
   },
   {
@@ -77,6 +84,7 @@ const ARTEFAKTE: ArtDef[] = [
     key: 'Sinusoidal 0,1–0,5 Hz, typisch N1/Einschlaf',
     aussehen: 'Träge sinusförmige Welle bilateral frontopolar',
     regions: ['frontopolar', 'frontal'],
+    freqChar: ['langsam'],
     vigilanz: ['schlaefrig', 'schlafend'],
   },
   {
@@ -86,6 +94,7 @@ const ARTEFAKTE: ArtDef[] = [
     key: 'Kurze Nadel F7/F8 zu Beginn einer Augenbewegung',
     aussehen: 'Einzelner scharfer Ausschlag <50 ms, kein kortikales Feld',
     regions: ['temporal_anterior'],
+    freqChar: ['scharf'],
     vigilanz: ['wach'],
   },
 
@@ -97,6 +106,7 @@ const ARTEFAKTE: ArtDef[] = [
     key: 'Hochfrequent >70 Hz, irregulär, temporal/frontal, durch Anspannung',
     aussehen: 'Rasches Rauschen über dem Grundrhythmus, kein klares Feld',
     regions: ['frontal', 'temporal_anterior', 'temporal_mittel', 'frontopolar'],
+    freqChar: ['hoch'],
   },
   {
     id: 'emg_kau',
@@ -105,6 +115,7 @@ const ARTEFAKTE: ArtDef[] = [
     key: 'Temporal T7/T8, burst-artig beim Sprechen oder Kauen',
     aussehen: 'Episodische hochfrequente Bursts temporal, kurz',
     regions: ['temporal_anterior', 'temporal_mittel', 'frontal'],
+    freqChar: ['hoch'],
   },
   {
     id: 'emg_tremor',
@@ -112,6 +123,7 @@ const ARTEFAKTE: ArtDef[] = [
     name: 'Tremorartifakt',
     key: 'Rhythmisch 4–12 Hz, klinisch sichtbarer Tremor',
     aussehen: 'Rhythmische Bursts, kann Spike-Wave imitieren — klinisch abgleichen',
+    freqChar: ['scharf', 'hoch'],
     vigilanz: ['wach', 'schlaefrig'],
   },
   {
@@ -121,6 +133,7 @@ const ARTEFAKTE: ArtDef[] = [
     key: 'Zungenbewegung → frontale langsame Welle, imitiert Delta',
     aussehen: 'Frontale/temporale Deltawelle beim Sprechen oder Schlucken',
     regions: ['frontal', 'temporal_anterior', 'frontopolar'],
+    freqChar: ['langsam'],
   },
 
   // ── ICU / Intensiv ────────────────────────────────────────────────────────
@@ -130,6 +143,7 @@ const ARTEFAKTE: ArtDef[] = [
     name: 'Beatmungsartefakt',
     key: 'Sehr langsam 0,2–0,4 Hz, synchron mit Beatmungsfrequenz',
     aussehen: 'Träge rhythmische Welle, generalisiert, streng beatmungssynchron',
+    freqChar: ['langsam'],
     kontext: ['bewusstseinsgestoert'],
   },
   {
@@ -139,6 +153,7 @@ const ARTEFAKTE: ArtDef[] = [
     key: 'Pulssynchrone langsame Welle temporal, Elektrode über Arterie',
     aussehen: 'Langsame ~1 Hz Welle temporal, streng herzfrequent aber breiter als EKG-Nadel',
     regions: ['temporal_mittel', 'temporal_posterior', 'temporal_anterior'],
+    freqChar: ['langsam'],
     kontext: ['bewusstseinsgestoert'],
   },
   {
@@ -153,19 +168,43 @@ const ARTEFAKTE: ArtDef[] = [
 
 // ─── Filter ───────────────────────────────────────────────────────────────────
 
-function filterArts(vigilanz: string, regionen: string[], kontext: string): ArtDef[] {
+// Aggressive Vorfilterung (AND): jede vom Anwender gelieferte Dimension, die das
+// Artefakt einschränkt, MUSS passen. Fehlt eine Nutzerangabe (z.B. keine Frequenz
+// bei sehr kurzer Dauer), wird nach dieser Dimension NICHT gefiltert.
+interface ArtFilter {
+  vigilanz: string
+  regionen: string[]
+  kontext: string
+  freqChars: FreqChar[]
+}
+function filterArts(f: ArtFilter): ArtDef[] {
   return ARTEFAKTE.filter(a => {
     if (a.always) return true
-    const matchR  = !a.regions  || a.regions.some(r => regionen.includes(r))
-    const matchV  = !a.vigilanz || a.vigilanz.includes(vigilanz)
-    const matchK  = !a.kontext  || a.kontext.includes(kontext)
-    // Wenn ICU-Kriterien: nur zeigen wenn kontext=bewusstseinsgestoert
-    if (a.kontext) return matchK
-    // sonst: mind. ein Kontext-Kriterium muss passen
-    const hasFilter = a.regions || a.vigilanz
-    if (!hasFilter) return true
-    return matchR || matchV
+    // Region: Artefakt hat Regionen + Anwender hat Regionen → müssen überlappen
+    if (a.regions?.length && f.regionen.length && !a.regions.some(r => f.regionen.includes(r))) return false
+    // Frequenzcharakter: Artefakt hat freqChar + ableitbar → müssen überlappen
+    if (a.freqChar?.length && f.freqChars.length && !a.freqChar.some(c => f.freqChars.includes(c))) return false
+    // Vigilanz: Artefakt hat Vigilanz + Anwender hat Vigilanz → muss passen
+    if (a.vigilanz?.length && f.vigilanz && !a.vigilanz.includes(f.vigilanz)) return false
+    // Kontext (ICU): nur bei Bewusstseinsstörung zeigen
+    if (a.kontext?.length && !a.kontext.includes(f.kontext)) return false
+    return true
   })
+}
+
+// Frequenzcharakter aus Frequenzband + Dauer ableiten
+function deriveFreqChars(frequenzAnswer?: string, morphologieAnswer?: string): FreqChar[] {
+  const chars = new Set<FreqChar>()
+  try {
+    const band = JSON.parse(frequenzAnswer ?? '{}').band as string
+    if (band === 'beta' || band === 'gamma') chars.add('hoch')
+    if (band === 'delta' || band === 'theta') chars.add('langsam')
+  } catch {}
+  try {
+    const dauer = JSON.parse(morphologieAnswer ?? '{}').dauer as string
+    if (dauer === 'spike' || dauer === 'sharp') chars.add('scharf')
+  } catch {}
+  return [...chars]
 }
 
 // ─── Karten ───────────────────────────────────────────────────────────────────
@@ -268,6 +307,7 @@ interface Props {
   patientAnswer?: string
   lokalisationAnswer?: string
   morphologieAnswer?: string
+  frequenzAnswer?: string
 }
 
 function parse(v: StepAnswer): Record<string, Verdikt> {
@@ -275,13 +315,14 @@ function parse(v: StepAnswer): Record<string, Verdikt> {
   return {}
 }
 
-export default function StepArtefakte({ value, onChange, patientAnswer, lokalisationAnswer }: Props) {
+export default function StepArtefakte({ value, onChange, patientAnswer, lokalisationAnswer, morphologieAnswer, frequenzAnswer }: Props) {
   const [answer, setAnswer] = useState<Record<string, Verdikt>>(parse(value))
 
   const vigilanz  = (() => { try { return JSON.parse(patientAnswer ?? '{}').vigilanz ?? '' } catch { return '' } })()
   const regionen: string[] = (() => { try { return JSON.parse(lokalisationAnswer ?? '{}').regionen ?? [] } catch { return [] } })()
+  const freqChars = deriveFreqChars(frequenzAnswer, morphologieAnswer)
 
-  const relevant = filterArts(vigilanz, regionen, vigilanz)
+  const relevant = filterArts({ vigilanz, regionen, kontext: vigilanz, freqChars })
   const gruppen = Array.from(new Set(relevant.map(a => a.gruppe)))
 
   function setVerdikt(id: string, v: Verdikt) {

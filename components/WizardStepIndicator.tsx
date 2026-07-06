@@ -1,6 +1,6 @@
 'use client'
 
-import { WIZARD_STEPS } from '@/hooks/useWizardState'
+import { WIZARD_STEPS, isStepSkipped } from '@/hooks/useWizardState'
 
 interface Props {
   currentStep: number
@@ -18,7 +18,8 @@ export default function WizardStepIndicator({ currentStep, onStepClick, answers 
       {/* ── Desktop: Schritt-Kreise + Verbindungslinien ── */}
       <div className="hidden md:flex items-center justify-between">
         {WIZARD_STEPS.map((step, i) => {
-          const done   = i < currentStep
+          const skip   = isStepSkipped(step.id, answers)
+          const done   = i < currentStep && !skip
           const active = i === currentStep
           const future = i > currentStep
 
@@ -26,7 +27,8 @@ export default function WizardStepIndicator({ currentStep, onStepClick, answers 
             <div key={step.id} className="flex items-center flex-1 last:flex-none">
               <button
                 onClick={() => done && onStepClick?.(i)}
-                disabled={future}
+                disabled={future || skip}
+                title={skip ? 'Bei sehr kurzer Dauer übersprungen' : undefined}
                 className="flex flex-col items-center gap-1.5 group focus:outline-none"
               >
                 {/* Circle */}
@@ -62,7 +64,7 @@ export default function WizardStepIndicator({ currentStep, onStepClick, answers 
                 </div>
 
                 {/* Label */}
-                <span className="text-[11px] font-semibold whitespace-nowrap transition-colors duration-200"
+                <span className={`text-[11px] font-semibold whitespace-nowrap transition-colors duration-200 ${skip ? 'line-through opacity-40' : ''}`}
                   style={{
                     color: active ? 'var(--brand)' : done ? 'var(--text-secondary)' : 'var(--text-tertiary)',
                   }}>

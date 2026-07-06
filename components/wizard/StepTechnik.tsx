@@ -195,6 +195,14 @@ export default function StepTechnik({ value, onChange }: Props) {
           </span>
         </div>
 
+        {/* Hinweis: empfohlene Standardeinstellungen */}
+        <p className="mb-3 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-[11px] leading-relaxed text-slate-500">
+          💡 Die voreingestellten Werte (Empfindlichkeit&nbsp;7&nbsp;µV/mm, HP&nbsp;0,5&nbsp;Hz,
+          TP&nbsp;70&nbsp;Hz, 50-Hz-Notch, 30&nbsp;mm/s) sind die <strong className="text-slate-600">empfohlenen
+          Grundeinstellungen</strong>. Nur in begründeten Ausnahmefällen abweichen — jede Abweichung
+          kann die Beurteilung von Amplitude, Frequenz oder Spikes verfälschen.
+        </p>
+
         {/* Horizontal pills */}
         <div className="flex flex-wrap gap-2">
           {PARAMS.map(p => {

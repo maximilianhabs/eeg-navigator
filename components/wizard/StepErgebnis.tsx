@@ -330,6 +330,14 @@ function PrimaerKarte({ result }: { result: MatchResult }) {
         ))}
       </div>
 
+      {result.score.caveats.length > 0 && (
+        <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 space-y-1">
+          {result.score.caveats.map((c, i) => (
+            <p key={i} className="text-xs text-amber-700 leading-snug">⚠ {c}</p>
+          ))}
+        </div>
+      )}
+
       {e.teaching_pearl && (
         <p className="text-xs text-blue-700 border-t border-blue-200 pt-2 italic">
           💡 {e.teaching_pearl}
@@ -386,13 +394,15 @@ function DDKarte({ result }: { result: MatchResult }) {
 function ScoreDetails({ result }: { result: MatchResult }) {
   const s = result.score
   const dims = [
-    { label: 'Verteilung',   pts: s.verteilung,   max: 4 },
+    { label: 'Verteilung',   pts: s.verteilung,   max: 6 },
     { label: 'Lokalisation', pts: s.lokalisation, max: 6 },
     { label: 'Frequenz',     pts: s.frequenz,     max: 4 },
     { label: 'Dauer',        pts: s.dauer,        max: 4 },
     { label: 'Polarität',    pts: s.polaritaet,   max: 3 },
     { label: 'Amplitude',    pts: s.amplitude,    max: 2 },
     { label: 'Auftreten',    pts: s.auftreten,    max: 4 },
+    { label: 'Montage',      pts: s.montage,      max: 2 },
+    { label: 'Vigilanz',     pts: s.vigilanz,     max: 2 },
   ]
   return (
     <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 space-y-2">

@@ -31,10 +31,10 @@ const REGIONEN = [
 ]
 
 const LATERALITAET = [
-  { value: 'links',     label: 'Links',              description: 'Maximum linkshemisphärisch' },
-  { value: 'rechts',    label: 'Rechts',             description: 'Maximum rechtshemisphärisch' },
-  { value: 'bilateral', label: 'Bilateral',          description: 'Beide Seiten gleich' },
-  { value: 'nb',        label: 'Nicht beurteilbar',  description: '' },
+  { value: 'bilateral',        label: 'Bilateral',              description: 'Beide Hemisphären betroffen' },
+  { value: 'unilateral',       label: 'Unilateral',             description: 'Nur eine Hemisphäre (Seite unerheblich)' },
+  { value: 'nicht_lateral',    label: 'Nicht lateralisiert',    description: 'Mittellinie / zentral, keine Seitenbetonung' },
+  { value: 'nb',               label: 'Nicht beurteilbar',      description: '' },
 ]
 
 // ─── SVG Kopf — klickbare Regionen ───────────────────────────────────────────
@@ -63,29 +63,28 @@ interface RegionShape {
 
 // Koordinaten für vereinfachten Kopf (Ansicht von oben, Nase oben/vorne)
 // Mirrored: left = x<150, right = x>150
+// Y-Bänder neu verteilt: Zentralregion vergrößert, Parietal + Okzipital nach hinten
+// gezogen (Okzipital reicht jetzt bis nahe an den Hinterkopf, y≈298 statt 278).
 const SHAPES: RegionShape[] = [
-  // Frontopolar — ganz oben
+  // Frontopolar — ganz vorne
   { id: 'frontopolar', points: '100,32 200,32 210,70 150,72 90,70', lx: CX, ly: 52, labelShort: 'FP' },
   // Frontal
-  { id: 'frontal', points: '90,70 210,70 218,118 150,120 82,118', lx: CX, ly: 96, labelShort: 'F' },
-  // Temporal anterior links
-  { id: 'temporal_anterior', points: '30,95 82,118 84,160 35,155', lx: 52, ly: 132, labelShort: 'AT' },
-  // Temporal anterior rechts
-  { id: 'temporal_anterior_r', points: '270,95 218,118 216,160 265,155', lx: 248, ly: 132, labelShort: 'AT' },
-  // Zentral
-  { id: 'zentral', points: '82,118 218,118 220,165 150,168 80,165', lx: CX, ly: 144, labelShort: 'C' },
-  // Temporal mittel links
-  { id: 'temporal_mittel', points: '22,160 84,160 82,205 26,200', lx: 48, ly: 182, labelShort: 'MT' },
-  // Temporal mittel rechts
-  { id: 'temporal_mittel_r', points: '278,160 216,160 218,205 274,200', lx: 252, ly: 182, labelShort: 'MT' },
-  // Parietal
-  { id: 'parietal', points: '80,165 220,165 218,215 150,218 82,215', lx: CX, ly: 192, labelShort: 'P' },
-  // Temporal posterior links
-  { id: 'temporal_posterior', points: '26,200 82,205 80,250 32,244', lx: 50, ly: 226, labelShort: 'PT' },
-  // Temporal posterior rechts
-  { id: 'temporal_posterior_r', points: '274,200 218,205 220,250 268,244', lx: 250, ly: 226, labelShort: 'PT' },
-  // Okzipital
-  { id: 'okzipital', points: '82,215 218,215 210,270 150,278 90,270', lx: CX, ly: 248, labelShort: 'O' },
+  { id: 'frontal', points: '90,70 210,70 216,114 150,116 84,114', lx: CX, ly: 94, labelShort: 'F' },
+  // Temporal anterior links / rechts
+  { id: 'temporal_anterior',   points: '28,92 84,114 82,152 32,148', lx: 52, ly: 128, labelShort: 'AT' },
+  { id: 'temporal_anterior_r', points: '272,92 216,114 218,152 268,148', lx: 248, ly: 128, labelShort: 'AT' },
+  // Zentral — vergrößert (y 114–176)
+  { id: 'zentral', points: '84,114 216,114 222,174 150,178 78,174', lx: CX, ly: 148, labelShort: 'C' },
+  // Temporal mittel links / rechts
+  { id: 'temporal_mittel',   points: '24,152 82,152 80,212 30,206', lx: 46, ly: 184, labelShort: 'MT' },
+  { id: 'temporal_mittel_r', points: '276,152 218,152 220,212 270,206', lx: 254, ly: 184, labelShort: 'MT' },
+  // Parietal — nach hinten geschoben (y 174–230)
+  { id: 'parietal', points: '78,174 222,174 218,230 150,234 82,230', lx: CX, ly: 204, labelShort: 'P' },
+  // Temporal posterior links / rechts
+  { id: 'temporal_posterior',   points: '30,206 80,212 82,264 38,258', lx: 50, ly: 238, labelShort: 'PT' },
+  { id: 'temporal_posterior_r', points: '270,206 220,212 218,264 262,258', lx: 250, ly: 238, labelShort: 'PT' },
+  // Okzipital — bis nahe an den Hinterkopf (y 230–298)
+  { id: 'okzipital', points: '82,230 218,230 206,286 150,298 94,286', lx: CX, ly: 262, labelShort: 'O' },
 ]
 
 // Mapping: rechte Spiegel-Shapes → originale Region-ID
