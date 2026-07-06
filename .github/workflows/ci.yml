@@ -26,6 +26,9 @@ jobs:
       - name: TypeScript check
         run: npx tsc --noEmit
 
+      - name: Datenvalidierung (Cross-Refs, IDs, Vokabular)
+        run: npm run validate
+
       - name: Build
         run: npm run build
         env:

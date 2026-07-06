@@ -42,3 +42,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Laufzeit-User-DB (enthält Passwort-Hashes) — nur im Volume, nicht im Repo
+data/users.json
+data/backups/
