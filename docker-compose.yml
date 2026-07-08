@@ -14,7 +14,7 @@ services:
     labels:
       - "caddy.reverse_proxy={{upstreams 3000}}"
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3000/impressum"]
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/impressum"]
       interval: 30s
       timeout: 10s
       retries: 3
