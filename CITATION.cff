@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "EEG Navigator"
+type: software
+authors:
+  - family-names: Habs
+    given-names: Maximilian
+repository-code: "https://github.com/maximilianhabs/eeg-navigator"
+license: Apache-2.0
