@@ -1,3 +1,21 @@
+# ┌──────────────────────────────────────────────────────────────────────┐
+# │ DIESE DATEI IST AUF DEM SERVER NICHT AKTIV.                          │
+# │                                                                      │
+# │ Auf neuro-vibe.de läuft ein einziger Caddy, und der gehört zum       │
+# │ Dienstwerk-Stack. Er liest ausschliesslich:                          │
+# │                                                                      │
+# │     ~/nz-dienstplan/Caddyfile                                        │
+# │                                                                      │
+# │ Änderungen HIER haben keinerlei Wirkung. Wer das Routing von         │
+# │ eeg.neuro-vibe.de ändern will, bearbeitet die Datei dort.            │
+# │                                                                      │
+# │ Ablauf und Fallstricke: nz-dienstplan/docs/RUNBOOK-caddy.md          │
+# │ — insbesondere: nach jeder Änderung NEU STARTEN, nicht neu laden.    │
+# │                                                                      │
+# │ Diese Datei bleibt als Vorlage für einen eigenständigen Betrieb      │
+# │ erhalten (etwa auf einem separaten Server).                          │
+# └──────────────────────────────────────────────────────────────────────┘
+
 eeg.neuro-vibe.de {
     # Automatisches HTTPS via Let's Encrypt
     encode zstd gzip

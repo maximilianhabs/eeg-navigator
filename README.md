@@ -83,3 +83,25 @@ der eingesetzten KI.
 ## Lizenz
 
 [Apache License 2.0](LICENSE) — siehe [CITATION.cff](CITATION.cff) für Zitierhinweise.
+
+## Betrieb auf neuro-vibe.de
+
+Der Reverse Proxy dieses Servers gehört zum Dienstwerk-Stack und liest
+ausschliesslich `~/nz-dienstplan/Caddyfile`. Änderungen an einem Caddyfile in
+diesem Projekt wirken auf dem Server **nicht**.
+
+Vor jeder Änderung am Routing — und bevor eine neue Subdomain eingerichtet
+wird — gilt: **nz-dienstplan/docs/RUNBOOK-caddy.md** lesen.
+
+Kurzfassung der wichtigsten Falle: Das Caddyfile ist als *einzelne Datei*
+eingehängt. Docker bindet dabei die Inode, nicht den Pfad — ein `git pull`
+ersetzt die Datei, und der Container arbeitet mit der alten weiter.
+`caddy reload` meldet dann Erfolg und lädt trotzdem den alten Stand. So war
+das Caddyfile vom 22.06. bis 01.08.2026 unbemerkt eingefroren.
+
+Deshalb nach jeder Änderung **neu starten**, nicht neu laden:
+
+```bash
+cd ~/nz-dienstplan && docker compose -f docker-compose.prod.yml restart caddy
+bash ~/nz-dienstplan/scripts/caddy-pruefen.sh      # Erfolgskontrolle
+```
