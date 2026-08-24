@@ -3925,11 +3925,11 @@
       ],
       "images": [
         {
-          "file": "placeholder_sss.png",
+          "file": "EEG_0030__adult__bipolar__01.edf",
           "montage": "bipolare Längsreihe",
           "context": "N1/N2-Schlaf",
-          "caption": "Small Sharp Spikes: niedrigamplitudig, temporal, < 50 ms, keine Slow Wave",
-          "status": "placeholder"
+          "caption": "Small Sharp Spikes (BETS): niedrigamplitudig, temporal, < 50 ms, keine Slow Wave",
+          "status": "edf"
         }
       ],
       "teaching_pearl": "SSS/BETS: <50 µV, <50 ms, temporal, N1/N2, keine Slow Wave, breites horizontales Dipolfeld. Cave: mesiotemporale IEDs koennen BETS imitieren. Dipol-Analyse: BETS horizontaler Dipol mit kontralateraler posteriorer Positivity; mesiotemporale IEDs vertikaler Dipol. Verschwindet in N3 (DD-Merkmal!). White 1977.",
@@ -10944,7 +10944,15 @@
         "PDR-Frequenz wird in der ersten Sekunde nach Lidschluss gemessen → fälschliche Überschätzung der Alpha-Grundfrequenz",
         "Transiente Frequenzbeschleunigung wird als epileptiformes Phänomen fehlgedeutet"
       ],
-      "images": [],
+      "images": [
+        {
+          "file": "EEG_0080__adult__bipolar__01.edf",
+          "montage": "bipolare Längsreihe",
+          "context": "Augenschluss, okzipitaler Grundrhythmus",
+          "caption": "Alpha Squeak: nach Augenschluss kurzzeitige Frequenzzunahme des Grundrhythmus, danach Rückkehr zur Baseline",
+          "status": "edf"
+        }
+      ],
       "teaching_pearl": "Namensgebung aus der Ära der Tintenschreiber-EEGs: Beim Lidschluss beschleunigte die plötzliche Alpha-Zunahme den Stift so stark, dass das Papier quietschte. Für die EEG-Auswertung gilt: PDR-Frequenz nie in der ersten Sekunde nach Lidschluss messen!",
       "warning": "Besonders ausgeprägt bei Kindern, Jugendlichen und erschöpften/gestressten Personen. Cave: Fehldiagnose 'zu schneller Alpha-Rhythmus' wenn Messung im Squeak-Fenster erfolgt.",
       "notes": "Pathophysiologie: Beim Lidschluss fällt visuelle Afferenz weg; die kortikalen Netzwerke überkompensieren kurzzeitig (Enthemmungsphänomen). Historisch: In der analogen EEG-Ära war das Quietschen des Schreibers ein bekanntes akustisches Signal für den Lidschluss-Zeitpunkt.",

@@ -1,11 +1,12 @@
 import type { EdfHeader } from './edfParser'
 
-export type MontageId = 'bipolar' | 'cz' | 'avg'
+export type MontageId = 'bipolar' | 'cz' | 'avg' | 'raw'
 
 export const MONTAGE_LABELS: Record<MontageId, string> = {
   bipolar: 'Doppelbanane (DGKN)',
   cz:      'CZ-Referenz',
   avg:     'Average-Referenz',
+  raw:     'Roh (wie aufgezeichnet)',
 }
 
 // Sentinel: sigB = -2 → "subtract average reference" (computed in EdfPanel)
@@ -64,14 +65,44 @@ const ALIASES: Record<string, string> = {
   T7:'T3', T8:'T4', P7:'T5', P8:'T6', M1:'A1', M2:'A2',
 }
 
+// Suffix nur strippen, wenn er eine ECHTE Referenz-Endung ist (Ref-Platzhalter oder
+// Mastoid/Ohr-Referenz), NICHT wenn er selbst ein Skalp-Elektrodenname ist. Sonst würde
+// z.B. "Fp1-F7" (ein bereits-differentieller Kanal einer vormontierten Datei) fälschlich
+// zu "FP1" normalisiert und mit einer echten Fp1-Elektrode verwechselt (siehe
+// EEG_0036__02: buildMontageRows hätte sonst "Fp1-F7" MINUS "F7-T3" verrechnet).
+const REFERENCE_SUFFIXES = new Set(['REF', 'A1', 'A2', 'M1', 'M2'])
+
 export function normLabel(raw: string): string {
-  const s = raw.toUpperCase().replace(/^EEG\s*/i, '').replace(/-[A-Z0-9]+$/, '').trim()
+  const noPrefix = raw.toUpperCase().replace(/^EEG\s*/i, '').trim()
+  const m = noPrefix.match(/^(.+)-([A-Z0-9]+)$/)
+  const s = (m && REFERENCE_SUFFIXES.has(m[2])) ? m[1] : noPrefix
   return ALIASES[s] ?? s
 }
 
 export function findChannel(header: EdfHeader, label: string): number {
   const target = normLabel(label)
   return header.signals.findIndex(s => normLabel(s.label) === target)
+}
+
+/**
+ * Erkennt bereits montierte Dateien: Mehrheit der EEG-Kanäle trägt bipolare
+ * Ableitungs-Labels wie "Fp1-F7" (zwei bekannte 10-20-Elektroden mit Bindestrich).
+ * Solche Dateien (z.B. aus Abbildungen rekonstruierte Doppelbananen) im Roh-Modus zeigen.
+ */
+export function isPreMontaged(header: EdfHeader): boolean {
+  let bipolar = 0, total = 0
+  for (const s of header.signals) {
+    const raw = s.label.replace(/^EEG\s*/i, '').trim()
+    if (/ECG|EKG|CARD/i.test(raw)) continue
+    total++
+    const m = raw.toUpperCase().match(/^([A-Z0-9]+)-([A-Z0-9]+)$/)
+    if (m) {
+      const a = ALIASES[m[1]] ?? m[1]
+      const b = ALIASES[m[2]] ?? m[2]
+      if (EEG_10_20.has(a) && EEG_10_20.has(b)) bipolar++
+    }
+  }
+  return total > 0 && bipolar / total > 0.6
 }
 
 export interface MontageRow {
@@ -192,6 +223,26 @@ export function buildMontageRows(header: EdfHeader, montage: MontageId): Montage
       }
       rows.push(...groupRows)
       firstGroup = false
+    }
+  }
+
+  if (montage === 'raw') {
+    // Roh/Passthrough: jeder (Nicht-EKG-)Kanal wird 1:1 dargestellt (sigB = -1).
+    // Für bereits montierte Dateien (z.B. rekonstruierte Doppelbananen) ist das
+    // die korrekte Darstellung — keine erneute Verrechnung.
+    for (let i = 0; i < header.signals.length; i++) {
+      const raw = header.signals[i].label.replace(/^EEG\s*/i, '').trim()
+      if (/ECG|EKG|CARD/i.test(raw) || /^POL X1$/i.test(raw)) continue
+      rows.push({
+        label:    raw,
+        sigA:     i,
+        sigB:     -1,
+        fs:       header.signals[i].sampleRate,
+        isEcg:    false,
+        isSpacer: false,
+        colorKey: /2$|4$|6$|8$/.test(raw.split('-')[0]) ? 'right' : 'left',
+        ampRange: 150,
+      })
     }
   }
 

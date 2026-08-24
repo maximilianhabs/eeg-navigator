@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import { EDFParser } from './edfParser'
-import { buildMontageRows, MONTAGE_LABELS, getRowColor, AVG_REF_SENTINEL, isStandardEegChannel, type MontageId } from './montages'
+import { buildMontageRows, MONTAGE_LABELS, getRowColor, AVG_REF_SENTINEL, isStandardEegChannel, isPreMontaged, type MontageId } from './montages'
 import { filterSignal, HP_OPTIONS, LP_OPTIONS, DEFAULT_HP, DEFAULT_LP } from './filters'
 import type { EdfHeader } from './edfParser'
 
@@ -99,7 +99,13 @@ export default function EdfViewerDirect({ url, filename, markers, canvasHeight =
 
     ctx.fillStyle = bgColor; ctx.fillRect(0, 0, W, H)
 
-    const allRows = buildMontageRows(header, montage)
+    // Bereits montierte Dateien (rekonstruierte Doppelbananen) MÜSSEN im Roh-Modus
+    // bleiben — siehe ausführlichen Kommentar in EdfViewer/index.tsx (normLabel-
+    // Mehrdeutigkeit: "-F7"-Suffix würde sonst wie eine Referenz-Endung behandelt
+    // und Kanäle fälschlich gegeneinander verrechnen).
+    const preMontaged = isPreMontaged(header)
+    const effMontage: MontageId = preMontaged ? 'raw' : montage
+    const allRows = buildMontageRows(header, effMontage)
     if (allRows.length === 0) {
       ctx.fillStyle = timeColor; ctx.font = '12px system-ui'; ctx.textAlign = 'center'
       ctx.fillText('Keine passenden Kanäle', W / 2, H / 2); return
@@ -207,7 +213,11 @@ export default function EdfViewerDirect({ url, filename, markers, canvasHeight =
     ctx.textAlign = 'right'; ctx.fillText(formatTime(viewEnd), W - pad.right, H - 3)
     ctx.fillStyle = isDark ? '#1e3a5f' : '#dbeafe'
     ctx.font = '9px system-ui'; ctx.textAlign = 'right'
-    ctx.fillText(MONTAGE_LABELS[montage], W - pad.right, pad.top - 6)
+    ctx.fillText(MONTAGE_LABELS[effMontage], W - pad.right, pad.top - 6)
+    if (preMontaged && montage !== 'raw') {
+      ctx.fillStyle = isDark ? '#fbbf24' : '#d97706'; ctx.font = '8px system-ui'; ctx.textAlign = 'right'
+      ctx.fillText('vormontiert — Referenzmontagen nicht ableitbar', W - pad.right, pad.top + 6)
+    }
   }, [header, filteredSignals, avgRef, montage, sensitivity, viewStart, windowSec, neonMode, markers])
 
   useEffect(() => { draw() }, [draw])
@@ -231,6 +241,9 @@ export default function EdfViewerDirect({ url, filename, markers, canvasHeight =
 
         {/* Montage */}
         <div className="flex rounded-lg overflow-hidden border text-[11px] font-medium" style={{ borderColor: 'var(--border)' }}>
+          {/* 'Roh' bewusst kein Button hier — nur für den EDF-Cropper relevant. Wird
+              für vormontierte Dateien trotzdem automatisch erzwungen (siehe preMontaged
+              oben), nur eben ohne manuelle Wahlmöglichkeit im Navigator. */}
           {([['bipolar', 'Doppelbanane'], ['cz', 'CZ-Ref.'], ['avg', 'Avg-Ref.']] as [MontageId, string][]).map(([m, label]) => (
             <button key={m} onClick={() => setMontage(m)} className="px-3 py-1.5 transition-colors"
               style={{ background: montage === m ? 'var(--brand)' : 'var(--bg-surface)', color: montage === m ? '#fff' : 'var(--text-secondary)' }}>
