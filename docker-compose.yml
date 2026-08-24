@@ -11,6 +11,10 @@ services:
     volumes:
       # data/ persistent halten: users, entity-edits, backups überleben rebuilds
       - eeg_data:/app/data
+      # public/edf als Bind-Mount: neue EDF-Beispieldateien landen so ohne Rebuild
+      - ./public/edf:/app/public/edf
+    networks:
+      - caddy_net
     labels:
       - "caddy.reverse_proxy={{upstreams 3000}}"
     healthcheck:
@@ -19,6 +23,13 @@ services:
       timeout: 10s
       retries: 3
       start_period: 15s
+
+networks:
+  # gemeinsames Netzwerk aller Dienstwerk-Container (siehe nz-dienstplan-Repo,
+  # RUNBOOK-caddy.md) -- der Reverse Proxy findet Container nur darüber.
+  caddy_net:
+    external: true
+    name: nz-dienstplan_app
 
 volumes:
   eeg_data:
