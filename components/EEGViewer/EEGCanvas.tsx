@@ -58,8 +58,17 @@ export default function EEGCanvas({
     const signalWidth = epochDuration * PX_PER_SEC
     const totalWidth = LABEL_WIDTH + signalWidth
 
-    canvas.width = totalWidth
-    canvas.height = totalHeight
+    // HiDPI: Backing-Store in Geräte-Pixeln, Zeichnen weiterhin in den logischen
+    // totalWidth/totalHeight-Koordinaten. Anders als beim EdfViewer hat dieser Canvas
+    // eine INTRINSISCHE Größe (PX_PER_SEC × Kanalzahl, horizontal scrollbar) und keine
+    // CSS-Breite — die muss deshalb explizit gesetzt werden, sonst würde der Canvas bei
+    // dpr=2 physisch doppelt so groß dargestellt statt doppelt so fein.
+    const dpr = window.devicePixelRatio || 1
+    canvas.width  = Math.round(totalWidth * dpr)
+    canvas.height = Math.round(totalHeight * dpr)
+    canvas.style.width  = totalWidth + 'px'
+    canvas.style.height = totalHeight + 'px'
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 
     // ── Background ───────────────────────────────────────────────────────────
     ctx.fillStyle = PAPER_COLOR
@@ -233,9 +242,13 @@ export default function EEGCanvas({
 
   return (
     <div className="overflow-x-auto">
+      {/* imageRendering bewusst NICHT gesetzt: 'crisp-edges' war ein Kompensationsversuch
+          gegen die HiDPI-Unschärfe (Backing-Store wurde hochskaliert). Seit der Canvas in
+          Geräte-Pixeln rastert, würde es nur noch das Kanten-Antialiasing der Kurven
+          unterdrücken und sie treppig wirken lassen. Breite/Höhe setzt der Effekt oben. */}
       <canvas
         ref={canvasRef}
-        style={{ display: 'block', imageRendering: 'crisp-edges' }}
+        style={{ display: 'block' }}
       />
     </div>
   )

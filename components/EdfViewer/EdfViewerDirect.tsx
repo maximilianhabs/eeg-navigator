@@ -90,7 +90,16 @@ export default function EdfViewerDirect({ url, filename, markers, canvasHeight =
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const W = canvas.width, H = canvas.height
+    // HiDPI — identisches Muster wie in EdfViewer/index.tsx, siehe Kommentar dort
+    // (Backing-Store in Geräte-Pixeln, Zeichnen in CSS-Pixeln, setTransform statt scale).
+    const dpr = window.devicePixelRatio || 1
+    const W = canvas.offsetWidth, H = canvas.offsetHeight
+    if (canvas.width !== Math.round(W * dpr) || canvas.height !== Math.round(H * dpr)) {
+      canvas.width  = Math.round(W * dpr)
+      canvas.height = Math.round(H * dpr)
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+
     const isDark = document.documentElement.classList.contains('dark')
     const bgColor     = neonMode ? '#080808' : (isDark ? '#0d1117' : '#ffffff')
     const gridColor   = neonMode ? '#1a1a1a' : (isDark ? '#1e2436' : '#f1f5f9')
@@ -224,7 +233,7 @@ export default function EdfViewerDirect({ url, filename, markers, canvasHeight =
   useEffect(() => {
     const canvas = canvasRef.current; if (!canvas) return
     const obs = new ResizeObserver(() => {
-      canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; draw()
+      draw()
     })
     obs.observe(canvas); return () => obs.disconnect()
   }, [draw])
