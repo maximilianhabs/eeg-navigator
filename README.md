@@ -37,6 +37,28 @@ npm run dev
 
 Läuft dann unter `http://localhost:3000`.
 
+## Was bekomme ich beim Clone?
+
+Das Repository ist mit allen enthaltenen EDF-Beispielaufnahmen nur **~11 MB** groß —
+`git clone` lädt alle Teaching-Snippets direkt mit, es gibt keinen separaten Datei-Download,
+kein CDN und keine externe Datenbank. `npm install` lädt danach die Next.js-Toolchain
+(~350 MB `node_modules`, einmalig) — das ist der eigentliche Zeitfaktor beim ersten Setup,
+nicht der Clone selbst.
+
+## System-Anforderungen / Plattformen
+
+- **Node.js** ≥ 20.9.0 (von Next.js 16 vorausgesetzt), npm.
+- **Getestet auf macOS.** Linux/Windows sollten funktionieren (reines Next.js/React/
+  TypeScript, keine bekannten OS-spezifischen Codepfade), sind aber von mir noch nicht
+  selbst verifiziert — Rückmeldungen/Issues willkommen.
+- Auth (`bcryptjs`) ist reines JavaScript ohne native Kompilierung — kein Build-Toolchain-
+  Risiko (Python/gcc/etc.) auf irgendeiner Plattform.
+- Tailwind v4 nutzt `lightningcss`, das ein plattformspezifisches natives Binary über npm
+  `optionalDependencies` nachlädt (macOS/Linux/Windows, x64/ARM64) — npm löst das
+  automatisch auf, es ist kein manueller Schritt nötig.
+- Deployment (siehe unten) ist über Docker vorgesehen und damit grundsätzlich
+  plattformunabhängig, unabhängig vom Host-OS.
+
 ## Funktionen
 
 - **Atlas**: durchsuchbare Übersicht aller EEG-Muster/Artefakte mit Topografie-Ansicht
