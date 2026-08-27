@@ -46,3 +46,6 @@ next-env.d.ts
 # Laufzeit-User-DB (enthält Passwort-Hashes) — nur im Volume, nicht im Repo
 data/users.json
 data/backups/
+
+# Privates Hilfsskript (Obsidian-Export), bewusst nicht im Repo
+scripts/build_obsidian_vault.py
