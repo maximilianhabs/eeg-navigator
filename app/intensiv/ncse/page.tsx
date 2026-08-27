@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Card, Callout } from '@/components/ui'
+import { Card, Callout, SelectableTile } from '@/components/ui'
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -122,17 +122,12 @@ function ChoiceBtn({ label, desc, selected, onClick }: {
   label: string; desc?: string; selected: boolean; onClick: () => void
 }) {
   return (
-    <button
-      onClick={onClick}
-      className={`w-full text-left px-4 py-3 rounded-xl border text-sm transition-all ${
-        selected
-          ? 'border-blue-400 bg-blue-50 text-blue-900 font-medium shadow-sm'
-          : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50'
-      }`}
-    >
+    <SelectableTile selected={selected} onClick={onClick}>
       <span className="font-semibold">{label}</span>
-      {desc && <span className="block text-xs text-slate-500 mt-0.5 font-normal">{desc}</span>}
-    </button>
+      {desc && (
+        <span className="block text-xs mt-0.5 font-normal" style={{ color: 'var(--text-secondary)' }}>{desc}</span>
+      )}
+    </SelectableTile>
   )
 }
 
@@ -142,17 +137,15 @@ function YesNo({ value, onChange, yesLabel = 'Ja', noLabel = 'Nein' }: {
   return (
     <div className="flex gap-3 mt-3">
       {[true, false].map(v => (
-        <button
+        <SelectableTile
           key={String(v)}
+          selected={value === v}
           onClick={() => onChange(v)}
-          className={`flex-1 py-2.5 rounded-xl border text-sm font-medium transition-all ${
-            value === v
-              ? 'border-blue-400 bg-blue-50 text-blue-800 shadow-sm'
-              : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
-          }`}
+          layout="inline"
+          className="font-medium"
         >
           {v ? yesLabel : noLabel}
-        </button>
+        </SelectableTile>
       ))}
     </div>
   )
@@ -160,17 +153,14 @@ function YesNo({ value, onChange, yesLabel = 'Ja', noLabel = 'Nein' }: {
 
 function CheckItem({ label, checked, onChange }: { label: string; checked: boolean; onChange: () => void }) {
   return (
-    <button
-      onClick={onChange}
-      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl border text-sm text-left transition-all ${
-        checked
-          ? 'border-blue-400 bg-blue-50 text-blue-900'
-          : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
-      }`}
-    >
-      <div className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 border-2 transition-all ${
-        checked ? 'bg-blue-500 border-blue-500' : 'border-slate-300'
-      }`}>
+    <SelectableTile selected={checked} onClick={onChange} className="flex items-center gap-3">
+      <div
+        className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 border-2 transition-all"
+        style={{
+          backgroundColor: checked ? 'var(--brand)' : 'transparent',
+          borderColor: checked ? 'var(--brand)' : 'var(--border-strong)',
+        }}
+      >
         {checked && (
           <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 12 12">
             <path strokeLinecap="round" d="M2 6l3 3 5-5"/>
@@ -178,7 +168,7 @@ function CheckItem({ label, checked, onChange }: { label: string; checked: boole
         )}
       </div>
       {label}
-    </button>
+    </SelectableTile>
   )
 }
 

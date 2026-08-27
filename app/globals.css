@@ -163,6 +163,14 @@ body {
   --eeg-curve-alt:  rgba(130,190,255,1.0);
 }
 
+/* ─── SelectableTile (components/ui) ─────────────────────────────────────────── */
+/* Hover nur für den NICHT ausgewählten Zustand — die Grundfarben setzt die Komponente
+   per Inline-Style aus Tokens; :hover ist inline nicht ausdrückbar, deshalb hier. */
+.selectable-tile:not(.is-selected):hover {
+  border-color: var(--border-strong) !important;
+  background-color: var(--bg-subtle) !important;
+}
+
 /* ─── Utilities ──────────────────────────────────────────────────────────────── */
 .glass {
   background: var(--glass-bg);

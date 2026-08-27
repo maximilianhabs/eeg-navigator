@@ -126,6 +126,46 @@ export function Callout({ children, tone = 'neutral', title, className = '' }: C
   )
 }
 
+// ── SelectableTile ────────────────────────────────────────────────────────────
+// Auswahlfläche mit Zustand (Antwortoption, Checkliste, Ja/Nein-Umschalter).
+//
+// Kapselt NUR den Rahmen: die drei Varianten in ncse/page.tsx (Option mit Beschreibung,
+// Ja/Nein-Paar, Checkbox-Zeile) unterscheiden sich allein im Inhalt, nicht im Zustands-Look.
+// Der ausgewählte Zustand nutzt `--brand-light`, das im Hellmodus ein zartes Blau und im
+// Nachtmodus ein dunkles Marineblau ist — genau dafür ist der Token da. Die frühere
+// Ad-hoc-Variante (`bg-blue-50` / `bg-white`) blieb im Nachtmodus weiß.
+
+interface SelectableTileProps {
+  children: ReactNode
+  selected: boolean
+  onClick: () => void
+  /** `block` = volle Breite (Listenoption), `inline` = flexibel (Ja/Nein nebeneinander). */
+  layout?: 'block' | 'inline'
+  className?: string
+}
+
+export function SelectableTile({
+  children, selected, onClick, layout = 'block', className = '',
+}: SelectableTileProps) {
+  return (
+    <button
+      onClick={onClick}
+      aria-pressed={selected}
+      className={`selectable-tile rounded-xl border text-sm transition-all ${
+        layout === 'block' ? 'w-full text-left px-4 py-3' : 'flex-1 py-2.5'
+      } ${selected ? 'is-selected' : ''} ${className}`}
+      style={{
+        borderColor: selected ? 'var(--brand)' : 'var(--border)',
+        backgroundColor: selected ? 'var(--brand-light)' : 'var(--bg-surface)',
+        color: 'var(--text-primary)',
+        boxShadow: selected ? 'var(--shadow-sm)' : undefined,
+      }}
+    >
+      {children}
+    </button>
+  )
+}
+
 // ── Metric ────────────────────────────────────────────────────────────────────
 // Einzelne Kennzahl (Wert + Bezeichnung), für Kennzahlenreihen.
 
