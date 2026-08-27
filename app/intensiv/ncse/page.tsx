@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { Card, Callout } from '@/components/ui'
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -373,11 +374,9 @@ function Step1({ s, set }: { s: State; set: (p: Partial<State>) => void }) {
       )}
 
       {s.freqRange === '<0.5' && (
-        <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-          <p className="text-xs text-slate-500">
-            Muster &lt; 0,5 Hz fällt nicht in die Salzburger Frequenzkriterien. Eine NCSE-Klassifikation nach Salzburg ist nicht anwendbar. Bitte klinischen Kontext und andere Kriterien heranziehen.
-          </p>
-        </div>
+        <Callout tone="neutral">
+          Muster &lt; 0,5 Hz fällt nicht in die Salzburger Frequenzkriterien. Eine NCSE-Klassifikation nach Salzburg ist nicht anwendbar. Bitte klinischen Kontext und andere Kriterien heranziehen.
+        </Callout>
       )}
     </div>
   )
@@ -688,16 +687,16 @@ function Step5({ s, onReset }: { s: State; onReset: () => void }) {
       </div>
 
       {/* IIC Spectrum */}
-      <div className="rounded-xl border border-slate-200 bg-white p-4 mb-5">
-        <p className="text-xs font-semibold text-slate-500 mb-3">Iktal-Interictal-Kontinuum</p>
+      <Card padding="md" className="mb-5">
+        <p className="text-xs font-semibold mb-3" style={{ color: 'var(--text-secondary)' }}>Iktal-Interictal-Kontinuum</p>
         <IICSpectrum verdict={verdict} />
-      </div>
+      </Card>
 
       {/* Pattern context */}
       {s.pattern && (
-        <div className="rounded-xl border border-slate-200 bg-white px-4 py-3 mb-5">
-          <p className="text-xs font-semibold text-slate-500 mb-2">Bewertetes Muster</p>
-          <p className="text-sm font-medium text-slate-800">
+        <Card padding="md" className="mb-5">
+          <p className="text-xs font-semibold mb-2" style={{ color: 'var(--text-secondary)' }}>Bewertetes Muster</p>
+          <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
             {s.pattern}
             {s.plusMods.length > 0 && <span className="text-blue-600"> {s.plusMods.join(' ')}</span>}
           </p>
@@ -707,7 +706,7 @@ function Step5({ s, onReset }: { s: State; onReset: () => void }) {
               {s.dauer10s !== null && ` · Dauer ≥ 10 s: ${s.dauer10s ? 'ja' : 'nein'}`}
             </p>
           )}
-        </div>
+        </Card>
       )}
 
       {/* Clinical implications */}
@@ -726,10 +725,9 @@ function Step5({ s, onReset }: { s: State; onReset: () => void }) {
         </div>
       )}
       {verdict === 'none' && (
-        <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 mb-4 text-xs text-slate-600 space-y-1">
-          <p className="font-semibold">Klinische Konsequenz — Kein NCSE</p>
-          <p>Muster entspricht IIC oder interikatem Korrelat. Ursachensuche und supportive Therapie. Regelmäßiges EEG-Monitoring fortsetzen.</p>
-        </div>
+        <Callout tone="neutral" title="Klinische Konsequenz — Kein NCSE" className="mb-4">
+          Muster entspricht IIC oder interikatem Korrelat. Ursachensuche und supportive Therapie. Regelmäßiges EEG-Monitoring fortsetzen.
+        </Callout>
       )}
 
       {/* References */}
@@ -830,7 +828,7 @@ export default function NCSEPage() {
       )}
 
       {/* Step content */}
-      <div className="rounded-2xl border border-slate-200 bg-white shadow-sm p-5">
+      <Card elevated radius="lg">
         {s.step === 0 && <Step0 s={s} set={set} />}
         {s.step === 1 && <Step1 s={s} set={set} />}
         {s.step === 2 && <Step2 s={s} set={set} />}
@@ -857,7 +855,7 @@ export default function NCSEPage() {
             }
           />
         )}
-      </div>
+      </Card>
 
       {/* Skip to result if B1/B2 already met on step 2/3 */}
       {(s.step === 2 || s.step === 3) && (() => {
