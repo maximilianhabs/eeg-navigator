@@ -106,6 +106,11 @@ der eingesetzten KI.
 
 [Apache License 2.0](LICENSE) — siehe [CITATION.cff](CITATION.cff) für Zitierhinweise.
 
+## Weiterführende Dokumentation
+
+- [docs/BETRIEB.md](docs/BETRIEB.md) — Server, Domains, DNS, Deployment, Persistenz
+- [docs/FALLSTRICKE.md](docs/FALLSTRICKE.md) — bekannte technische Fallen mit Prüfbefehlen
+
 ## Betrieb auf neuro-vibe.de
 
 Der Reverse Proxy dieses Servers gehört zum Dienstwerk-Stack und liest
