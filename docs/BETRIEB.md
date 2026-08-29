@@ -184,7 +184,7 @@ Wer die Daten braucht, findet sie an folgenden Stellen:
 | Zugänge der Nachbar-Apps (EDF-Analyzer, Anonymisator) | jeweils eigene Notiz-Einträge pro Projekt |
 | GitHub-Token / 2FA-Wiederherstellungscodes | ausschließlich lokal beim Betreiber, nie in einem Repo |
 | SSH-Zugang | Key-basiert, privater Schlüssel nur auf dem Arbeitsrechner |
-| **sudo-Passwort des Users `deploy`** | macOS-Schlüsselbund, Eintrag „Hetzner neuro-vibe-server sudo" |
+| **sudo-Passwort des Users `deploy`** | macOS-Schlüsselbund, Eintrag „Hetzner neuro-vibe-server sudo" (Konto `deploy`) — angelegt und geprüft am 29.08.2026 |
 | **root-Passwort des Servers** | macOS-Schlüsselbund, Eintrag „Hetzner neuro-vibe-server root"; jederzeit über die Hetzner Cloud Console neu setzbar |
 
 **Warum die beiden Passwort-Zeilen dazugekommen sind (29.08.2026):** Sie fehlten, und
