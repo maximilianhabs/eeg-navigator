@@ -102,3 +102,45 @@ per `className` überschreibbaren Klassen. `className` bleibt für additive Ding
 nach außen, Grid-Platzierung) reserviert.
 
 Prüfbar: `getComputedStyle(el).borderRadius` gegen den erwarteten Wert.
+
+## F-08 — Docker umgeht ufw: `ports:` ohne Adresse ist weltweit offen
+
+**Gefunden:** 2026-08-29, beim Sicherheits-Audit des Servers — durch einen Portscan **von
+außen**. Von innen sah alles korrekt aus.
+
+Die Firewall des Servers erlaubte ausdrücklich nur 22, 80 und 443 (`Default: deny
+incoming`). Trotzdem war der EEG Navigator unter `http://178.105.255.72:3020` aus dem
+Internet erreichbar — unverschlüsselt, an Caddy vorbei, ohne TLS und ohne die
+Security-Header, die für `eeg.neuro-vibe.de` gesetzt sind. Anmeldedaten gingen auf diesem
+Weg im Klartext über die Leitung.
+
+Ursache ist kein Konfigurationsfehler in ufw, sondern die Arbeitsweise von Docker: **Docker
+trägt Port-Weiterleitungen direkt in die `nat`-Tabelle von iptables ein — vor den Ketten,
+die ufw verwaltet.** Ein Mapping auf `0.0.0.0` ist damit weltweit erreichbar, egal was
+`ufw status` anzeigt. Die Firewall sieht diesen Verkehr nie.
+
+**Eine ufw-Regel behebt das nicht.** Nur das Mapping selbst wirkt:
+
+```yaml
+ports:
+  - "3020:3000"              # FALSCH — bindet auf 0.0.0.0, weltweit offen
+  - "127.0.0.1:3020:3000"    # richtig — nur lokal
+```
+
+Hier wurde die Loopback-Variante gewählt und nicht ersatzlos gestrichen, weil
+`docs/kollaboration-guide.md` zur lokalen Entwicklung an `localhost:3020` verweist — das
+funktioniert mit der Bindung an `127.0.0.1` unverändert weiter. In Produktion braucht Caddy
+den Port ohnehin nicht: Es spricht den Container über den Namen im Netz `nz-dienstplan_app`
+an.
+
+**Prüfbar — und zwar nur von einem anderen Rechner aus:**
+```bash
+nc -z -w3 178.105.255.72 3020     # Erfolg = offen, das wäre der Fehlerfall
+```
+
+Auf dem Host selbst sieht ein offener Port genauso aus wie ein zugebundener. `ss -tlnH |
+grep 3020` zeigt lediglich, **welche** Adresse gebunden ist — `0.0.0.0` ist der Alarm,
+`127.0.0.1` ist korrekt.
+
+Für alle Container eines Hosts auf einmal:
+`homeserver/services/hetzner-ops/docker-ports-pruefen.sh`

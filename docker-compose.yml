@@ -4,7 +4,15 @@ services:
     container_name: eeg-navigator
     restart: unless-stopped
     ports:
-      - "3020:3000"
+      # NUR auf 127.0.0.1 binden. Ohne die Adresse davor bindet Docker auf
+      # 0.0.0.0 und traegt die Weiterleitung direkt in die nat-Tabelle von
+      # iptables ein -- VOR den Ketten, die ufw verwaltet. Der Port waere dann
+      # weltweit erreichbar, obwohl "ufw status" nur 22/80/443 erlaubt.
+      # Genau so hing dieser Dienst unverschluesselt am Internet (bis 29.08.2026).
+      # In Produktion braucht Caddy den Port nicht -- es spricht den Container
+      # ueber den Namen im Netz nz-dienstplan_app an. Lokal bleibt
+      # http://localhost:3020 fuer die Entwicklung erreichbar.
+      - "127.0.0.1:3020:3000"
     environment:
       - NODE_ENV=production
       - APP_SECRET=${APP_SECRET}          # aus .env auf dem Server
