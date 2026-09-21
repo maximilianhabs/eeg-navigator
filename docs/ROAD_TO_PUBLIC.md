@@ -182,19 +182,19 @@ ohne private Infrastruktur, geheime Vorkenntnisse oder unsichere Standardwerte.
 GitHub empfiehlt Community-Dateien und Sicherheitsfunktionen. Nicht jede Datei ist
 zwingende Plattformpflicht; wir wählen einen angemessenen Umfang für dieses Projekt.
 
-- [ ] `CONTRIBUTING.md`: deutsche Beiträge, kleine PRs, Quellen für fachliche
+- [x] `CONTRIBUTING.md`: deutsche Beiträge, kleine PRs, Quellen für fachliche
   Änderungen, keine Patientendaten, erforderliche Prüfungen und Maintainer-Review.
-- [ ] `SECURITY.md`: tatsächlich eingerichteter privater Meldeweg, unterstützter
+- [x] `SECURITY.md`: tatsächlich eingerichteter privater Meldeweg, unterstützter
   Versionsstand, keine Sicherheitsdetails in öffentlichen Issues; keine unrealistische SLA.
-- [ ] Kurzer Verhaltenskodex mit geklärtem Kontakt und realistischem Moderationsumfang.
-- [ ] Deutsche Issue- und PR-Vorlagen mit Reproduktionsschritten bzw. Literaturbelegen;
+- [x] Kurzer Verhaltenskodex mit geklärtem Kontakt und realistischem Moderationsumfang.
+- [x] Deutsche Issue- und PR-Vorlagen mit Reproduktionsschritten bzw. Literaturbelegen;
   ausdrücklich keine klinischen Originaldateien oder Patienteninformationen anhängen.
-- [ ] CI als erforderliche Prüfung auf `main`; PR-Regeln passend zur kleinen
+- [x] CI als erforderliche Prüfung auf `main`; PR-Regeln passend zur kleinen
   Maintainer-Struktur einrichten. Schreibrechte allein verhindern direkte Pushes nicht.
-- [ ] Dependabot, Secret Scanning, Push Protection, Code Scanning und private
+- [x] Dependabot, Secret Scanning, Push Protection, Code Scanning und private
   Sicherheitsmeldungen auf Verfügbarkeit prüfen und passend aktivieren.
-- [ ] GitHub About, Topics, Website-Link und `CITATION.cff` konsistent gestalten.
-- [ ] Changelog und deutsche Release Notes mit Funktionsumfang und Einschränkungen.
+- [x] GitHub About, Topics, Website-Link und `CITATION.cff` konsistent gestalten.
+- [x] Changelog und deutsche Release Notes mit Funktionsumfang und Einschränkungen.
 
 **Abnahme:** Nutzung, Mitarbeit, fachliche Korrekturen und vertrauliche Meldungen
 haben jeweils einen verständlichen Weg; CI und Repo-Einstellungen sind überprüft.
