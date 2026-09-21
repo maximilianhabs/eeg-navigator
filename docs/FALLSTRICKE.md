@@ -144,3 +144,34 @@ grep 3020` zeigt lediglich, **welche** Adresse gebunden ist — `0.0.0.0` ist de
 
 Für alle Container eines Hosts auf einmal:
 `homeserver/services/hetzner-ops/docker-ports-pruefen.sh`
+
+---
+
+## F-09 — EDF-Cropper: Exportmodus entscheidet, ob Montagen ableitbar sind
+
+**Gefunden:** 2026-09-21, beim Hinzufügen von EEG_0040 (Breach-Rhythmus).
+
+**Symptom:** Navigator zeigt „vormontiert — Referenzmontagen nicht ableitbar" und sperrt
+Montage-Wechsel. Montage-Buttons (Doppelbanane, CZ-Ref, Avg-Ref) fehlen.
+
+**Ursache:** Der EDF-Cropper hat zwei Exportmodi:
+
+| Modus | `exp-signal-source` | Was in die EDF kommt | Navigator-Verhalten |
+|---|---|---|---|
+| **Raw** | `raw` | Original-Elektrodenkanäle (`EEG Fp1-Ref` etc.) | Alle Montagen ableitbar ✅ |
+| **Gefilterte Ansicht** | `filtered` | Bereits berechnete Montage-Signale (`Fp1-F7`, `F7-T3` etc.) | `isPreMontaged()` sperrt Montage-Wechsel ❌ |
+
+Nach Einführung des SignalResurrect-Workflows war „EDF+PDF / gefilterte Ansicht" als Cropper-Standard
+aktiv (damit EDF und PDF exakt übereinstimmen). Für den Navigator ist das falsch.
+
+**Diagnose:** `python3 -c` auf die EDF: wenn Kanallabels `Fp1-F7`, `F7-T3` etc. zeigen →
+bipolarer Export. Wenn `EEG Fp1-Ref`, `EEG F7-Ref` etc. → Raw-Export.
+
+**Fix:** Im EDF-Cropper beim Export für den Navigator immer **„Originalkanäle (roh)"** wählen
+(`exp-signal-source = raw`), kein PDF-Kombimodus. Danach Datei ersetzen und testen.
+
+**Hintergrund `isPreMontaged()`:** Die Funktion in `components/EdfViewer/montages.ts` prüft,
+ob >60 % der EEG-Kanäle das Muster `Elektrode-Elektrode` (z. B. `Fp1-F7`) tragen. Das ist
+korrekt für aus PDF-Abbildungen rekonstruierte Signale (SignalResurrect) — dort sind nur
+Differenz-Signale vorhanden und Remontage wäre physikalisch falsch. Für Klinik-Rohexporte
+darf die Funktion nie auslösen, weil diese immer referentiell exportiert werden.
