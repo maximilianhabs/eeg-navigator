@@ -32,6 +32,9 @@ services:
       retries: 3
       start_period: 15s
 
+# Lokal ohne Dienstwerk: "external: true" und "name:" auskommentieren,
+# stattdessen "external: false" oder Zeilen weglassen — dann legt Docker
+# das Netzwerk automatisch an.
 networks:
   # gemeinsames Netzwerk aller Dienstwerk-Container (siehe nz-dienstplan-Repo,
   # RUNBOOK-caddy.md) -- der Reverse Proxy findet Container nur darüber.

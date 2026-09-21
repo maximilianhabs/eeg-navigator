@@ -29,8 +29,11 @@ git clone https://github.com/maximilianhabs/eeg-navigator.git
 cd eeg-navigator
 npm install
 cp .env.example .env.local   # APP_SECRET setzen, siehe Kommentar in der Datei
+node scripts/setup-admin.mjs  # Ersten Admin-User anlegen
 npm run dev
 ```
+
+Ohne diesen Schritt ist der Login gesperrt — `data/users.json` existiert erst nach dem Setup.
 
 Läuft dann unter `http://localhost:3000`.
 

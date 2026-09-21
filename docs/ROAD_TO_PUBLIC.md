@@ -115,20 +115,20 @@ Grenzen und Installationsweg, ohne interne Dokumente lesen zu müssen.
 
 ### Etappe B — Daten, Rechte und Historie (vor Public zwingend)
 
-- [ ] Alle zur Veröffentlichung bestimmten Branches, Tags und erreichbaren
+- [x] Alle zur Veröffentlichung bestimmten Branches, Tags und erreichbaren
   historischen Dateien auf Zugangsdaten, Tokens, Passwort-Hashes, personenbezogene
   Informationen und private Unterlagen prüfen. Ergebnisse ohne Geheimniswerte
   protokollieren; auch alte Namen/Pfade und gelöschte Dateien berücksichtigen.
-- [ ] GitHub-Inhalte wie PR-Diskussionen, Anhänge, Releases und Artefakte prüfen,
+- [x] GitHub-Inhalte wie PR-Diskussionen, Anhänge, Releases und Artefakte prüfen,
   soweit vorhanden; lokale Git-Prüfung allein deckt diese nicht ab.
-- [ ] EDF-Bestand dateiweise prüfen: Patienten-/Aufzeichnungsfelder, Daten,
+- [x] EDF-Bestand dateiweise prüfen: Patienten-/Aufzeichnungsfelder, Daten,
   Freitext, Annotationen, Kanalnamen und Dateinamen; historische Versionen einbeziehen.
-- [ ] Herkunft und Befugnis zur öffentlichen Weitergabe für jede Aufnahme und
+- [x] Herkunft und Befugnis zur öffentlichen Weitergabe für jede Aufnahme und
   aus Literatur rekonstruierte Abbildung nachvollziehbar dokumentieren.
-- [ ] Lizenzumfang für Code, Fachtexte, Abbildungen und EDF-Dateien klären.
+- [x] Lizenzumfang für Code, Fachtexte, Abbildungen und EDF-Dateien klären.
   Eine vorhandene Softwarelizenz belegt keine Rechte an sämtlichen Fremdinhalten.
   Ungeklärte Materialien vor Veröffentlichung ausschließen oder ersetzen.
-- [ ] Interne Serverinventare, fremde Projekte, Zugangsdaten-Ablageorte und private
+- [x] Interne Serverinventare, fremde Projekte, Zugangsdaten-Ablageorte und private
   Betriebsnotizen aus öffentlicher Doku herauslösen. Öffentliche IPs sind nicht
   automatisch Geheimnisse, aber für einen allgemeinen Einstieg meist unnötig.
 - [ ] Bei tatsächlichem Geheimnisfund betroffene Zugänge zuerst widerrufen/rotieren;
@@ -139,18 +139,22 @@ Grenzen und Installationsweg, ohne interne Dokumente lesen zu müssen.
 Veröffentlichungsumfang; dokumentierte Freigabe durch den Maintainer. Bei Bedarf
 fachkundige Klärung offener Rechtsfragen, keine pauschale Rechtsfreigabe aus diesem Plan.
 
+**Stand 21.09.2026:** Etappe B abgeschlossen. EDF-Dateien anonymisiert (X X X X), erhoben am
+Bezirksklinikum Mainkofen, zur öffentlichen Weitergabe freigegeben. Fachtexte urheberrechtlich
+beim Autor. data/users.json aus Git-Historie entfernt (filter-repo). Server-IP bereinigt.
+
 ### Etappe C — Sicher und nachvollziehbar selbst betreiben
 
 Konkrete Befunde aus der Bestandsaufnahme:
 
 - `lib/auth.ts` und `lib/auth-edge.ts` verwenden bei fehlendem `APP_SECRET` einen
   bekannten Ersatzwert. Produktionsbetrieb muss bei fehlendem, schwachem oder
-  unverändertem Beispielwert abbrechen; Verhalten beider Implementierungen abstimmen.
+  unverändertem Beispielwert abbrechen; Verhalten beider Implementierungen abstimmen. → ✅ bereits implementiert
 - README-Schnellstart legt keinen ersten Benutzer an. Das vorhandene Skript
   `scripts/setup-admin.mjs` einbinden und sicher dokumentieren; keine Standardkonten.
 - Docker kopiert mit `COPY . .` den Build-Kontext; eine `.dockerignore` fehlt.
   Lokale Umgebungsdateien, Benutzerdateien, Backups, Git-Daten und Entwicklungsreste
-  ausschließen und erzeugtes Image/Build-Kontext prüfen.
+  ausschließen und erzeugtes Image/Build-Kontext prüfen. → ✅ bereits erledigt (Commit fdf4895)
 - Compose-Dateien setzen ein externes, betreiberspezifisches Netzwerk voraus und
   unterscheiden sich bei Mounts und Healthcheck. Ein frischer Clone braucht eine
   eindeutige lokale Anleitung und eine getrennte, generische Serverkonfiguration.

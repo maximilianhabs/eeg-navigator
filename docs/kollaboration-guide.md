@@ -129,7 +129,7 @@ Mit dem GitHub-Connector kann Claude Code Pull Requests direkt lesen und komment
    cp .env.example .env
    npm run dev
    ```
-2. Browser: **localhost:5100**
+2. Browser: **localhost:3000**
 
 ---
 
