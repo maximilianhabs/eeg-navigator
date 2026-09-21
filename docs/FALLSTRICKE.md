@@ -175,3 +175,49 @@ ob >60 % der EEG-Kanäle das Muster `Elektrode-Elektrode` (z. B. `Fp1-F7`) trage
 korrekt für aus PDF-Abbildungen rekonstruierte Signale (SignalResurrect) — dort sind nur
 Differenz-Signale vorhanden und Remontage wäre physikalisch falsch. Für Klinik-Rohexporte
 darf die Funktion nie auslösen, weil diese immer referentiell exportiert werden.
+
+---
+
+## F-10 — `.dockerignore`-Eintrag ohne korrespondierenden Bind-Mount in `docker-compose.prod.yml`
+
+**Gefunden:** 2026-09-21, nach Etappe-B-Deploy (Thumbnails und Viewer vollständig ausgefallen).
+
+**Symptom:** Atlas zeigt „0 EDF-Snippets", Thumbnails bleiben leer, EDF-Viewer lädt keine
+Kurven. `/api/edf/*` gibt `[]` zurück — kein Fehler, kein Log-Eintrag.
+
+**Ursache:** Eine Dateiausschluss in `.dockerignore` und der kompensierende Bind-Mount in
+`docker-compose.prod.yml` sind **zwei Seiten derselben Entscheidung** und müssen atomar
+geändert werden:
+
+| Datei | Rolle |
+|---|---|
+| `.dockerignore` | `public/edf/*.edf` — EDF aus Image-Build ausschließen (korrekt: ~100 MB Binärdaten) |
+| `docker-compose.prod.yml` | `./public/edf:/app/public/edf:ro` — Dateien zur Laufzeit einmounten |
+
+In Etappe B wurde `.dockerignore` neu angelegt (vorher gab es keins — EDF-Dateien landeten
+im Image). Der Bind-Mount wurde dabei vergessen. Das Image war von da an leer; ein einfaches
+`docker compose up -d` kann das nicht reparieren, weil kein Datei-Diff auf Fehlendes hinweist.
+
+**Entstehung rekonstruiert:**
+- 14.06.2026: `docker-compose.prod.yml` angelegt — kein `.dockerignore`, EDF im Image ✅
+- 21.09.2026 (Etappe B): `.dockerignore` mit `public/edf/*.edf` eingeführt — Bind-Mount
+  vergessen → Container hat ab diesem Moment 0 EDF-Dateien ❌
+
+**Diagnose im laufenden Container:**
+```bash
+docker exec eeg-navigator ls /app/public/edf/ 2>&1 | wc -l   # 0 = Mount fehlt
+docker inspect eeg-navigator --format '{{json .Mounts}}'      # Bind-Mount prüfen
+```
+
+**Fix:** Bind-Mount in `docker-compose.prod.yml` ergänzen, dann `docker compose up -d`
+(kein Rebuild nötig — nur Mount-Konfiguration).
+
+**Regel für die Zukunft:** Wenn in `.dockerignore` ein Pfad ergänzt wird, der zur Laufzeit
+gebraucht wird, **sofort** in `docker-compose.prod.yml` den Bind-Mount anlegen — im selben
+Commit. Änderungen an `.dockerignore` immer gegen `docker-compose.prod.yml` querlesen.
+
+**Healthcheck:** Der bisherige Check testete nur die Login-Seite. Ein ausgefallener EDF-Mount
+wäre damit unsichtbar. Aktueller Check prüft zusätzlich mindestens eine EDF-Datei:
+```yaml
+test: ["CMD", "sh", "-c", "wget -qO- http://127.0.0.1:3000/login > /dev/null && ls /app/public/edf/*.edf 2>/dev/null | head -1 | grep -q ."]
+```
