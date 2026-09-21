@@ -10,10 +10,11 @@ services:
       - APP_SECRET=${APP_SECRET}
     volumes:
       - eeg_data:/app/data
+      - ./public/edf:/app/public/edf:ro
     networks:
       - nz-dienstplan_app
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/login"]
+      test: ["CMD", "sh", "-c", "wget -qO- http://127.0.0.1:3000/login > /dev/null && ls /app/public/edf/*.edf 2>/dev/null | head -1 | grep -q ."]
       interval: 30s
       timeout: 10s
       retries: 3
