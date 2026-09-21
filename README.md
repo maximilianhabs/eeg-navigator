@@ -10,9 +10,17 @@
 
 ## Was ist das?
 
-Ein EEG-Lehr- und Nachschlagewerk: eine strukturierte Wissensdatenbank
-von EEG-Mustern und Artefakten (Frequenz, Amplitude, Morphologie, Montage-Verhalten,
-Differenzialdiagnosen) kombiniert mit einem interaktiven Web-Viewer für echte EDF-Aufnahmen.
+**Deutschsprachiges** EEG-Lehr- und Nachschlagewerk für medizinisches Fachpersonal —
+Ärztinnen und Ärzte, Neurologinnen und Neurologen sowie EEG-Technik, die EEG-Muster
+und Artefakte strukturiert nachschlagen, anhand echter EDF-Beispielaufnahmen erkennen
+und im Rahmen der Weiterbildung und Lehre vertiefen möchten.
+
+Konkret: eine strukturierte Wissensdatenbank von EEG-Mustern und Artefakten
+(Frequenz, Amplitude, Morphologie, Montage-Verhalten, Differenzialdiagnosen) kombiniert
+mit einem interaktiven Web-Viewer für echte EDF-Aufnahmen.
+
+Sprache der Oberfläche, der fachlichen Inhalte und der Dokumentation: **Deutsch**.
+Eine englische Version oder internationale fachliche Abdeckung ist nicht Teil dieses Projekts.
 
 ## Warum
 
@@ -22,42 +30,7 @@ tatsächlich abspielbaren EDF-Beispielaufnahmen in einem einzigen, durchsuchbare
 inklusive der Fallstricke, die in der Praxis zu Fehlinterpretationen führen (Referenz-
 kontamination, Band-Überlauf, Montage-abhängige Sichtbarkeit).
 
-## Schnellstart
-
-```bash
-git clone https://github.com/maximilianhabs/eeg-navigator.git
-cd eeg-navigator
-npm install
-cp .env.example .env.local   # APP_SECRET setzen, siehe Kommentar in der Datei
-node scripts/setup-admin.mjs  # Ersten Admin-User anlegen
-npm run dev
-```
-
-Ohne diesen Schritt ist der Login gesperrt — `data/users.json` existiert erst nach dem Setup.
-
-Läuft dann unter `http://localhost:3000`.
-
-## Was bekomme ich beim Clone?
-
-Das Repository ist mit allen enthaltenen EDF-Beispielaufnahmen nur **~11 MB** groß —
-`git clone` lädt alle Teaching-Snippets direkt mit, es gibt keinen separaten Datei-Download,
-kein CDN und keine externe Datenbank. `npm install` lädt danach die Next.js-Toolchain
-(~350 MB `node_modules`, einmalig) — das ist der eigentliche Zeitfaktor beim ersten Setup,
-nicht der Clone selbst.
-
-## System-Anforderungen / Plattformen
-
-- **Node.js** ≥ 20.9.0 (von Next.js 16 vorausgesetzt), npm.
-- **Getestet auf macOS.** Linux/Windows sollten funktionieren (reines Next.js/React/
-  TypeScript, keine bekannten OS-spezifischen Codepfade), sind aber von mir noch nicht
-  selbst verifiziert — Rückmeldungen/Issues willkommen.
-- Auth (`bcryptjs`) ist reines JavaScript ohne native Kompilierung — kein Build-Toolchain-
-  Risiko (Python/gcc/etc.) auf irgendeiner Plattform.
-- Tailwind v4 nutzt `lightningcss`, das ein plattformspezifisches natives Binary über npm
-  `optionalDependencies` nachlädt (macOS/Linux/Windows, x64/ARM64) — npm löst das
-  automatisch auf, es ist kein manueller Schritt nötig.
-- Deployment (siehe unten) ist über Docker vorgesehen und damit grundsätzlich
-  plattformunabhängig, unabhängig vom Host-OS.
+<!-- TODO: Screenshots Atlas, Viewer, Teaching -->
 
 ## Funktionen
 
@@ -73,21 +46,56 @@ sind ausgeblendet und auch über direkte URLs nicht zugänglich. Ihr Quellcode b
 für die Weiterentwicklung erhalten. Die fachlichen Kategorien und Filter im Atlas
 sowie die interne Administration bleiben verfügbar.
 
+## Schnellstart
+
+```bash
+git clone https://github.com/maximilianhabs/eeg-navigator.git
+cd eeg-navigator
+npm install
+cp .env.example .env.local   # APP_SECRET setzen, siehe Kommentar in der Datei
+node scripts/setup-admin.mjs  # Ersten Admin-User anlegen
+npm run dev
+```
+
+> **Hinweis:** `node scripts/setup-admin.mjs` muss vor dem ersten Start ausgeführt werden —
+> `data/users.json` existiert erst nach diesem Schritt; ohne ihn ist der Login gesperrt.
+
+Läuft dann unter `http://localhost:3000`.
+
+`npm install` lädt die Next.js-Toolchain (~350 MB `node_modules`, einmalig) — das ist
+der eigentliche Zeitfaktor beim ersten Setup.
+
+## System-Anforderungen / Plattformen
+
+- **Node.js** ≥ 20.9.0 (von Next.js 16 vorausgesetzt), npm.
+- **Getestet auf macOS.** Linux/Windows sollten funktionieren (reines Next.js/React/
+  TypeScript, keine bekannten OS-spezifischen Codepfade), sind aber vom Maintainer noch
+  nicht selbst verifiziert — Rückmeldungen/Issues willkommen.
+- Auth (`bcryptjs`) ist reines JavaScript ohne native Kompilierung — kein Build-Toolchain-
+  Risiko (Python/gcc/etc.) auf irgendeiner Plattform.
+- Tailwind v4 nutzt `lightningcss`, das ein plattformspezifisches natives Binary über npm
+  `optionalDependencies` nachlädt (macOS/Linux/Windows, x64/ARM64) — npm löst das
+  automatisch auf, es ist kein manueller Schritt nötig.
+- Deployment ist über Docker vorgesehen und damit grundsätzlich plattformunabhängig,
+  unabhängig vom Host-OS.
+
 ## Wissenschaftliche Ehrlichkeit
 
-- **Validiert**: die zugrunde liegenden Kriterien (Frequenz-/Amplitudenbereiche,
-  Montage-Verhalten, Differenzialdiagnosen) folgen etablierter Fachliteratur (siehe
-  Quellenangaben je Entität in der Datenbank).
+- **Quellenbasiert**: die zugrunde liegenden Kriterien (Frequenz-/Amplitudenbereiche,
+  Montage-Verhalten, Differenzialdiagnosen) orientieren sich an etablierter Fachliteratur
+  (siehe Quellenangaben je Entität in der Datenbank). Ein redaktioneller Review und eine
+  formale klinische Validierungsstudie (Sensitivität/Spezifität gegen Facharzt-Konsens)
+  liegen nicht vor.
 - **Experimentell und deaktiviert**: Der Klassifikations-Wizard ist nicht über die Website
   erreichbar. Sein Entwicklungsstand liegt unter `components/wizard/WizardPage.tsx`.
   Die Scoring-Logik ist eine didaktische Annäherung und kein validiertes klinisches System.
-- **Nicht validiert**: es liegt keine formale klinische Validierungsstudie (Sensitivität/
-  Spezifität gegen Facharzt-Konsens) für das Gesamtsystem vor.
+- **Nicht validiert**: es liegt keine formale klinische Validierungsstudie für das
+  Gesamtsystem vor.
 
 ## Limitationen
 
 - Datenbank ist kuratiert, aber nicht vollständig (Abdeckung seltener Varianten wächst
-  laufend, einige Einträge sind noch als "partial" markiert).
+  laufend, einige Einträge sind noch als „partial" markiert).
 - EDF-Beispieldateien stammen überwiegend aus anonymisierten realen klinischen Aufnahmen
   eines einzelnen Klinikstandorts (Nihon-Kohden-Gerät) sowie einigen rekonstruierten
   Abbildungen aus Fachliteratur — keine multizentrische, repräsentative Stichprobe.
@@ -95,9 +103,19 @@ sowie die interne Administration bleiben verfügbar.
 
 ## Datenschutz
 
-Alle EDF-Beispielaufnahmen sind patientenseitig anonymisiert (kein Name, keine
-Patienten-ID im Dateiheader). Es liegt keine Verarbeitung personenbezogener Nutzerdaten
-über das für den Login notwendige Maß hinaus vor.
+Die EDF-Beispielaufnahmen stammen aus dem Bezirksklinikum Mainkofen. Patienten-/
+Aufzeichnungsfelder in den Datei-Headern sind anonymisiert (kein Name, keine Patienten-ID).
+Eine Garantie vollständiger De-Identifikation ohne Einzelfallprüfung kann nicht gegeben
+werden. Es liegt keine Verarbeitung personenbezogener Nutzerdaten über das für den Login
+notwendige Maß hinaus vor.
+
+## Mitarbeit
+
+Beiträge — fachliche Korrekturen, Ergänzungen, Bugfixes — sind willkommen. Kommunikation,
+Dokumentation und Pull-Requests bitte auf **Deutsch**. Kleine, thematisch fokussierte
+Änderungen bevorzugen; fachliche Anpassungen mit Quellenangabe begründen; keine
+klinischen Originaldateien oder Patientendaten beifügen. Jeder Beitrag wird vom
+Maintainer geprüft, bevor er aufgenommen wird.
 
 ## Feedback und EDF-Beiträge
 
@@ -113,6 +131,12 @@ prüfen; bloßes Umbenennen reicht nicht. Bei Unsicherheit zunächst ohne Anhang
 Bitte eine kurze fachliche Beschreibung und Herkunft ohne Personenbezug ergänzen.
 Maximilian Habs prüft jeden Beitrag. Aufnahme in die Website, Veröffentlichungsumfang,
 Namensnennung und Lizenz werden vorab abgestimmt; es erfolgt keine automatische Veröffentlichung.
+
+## Sicherheit
+
+Sicherheitsprobleme bitte **nicht** als öffentliches GitHub-Issue melden, sondern per
+E-Mail an [maximilian.habs@googlemail.com](mailto:maximilian.habs@googlemail.com?subject=Sicherheit%20EEG%20Navigator)
+mit dem Betreff „Sicherheit EEG Navigator". Weitere Hinweise folgen in `SECURITY.md`.
 
 ## Maintainer
 
@@ -131,25 +155,3 @@ der eingesetzten KI.
 - [Road to Public](docs/ROAD_TO_PUBLIC.md) — Fahrplan zur deutschsprachigen Veröffentlichung
 - [docs/BETRIEB.md](docs/BETRIEB.md) — Server, Domains, DNS, Deployment, Persistenz
 - [docs/FALLSTRICKE.md](docs/FALLSTRICKE.md) — bekannte technische Fallen mit Prüfbefehlen
-
-## Betrieb auf neuro-vibe.de
-
-Der Reverse Proxy dieses Servers gehört zum Dienstwerk-Stack und liest
-ausschliesslich `~/nz-dienstplan/Caddyfile`. Änderungen an einem Caddyfile in
-diesem Projekt wirken auf dem Server **nicht**.
-
-Vor jeder Änderung am Routing — und bevor eine neue Subdomain eingerichtet
-wird — gilt: **nz-dienstplan/docs/RUNBOOK-caddy.md** lesen.
-
-Kurzfassung der wichtigsten Falle: Das Caddyfile ist als *einzelne Datei*
-eingehängt. Docker bindet dabei die Inode, nicht den Pfad — ein `git pull`
-ersetzt die Datei, und der Container arbeitet mit der alten weiter.
-`caddy reload` meldet dann Erfolg und lädt trotzdem den alten Stand. So war
-das Caddyfile vom 22.06. bis 01.08.2026 unbemerkt eingefroren.
-
-Deshalb nach jeder Änderung **neu starten**, nicht neu laden:
-
-```bash
-cd ~/nz-dienstplan && docker compose -f docker-compose.prod.yml restart caddy
-bash ~/nz-dienstplan/scripts/caddy-pruefen.sh      # Erfolgskontrolle
-```

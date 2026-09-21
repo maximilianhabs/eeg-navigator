@@ -100,8 +100,8 @@ Prüfung voraus; diese Bestandsaufnahme ist kein vollständiges Sicherheitsaudit
 
 - [x] Funktionsumfang mit dem Maintainer festgelegt; Beta-Seiten lokal deaktiviert.
 - [ ] „Deutschsprachig“ direkt am Anfang der README und in GitHub About nennen.
-- [ ] Deutsche Dokumentation und Beitragskommunikation ausdrücklich festlegen.
-- [ ] README ordnen: Zweck/Zielgruppe → Screenshot → Funktionen → Installation
+- [x] Deutsche Dokumentation und Beitragskommunikation ausdrücklich festlegen.
+- [x] README ordnen: Zweck/Zielgruppe → Screenshot → Funktionen → Installation
   inklusive Login → Grenzen → Mitarbeit → Sicherheit → Lizenz/Zitieren.
 - [ ] „Entscheidungssystem“ und „Diagnose-Wizard“ als Produktversprechen entfernen.
 - [ ] „Validiert“ nicht mit Literaturbezug gleichsetzen; fachliche Quellen,
