@@ -5550,15 +5550,7 @@
       "common_misinterpretations": [
         "Ohne Kenntnis der Knochenlücke häufige Verwechslung mit fokalen Spikes oder Beta-Aktivität"
       ],
-      "images": [
-        {
-          "file": "placeholder_breach.png",
-          "montage": "bipolare Längsreihe",
-          "context": "wach, Z.n. Kraniotomie",
-          "caption": "Breach-Rhythmus: fokal hochamplitudig über Knochenlücke",
-          "status": "placeholder"
-        }
-      ],
+      "images": [],
       "teaching_pearl": "Breach-Rhythmus ohne Kenntnis der Kraniotomie = Falle. Immer Anamnese fragen: Schädeloperationen?",
       "warning": "Kann zu Überdiagnose fokaler Epilepsie führen. Klinischer Kontext (Knochenlücke) ist essenziell.",
       "notes": "Kein hirneigener Rhythmus, kein Epilepsiehinweis per se. Anatomischer Kontext entscheidend.",
@@ -5569,6 +5561,11 @@
       ],
       "cross_references": {
         "artifact_mimics": []
+      },
+      "edf_markers": {
+        "EEG_0040__adult__bipolar__01.edf": [
+          { "t": 1.0, "label": "Breach links temporal", "color": "blue" }
+        ]
       },
       "spatial_distribution": "fokal",
       "spatial_subtype": null,
