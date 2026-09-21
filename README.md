@@ -30,7 +30,11 @@ tatsächlich abspielbaren EDF-Beispielaufnahmen in einem einzigen, durchsuchbare
 inklusive der Fallstricke, die in der Praxis zu Fehlinterpretationen führen (Referenz-
 kontamination, Band-Überlauf, Montage-abhängige Sichtbarkeit).
 
-<!-- TODO: Screenshots Atlas, Viewer, Teaching -->
+| Atlas — Kachelansicht | Atlas — Verzeichnis |
+|---|---|
+| ![Atlas Kacheln mit EEG-Thumbnails](docs/screenshots/atlas-kacheln.webp) | ![Atlas Verzeichnis](docs/screenshots/atlas-verzeichnis.webp) |
+
+![Teaching-Modul: Phasenumkehr & Feldanalyse](docs/screenshots/teaching-phasenumkehr.webp)
 
 ## Funktionen
 
