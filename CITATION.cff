@@ -1,9 +1,18 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
+message: "Wenn Sie diese Software verwenden, zitieren Sie sie bitte wie unten angegeben."
 title: "EEG Navigator"
+abstract: "Deutschsprachiges EEG-Lehr- und Nachschlagewerk mit interaktivem EDF-Viewer, Schlaf- und Teaching-Modulen. Für medizinisches Fachpersonal; kein Medizinprodukt."
 type: software
 authors:
   - family-names: Habs
     given-names: Maximilian
+    email: maximilian.habs@googlemail.com
 repository-code: "https://github.com/maximilianhabs/eeg-navigator"
+url: "https://eeg.neuro-vibe.de"
 license: Apache-2.0
+keywords:
+  - EEG
+  - Neurologie
+  - medizinische Ausbildung
+  - EDF
+  - Lehre
