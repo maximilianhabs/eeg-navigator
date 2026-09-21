@@ -1,0 +1,32 @@
+name: Docker Build
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -f Dockerfile --target runner -t eeg-navigator-test .
+
+      - name: Smoke test — Atlas erreichbar
+        run: |
+          docker run -d --name eeg-test \
+            -e APP_SECRET=ci-test-secret-not-for-production \
+            -e NODE_ENV=production \
+            -p 3000:3000 eeg-navigator-test
+          sleep 5
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/api/health || echo "000")
+          if [ "$STATUS" != "200" ]; then
+            # Fallback: Hauptseite muss erreichbar sein (Login-Redirect = 200 oder 307)
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/)
+          fi
+          echo "HTTP status: $STATUS"
+          docker logs eeg-test
+          [ "$STATUS" = "200" ] || [ "$STATUS" = "307" ] || [ "$STATUS" = "302" ]

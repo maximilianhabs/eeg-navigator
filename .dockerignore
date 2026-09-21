@@ -13,3 +13,8 @@ Dockerfile*
 docker-compose*.yml
 .dockerignore
 .gitignore
+
+# data/ enthält benötigte Quelldaten (wellen.json, artefakte.json, topography.ts)
+# und darf NICHT pauschal ausgeschlossen werden — nur private Laufzeitdaten:
+data/users.json
+data/backups/
