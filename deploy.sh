@@ -20,7 +20,7 @@
 #
 set -euo pipefail
 
-SERVER="deploy@178.105.255.72"
+SERVER="deploy@<server-ip>"
 CONTAINER="eeg-navigator"
 REMOTE_DIR="~/eeg-navigator"
 BRANCH="main"

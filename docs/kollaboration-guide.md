@@ -211,7 +211,7 @@ Maximilian bekommt eine E-Mail-Benachrichtigung.
 Nach dem Merge auf dem Server:
 
 ```bash
-ssh deploy@178.105.255.72
+ssh deploy@<server-ip>
 cd ~/eeg-navigator
 git pull
 docker compose -f docker-compose.prod.yml up -d --build

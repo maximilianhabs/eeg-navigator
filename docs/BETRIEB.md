@@ -13,8 +13,8 @@ alle Angaben an diesem Tag live gegen den Server geprüft (nicht aus dem Gedäch
 | | |
 |---|---|
 | Anbieter | Hetzner Cloud |
-| Öffentliche IP | `178.105.255.72` |
-| SSH | `ssh deploy@178.105.255.72` (Key-basiert), Benutzer `deploy` |
+| Öffentliche IP | `<server-ip>` |
+| SSH | `ssh deploy@<server-ip>` (Key-basiert), Benutzer `deploy` |
 | DNS | **über das Hetzner-Dashboard**, nicht über INWX |
 | Reverse Proxy | Caddy — **gehört zum Dienstwerk-Stack**, nicht zu diesem Projekt |
 
@@ -73,10 +73,10 @@ anstoßen.
 Alle vier Domains lösen auf dieselbe IP auf (geprüft per `dig`):
 
 ```
-neuro-vibe.de       → 178.105.255.72
-eeg.neuro-vibe.de   → 178.105.255.72
-edf.neuro-vibe.de   → 178.105.255.72
-ano.neuro-vibe.de   → 178.105.255.72
+neuro-vibe.de       → <server-ip>
+eeg.neuro-vibe.de   → <server-ip>
+edf.neuro-vibe.de   → <server-ip>
+ano.neuro-vibe.de   → <server-ip>
 ```
 
 ## Was sonst noch auf diesem Server läuft
