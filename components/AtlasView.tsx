@@ -37,16 +37,16 @@ interface Filter {
 }
 
 const FILTERS: Filter[] = [
-  { id: 'alle',           label: 'Alle',               color: 'bg-slate-100 text-slate-600 hover:bg-slate-200',              active: 'bg-slate-800 text-white' },
-  { id: 'physiologisch',  label: 'Physiologisch',       color: 'bg-blue-50 text-blue-700 hover:bg-blue-100 ring-1 ring-blue-200',   active: 'bg-blue-600 text-white' },
-  { id: 'benigne',        label: 'Benigne Variante',    color: 'bg-teal-50 text-teal-700 hover:bg-teal-100 ring-1 ring-teal-200',   active: 'bg-teal-600 text-white' },
-  { id: 'epileptiform',   label: 'Epileptiform',        color: 'bg-red-50 text-red-700 hover:bg-red-100 ring-1 ring-red-200',       active: 'bg-red-600 text-white' },
-  { id: 'pathologisch',   label: 'Pathologisch',        color: 'bg-orange-50 text-orange-700 hover:bg-orange-100 ring-1 ring-orange-200', active: 'bg-orange-600 text-white' },
-  { id: 'kontextabhaengig', label: 'Kontextabhängig',  color: 'bg-purple-50 text-purple-700 hover:bg-purple-100 ring-1 ring-purple-200', active: 'bg-purple-600 text-white' },
-  { id: 'schlaf',         label: 'Schlafmuster',        color: 'bg-indigo-50 text-indigo-700 hover:bg-indigo-100 ring-1 ring-indigo-200', active: 'bg-indigo-600 text-white' },
-  { id: 'artefakte',      label: 'Artefakte',           color: 'bg-amber-50 text-amber-700 hover:bg-amber-100 ring-1 ring-amber-200', active: 'bg-amber-600 text-white' },
-  { id: 'pol_positiv',    label: '↓ Primär positiv',   color: 'bg-rose-50 text-rose-700 hover:bg-rose-100 ring-1 ring-rose-200',     active: 'bg-rose-600 text-white' },
-  { id: 'pol_negativ',    label: '↑ Primär negativ',   color: 'bg-violet-50 text-violet-700 hover:bg-violet-100 ring-1 ring-violet-200', active: 'bg-violet-600 text-white' },
+  { id: 'alle',           label: 'Alle',               color: 'bg-slate-100 dark:bg-slate-700/40 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700/60',              active: 'bg-slate-800 dark:bg-slate-500 text-white' },
+  { id: 'physiologisch',  label: 'Physiologisch',       color: 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/50 ring-1 ring-blue-200 dark:ring-blue-700',   active: 'bg-blue-600 text-white' },
+  { id: 'benigne',        label: 'Benigne Variante',    color: 'bg-teal-50 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 hover:bg-teal-100 dark:hover:bg-teal-900/50 ring-1 ring-teal-200 dark:ring-teal-700',   active: 'bg-teal-600 text-white' },
+  { id: 'epileptiform',   label: 'Epileptiform',        color: 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-900/50 ring-1 ring-red-200 dark:ring-red-700',       active: 'bg-red-600 text-white' },
+  { id: 'pathologisch',   label: 'Pathologisch',        color: 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 hover:bg-orange-100 dark:hover:bg-orange-900/50 ring-1 ring-orange-200 dark:ring-orange-700', active: 'bg-orange-600 text-white' },
+  { id: 'kontextabhaengig', label: 'Kontextabhängig',  color: 'bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900/50 ring-1 ring-purple-200 dark:ring-purple-700', active: 'bg-purple-600 text-white' },
+  { id: 'schlaf',         label: 'Schlafmuster',        color: 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 ring-1 ring-indigo-200 dark:ring-indigo-700', active: 'bg-indigo-600 text-white' },
+  { id: 'artefakte',      label: 'Artefakte',           color: 'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/50 ring-1 ring-amber-200 dark:ring-amber-700', active: 'bg-amber-600 text-white' },
+  { id: 'pol_positiv',    label: '↓ Primär positiv',   color: 'bg-rose-50 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-900/50 ring-1 ring-rose-200 dark:ring-rose-700',     active: 'bg-rose-600 text-white' },
+  { id: 'pol_negativ',    label: '↑ Primär negativ',   color: 'bg-violet-50 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 hover:bg-violet-100 dark:hover:bg-violet-900/50 ring-1 ring-violet-200 dark:ring-violet-700', active: 'bg-violet-600 text-white' },
 ]
 
 // ─── Props ────────────────────────────────────────────────────────────────────
@@ -197,7 +197,7 @@ export function AtlasView({ wellenByCategory, artefakteByCategory, alleWellen, a
                 onClick={() => setAgeMode(mode)}
                 className="rounded-lg px-3 py-2 text-xs font-semibold transition-all duration-200 min-h-[44px] flex items-center justify-center"
                 style={ageMode === mode ? {
-                  backgroundColor: mode === 'kinder' ? '#7c3aed' : mode === 'erwachsen' ? '#2563eb' : 'var(--text-primary)',
+                  backgroundColor: mode === 'kinder' ? '#7c3aed' : mode === 'erwachsen' ? '#2563eb' : 'var(--brand, #3b5fe8)',
                   color: '#fff',
                   boxShadow: 'var(--shadow-sm)',
                 } : { color: 'var(--text-tertiary)' }}
@@ -330,27 +330,27 @@ export function AtlasView({ wellenByCategory, artefakteByCategory, alleWellen, a
 
 const CATEGORY_THEME: Record<string, {
   border: string
-  bg: string
+  accent: string   // hex accent for inline bg
   label: string
   dot: string
   section?: string   // Oberkategorie für Gruppierung
 }> = {
-  'Hintergrundaktivität':                          { border: 'border-blue-400',    bg: 'bg-blue-50',    label: 'text-blue-700',   dot: 'bg-blue-400',    section: 'Hintergrundaktivität' },
-  'Physiologische Wachmuster':                     { border: 'border-sky-400',     bg: 'bg-sky-50',     label: 'text-sky-700',    dot: 'bg-sky-400',     section: 'Physiologische Wachmuster' },
-  'Physiologische Muster und Normalbefunde':       { border: 'border-sky-400',     bg: 'bg-sky-50',     label: 'text-sky-700',    dot: 'bg-sky-400',     section: 'Physiologische Wachmuster' },
-  'Reaktivitäts- und Aktivierungsmuster':          { border: 'border-sky-400',     bg: 'bg-sky-50',     label: 'text-sky-700',    dot: 'bg-sky-400',     section: 'Physiologische Wachmuster' },
-  'Schlaf- und Vigilanzmuster':                    { border: 'border-indigo-400',  bg: 'bg-indigo-50',  label: 'text-indigo-700', dot: 'bg-indigo-400',  section: 'Schlaf- und Vigilanzmuster' },
-  'Benigne Varianten und Normvarianten':           { border: 'border-teal-400',    bg: 'bg-teal-50',    label: 'text-teal-700',   dot: 'bg-teal-400',    section: 'Benigne Varianten' },
-  'Benigne Varianten und Spike-Mimics':            { border: 'border-teal-400',    bg: 'bg-teal-50',    label: 'text-teal-700',   dot: 'bg-teal-400',    section: 'Benigne Varianten' },
-  'Benigne Varianten':                             { border: 'border-teal-400',    bg: 'bg-teal-50',    label: 'text-teal-700',   dot: 'bg-teal-400',    section: 'Benigne Varianten' },
-  'Neonatale und altersspezifische Muster':        { border: 'border-violet-400',  bg: 'bg-violet-50',  label: 'text-violet-700', dot: 'bg-violet-400',  section: 'Neonatale Muster' },
-  'Rhythmische und periodische Muster':            { border: 'border-orange-400',  bg: 'bg-orange-50',  label: 'text-orange-700', dot: 'bg-orange-400',  section: 'Pathologische Muster' },
-  'Diffuse pathologische Muster und Komamuster':   { border: 'border-orange-500',  bg: 'bg-orange-50',  label: 'text-orange-700', dot: 'bg-orange-500',  section: 'Pathologische Muster' },
-  'Pathologische Muster – Fokal und Lateralisiert':{ border: 'border-orange-400',  bg: 'bg-orange-50',  label: 'text-orange-700', dot: 'bg-orange-400',  section: 'Pathologische Muster' },
-  'Epileptiforme Potentiale und Muster':           { border: 'border-red-400',     bg: 'bg-red-50',     label: 'text-red-700',    dot: 'bg-red-400',     section: 'Epileptiforme Muster' },
-  'Epileptiforme Aktivität – Iktal und Interiktal':{ border: 'border-red-400',     bg: 'bg-red-50',     label: 'text-red-700',    dot: 'bg-red-400',     section: 'Epileptiforme Muster' },
-  'Anfallsmuster':                                 { border: 'border-red-500',     bg: 'bg-red-50',     label: 'text-red-800',    dot: 'bg-red-500',     section: 'Epileptiforme Muster' },
-  'Schädeldefekt- und Strukturphänomene':          { border: 'border-slate-400',   bg: 'bg-slate-50',   label: 'text-slate-600',  dot: 'bg-slate-400',   section: 'Sonstige' },
+  'Hintergrundaktivität':                          { border: 'border-blue-400',    accent: '#3b82f6', label: 'text-blue-700',   dot: 'bg-blue-400',    section: 'Hintergrundaktivität' },
+  'Physiologische Wachmuster':                     { border: 'border-sky-400',     accent: '#0ea5e9', label: 'text-sky-700',    dot: 'bg-sky-400',     section: 'Physiologische Wachmuster' },
+  'Physiologische Muster und Normalbefunde':       { border: 'border-sky-400',     accent: '#0ea5e9', label: 'text-sky-700',    dot: 'bg-sky-400',     section: 'Physiologische Wachmuster' },
+  'Reaktivitäts- und Aktivierungsmuster':          { border: 'border-sky-400',     accent: '#0ea5e9', label: 'text-sky-700',    dot: 'bg-sky-400',     section: 'Physiologische Wachmuster' },
+  'Schlaf- und Vigilanzmuster':                    { border: 'border-indigo-400',  accent: '#6366f1', label: 'text-indigo-700', dot: 'bg-indigo-400',  section: 'Schlaf- und Vigilanzmuster' },
+  'Benigne Varianten und Normvarianten':           { border: 'border-teal-400',    accent: '#14b8a6', label: 'text-teal-700',   dot: 'bg-teal-400',    section: 'Benigne Varianten' },
+  'Benigne Varianten und Spike-Mimics':            { border: 'border-teal-400',    accent: '#14b8a6', label: 'text-teal-700',   dot: 'bg-teal-400',    section: 'Benigne Varianten' },
+  'Benigne Varianten':                             { border: 'border-teal-400',    accent: '#14b8a6', label: 'text-teal-700',   dot: 'bg-teal-400',    section: 'Benigne Varianten' },
+  'Neonatale und altersspezifische Muster':        { border: 'border-violet-400',  accent: '#8b5cf6', label: 'text-violet-700', dot: 'bg-violet-400',  section: 'Neonatale Muster' },
+  'Rhythmische und periodische Muster':            { border: 'border-orange-400',  accent: '#f97316', label: 'text-orange-700', dot: 'bg-orange-400',  section: 'Pathologische Muster' },
+  'Diffuse pathologische Muster und Komamuster':   { border: 'border-orange-500',  accent: '#f97316', label: 'text-orange-700', dot: 'bg-orange-500',  section: 'Pathologische Muster' },
+  'Pathologische Muster – Fokal und Lateralisiert':{ border: 'border-orange-400',  accent: '#f97316', label: 'text-orange-700', dot: 'bg-orange-400',  section: 'Pathologische Muster' },
+  'Epileptiforme Potentiale und Muster':           { border: 'border-red-400',     accent: '#ef4444', label: 'text-red-700',    dot: 'bg-red-400',     section: 'Epileptiforme Muster' },
+  'Epileptiforme Aktivität – Iktal und Interiktal':{ border: 'border-red-400',     accent: '#ef4444', label: 'text-red-700',    dot: 'bg-red-400',     section: 'Epileptiforme Muster' },
+  'Anfallsmuster':                                 { border: 'border-red-500',     accent: '#ef4444', label: 'text-red-800',    dot: 'bg-red-500',     section: 'Epileptiforme Muster' },
+  'Schädeldefekt- und Strukturphänomene':          { border: 'border-slate-400',   accent: '#94a3b8', label: 'text-slate-600',  dot: 'bg-slate-400',   section: 'Sonstige' },
 }
 
 const SECTION_META: Record<string, { icon: string; color: string; desc: string }> = {
@@ -366,7 +366,7 @@ const SECTION_META: Record<string, { icon: string; color: string; desc: string }
 
 function getTheme(category: string) {
   return CATEGORY_THEME[category] ?? {
-    border: 'border-slate-300', bg: 'bg-slate-50', label: 'text-slate-600', dot: 'bg-slate-300', section: 'Sonstige'
+    border: 'border-slate-300', accent: '#94a3b8', label: 'text-slate-600', dot: 'bg-slate-300', section: 'Sonstige'
   }
 }
 
@@ -555,7 +555,7 @@ function DirectoryView({
           icon="⊘"
           headerColor="text-amber-700"
           borderColor="border-amber-200"
-          bgColor="bg-amber-50"
+          accentHex="#f59e0b"
           title="Artefakte"
           groups={artefakteFlat.map(g => ({
             name: g.category,
@@ -670,8 +670,8 @@ function DirectoryView({
         key={section}
         icon={meta.icon}
         headerColor={meta.color}
-        borderColor={theme0.border.replace('border-', 'border-').replace('-400', '-200').replace('-500', '-200')}
-        bgColor={theme0.bg}
+        borderColor={theme0.border.replace('-400', '-200').replace('-500', '-200')}
+        accentHex={theme0.accent}
         title={section}
         groups={directoryGroups}
         total={totalInSection}
@@ -709,18 +709,19 @@ interface DirectoryGroup {
 }
 
 function DirectorySection({
-  icon, headerColor, borderColor, bgColor, title, groups, total,
+  icon, headerColor, borderColor, accentHex, title, groups, total,
 }: {
   icon: string
   headerColor: string
   borderColor: string
-  bgColor: string
+  accentHex: string
   title: string
   groups: DirectoryGroup[]
   total: number
 }) {
   return (
-    <div className={`rounded-xl border ${borderColor} ${bgColor} overflow-hidden`}>
+    <div className={`rounded-xl border ${borderColor} overflow-hidden`}
+      style={{ backgroundColor: accentHex + '12' }}>
       {/* Sektion-Header */}
       <div className="px-3 py-2 border-b border-current border-opacity-10">
         <div className="flex items-center gap-1.5">
@@ -748,9 +749,13 @@ function DirectorySection({
               <Link
                 key={entry.id}
                 href={`/entity/${entry.id}`}
-                className="flex items-baseline gap-2 px-3 py-1 hover:bg-white/60 transition-colors group"
+                className="flex items-baseline gap-2 px-3 py-1 transition-colors group"
+                style={{ ':hover': undefined } as React.CSSProperties}
+                onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'var(--bg-subtle)')}
+                onMouseLeave={e => (e.currentTarget.style.backgroundColor = '')}
               >
-                <span className="text-xs font-medium text-slate-800 group-hover:text-blue-600 transition-colors flex-1 leading-5">
+                <span className="text-xs font-medium transition-colors flex-1 leading-5 group-hover:text-blue-500"
+                  style={{ color: 'var(--text-primary)' }}>
                   {entry.name}
                 </span>
                 {entry.tag && (

@@ -44,12 +44,17 @@ export default function AtlasPage() {
         </div>
       </div>
 
-      {/* ── Module Grid ── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 animate-fade-in delay-75">
+      {/* ── Module ── */}
+      <div className="animate-fade-in delay-75">
+      <div className="flex items-center gap-3 mb-3">
+        <h2 className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--text-tertiary)' }}>Module</h2>
+        <span className="h-px flex-1" style={{ backgroundColor: 'var(--border)' }} />
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <ModuleCard
           href="/eeg-viewer"
           title="EEG-Viewer"
-          description="Synthetische EEG-Kurven in bipolarer Längsreihe und Cz-Referenz."
+          description="EDF-Beispielaufnahmen mit umschaltbaren Montagen, Filtern und Wiedergabe."
           badge="Verfügbar"
           accentColor="#10b981"
           icon={
@@ -71,18 +76,6 @@ export default function AtlasPage() {
           }
         />
         <ModuleCard
-          href="/intensiv"
-          title="Intensiv & Bewusstseinsstörungen"
-          description="Maligne EEG-Muster, ACNS-Klassifikation, ICU-EEG. ACNS 2021."
-          badge="In Entwicklung"
-          accentColor="#f59e0b"
-          icon={
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-            </svg>
-          }
-        />
-        <ModuleCard
           href="/teaching"
           title="Teaching"
           description="Kindliche EEG-Entwicklung, Montageauswahl, Phasenumkehr-Simulator."
@@ -94,6 +87,7 @@ export default function AtlasPage() {
             </svg>
           }
         />
+      </div>
       </div>
 
       {/* ── Quick Access: Lesezeichen + Zuletzt gesehen ── */}

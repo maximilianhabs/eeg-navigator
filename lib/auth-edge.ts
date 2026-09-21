@@ -6,7 +6,14 @@ export interface SessionPayload { userId: string; username: string; role: UserRo
 export const SESSION_COOKIE = 'eeg-session'
 
 function getSecret() {
-  return process.env.APP_SECRET ?? 'dev-secret-please-change-in-production'
+  const s = process.env.APP_SECRET
+  if (!s || s === 'ERSETZE_MICH_MIT_ZUFALLSSTRING') {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('APP_SECRET ist nicht gesetzt. Produktionsstart abgebrochen.')
+    }
+    return 'dev-secret-please-change-in-production'
+  }
+  return s
 }
 
 function toBase64url(buf: ArrayBuffer): string {

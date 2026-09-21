@@ -1,0 +1,16 @@
+.git
+.github
+node_modules
+.next
+.env
+.env.local
+.env.*.local
+data/
+public/edf/*.edf
+docs/
+scripts/
+*.md
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+.gitignore

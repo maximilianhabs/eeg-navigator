@@ -22,7 +22,14 @@ export interface User {
 // ─── Token signing (HMAC-SHA256, no external dep) ────────────────────────────
 
 function secret() {
-  return process.env.APP_SECRET ?? 'dev-secret-please-change-in-production'
+  const s = process.env.APP_SECRET
+  if (!s || s === 'ERSETZE_MICH_MIT_ZUFALLSSTRING') {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('APP_SECRET ist nicht gesetzt. Produktionsstart abgebrochen.')
+    }
+    return 'dev-secret-please-change-in-production'
+  }
+  return s
 }
 
 export function signToken(payload: SessionPayload): string {

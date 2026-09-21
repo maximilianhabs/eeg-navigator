@@ -22,12 +22,12 @@ export default function ImpressumPage() {
           Impressum &amp; Rechtliches
         </h1>
         <p className="mt-1 text-sm" style={{ color: 'var(--text-tertiary)' }}>
-          Angaben gemäß §5 TMG · Datenschutz · Nutzungsrecht · Medizinischer Hinweis
+          Angaben gemäß § 5 DDG · Datenschutz · Nutzungsrecht · Medizinischer Hinweis
         </p>
       </div>
 
       {/* ── Impressum ── */}
-      <Section title="Impressum" subtitle="Angaben gemäß § 5 TMG">
+      <Section title="Impressum" subtitle="Angaben gemäß § 5 DDG">
         <Field label="Verantwortlicher">
           Maximilian Habs
         </Field>
@@ -53,6 +53,48 @@ export default function ImpressumPage() {
           ausgewählte, persönlich eingeladene Nutzer aus dem medizinischen Fachbereich.
         </p>
       </Section>
+
+      <div id="feedback" className="scroll-mt-20">
+        <Section title="Über das Projekt, Feedback &amp; EDF-Beiträge">
+          <p>
+            EEG Navigator ist ein deutschsprachiges Lehr- und Nachschlagewerk von
+            Maximilian Habs für medizinisches Fachpersonal. Hinweise auf Fehler,
+            fachliche Ergänzungen und Vorschläge zur Bedienung sind willkommen.
+          </p>
+          <p>
+            Schreiben Sie an{' '}
+            <a href="mailto:maximilian.habs@googlemail.com?subject=Feedback%20zum%20EEG%20Navigator"
+              className="underline underline-offset-2" style={{ color: 'var(--brand)' }}>
+              maximilian.habs@googlemail.com
+            </a>.
+            Nennen Sie nach Möglichkeit die betroffene Seite oder Entitäts-ID und
+            beschreiben Sie Ihren Vorschlag. Bitte senden Sie keine personenbezogenen
+            Patientendaten, auch nicht in Screenshots oder im Nachrichtentext.
+          </p>
+          <SubSection title="Eigene EDF-Beispiele beitragen">
+            Sie können anonymisierte EDF-Beispielaufnahmen für die Lehre per E-Mail
+            vorschlagen. Entfernen Sie vor dem Versand alle identifizierenden Angaben,
+            insbesondere aus Dateinamen, Patienten- und Aufzeichnungsfeldern,
+            Datumsangaben, Freitext und Annotationen. Das bloße Umbenennen der Datei
+            genügt nicht. Wenn Sie unsicher sind, nehmen Sie zunächst ohne Dateianhang
+            Kontakt auf.
+          </SubSection>
+          <p>
+            Bitte reichen Sie nur Aufnahmen ein, zu deren Weitergabe und Veröffentlichung
+            Sie berechtigt sind. Ergänzen Sie eine kurze fachliche Beschreibung des
+            EEG-Phänomens und Angaben zur Herkunft ohne Personenbezug. Maximilian Habs
+            prüft die vorgeschlagenen Dateien vor einer möglichen Aufnahme in die
+            Website. Veröffentlichungsumfang, Namensnennung und Lizenz werden vorab
+            abgestimmt; eine Einsendung wird nicht automatisch veröffentlicht.
+          </p>
+          <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
+            Die Kontaktlinks öffnen Ihr E-Mail-Programm. Es gibt keinen direkten
+            Datei-Upload auf dieser Website. Ihre E-Mail-Adresse und die mitgesendeten
+            Angaben werden zur Bearbeitung Ihrer Anfrage und zur Abstimmung eines
+            möglichen Beitrags verwendet.
+          </p>
+        </Section>
+      </div>
 
       {/* ── Medizinischer Disclaimer ── */}
       <Section title="Medizinischer Hinweis" subtitle="Kein Medizinprodukt · Keine klinische Entscheidungshilfe">
@@ -173,12 +215,14 @@ export default function ImpressumPage() {
           </ul>
         </SubSection>
         <SubSection title="Zweck der Datenverarbeitung">
-          Die erhobenen Daten dienen ausschließlich der Zugangskontrolle zu dieser nicht-öffentlichen
-          Testplattform. Eine Nutzung zu anderen Zwecken findet nicht statt.
+          Die bei der Anmeldung erhobenen Daten dienen der Zugangskontrolle zu dieser
+          nicht-öffentlichen Plattform. Bei einer Kontaktaufnahme per E-Mail werden
+          die mitgesendeten Angaben zur Bearbeitung der Anfrage verwendet.
           Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung / berechtigtes Interesse).
         </SubSection>
         <SubSection title="Datenspeicherung und -löschung">
-          Benutzerdaten werden in einer verschlüsselten Datei auf dem Server gespeichert.
+          Benutzerdaten werden in einer Datei auf dem Server gespeichert. Passwörter werden
+          ausschließlich als bcrypt-Hashes abgelegt.
           Die Daten werden gelöscht, sobald der Zugang nicht mehr benötigt wird oder auf Anfrage
           des Nutzers. Das Sitzungs-Cookie wird nach 10 Stunden automatisch ungültig.
         </SubSection>
@@ -196,7 +240,7 @@ export default function ImpressumPage() {
 
       {/* ── Stand ── */}
       <p className="text-xs pb-6" style={{ color: 'var(--text-tertiary)' }}>
-        Stand: Juni 2026 · Diese Seite kann jederzeit ohne Vorankündigung aktualisiert werden.
+        Stand: September 2026 · Diese Seite kann jederzeit ohne Vorankündigung aktualisiert werden.
       </p>
 
     </div>

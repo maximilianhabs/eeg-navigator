@@ -10,12 +10,9 @@
 
 ## Was ist das?
 
-Ein regelbasiertes EEG-Lehr- und Entscheidungssystem: eine strukturierte Wissensdatenbank
+Ein EEG-Lehr- und Nachschlagewerk: eine strukturierte Wissensdatenbank
 von EEG-Mustern und Artefakten (Frequenz, Amplitude, Morphologie, Montage-Verhalten,
-Differenzialdiagnosen) kombiniert mit einem interaktiven Web-Viewer für echte EDF-Aufnahmen
-und einem geführten Diagnose-Wizard. Kein Machine-Learning-Klassifikator — die Logik ist
-deterministisch und nachvollziehbar, jede Einschätzung ist auf dokumentierte Kriterien
-zurückführbar.
+Differenzialdiagnosen) kombiniert mit einem interaktiven Web-Viewer für echte EDF-Aufnahmen.
 
 ## Warum
 
@@ -64,18 +61,23 @@ nicht der Clone selbst.
 - **Atlas**: durchsuchbare Übersicht aller EEG-Muster/Artefakte mit Topografie-Ansicht
 - **EEG-Viewer**: Canvas-basierter EDF-Player mit umschaltbaren Montagen (bipolare
   Doppelbanane, Cz-Referenz, Average-Referenz)
-- **Wizard**: schrittweiser Differenzialdiagnose-Dialog mit Live-Wellensimulator
-- **Schlaf-/Intensiv-/Teaching-Module**: spezialisierte Lehreinheiten (Schlafstadien,
-  Status-epilepticus-Kriterien, Entwicklungs-EEG)
+- **Schlaf und Teaching**: Schlafstadien, Entwicklungs-EEG und Montage-Lehre
 - **Admin-Editor**: strukturierte Pflege der Entitätsdatenbank
+
+Die erste Veröffentlichung konzentriert sich auf Atlas, Suche, Entitätsseiten und
+EDF-Viewer sowie Schlaf und Teaching. Wizard/Klassifikation und Intensiv-/NCSE-Seiten
+sind ausgeblendet und auch über direkte URLs nicht zugänglich. Ihr Quellcode bleibt
+für die Weiterentwicklung erhalten. Die fachlichen Kategorien und Filter im Atlas
+sowie die interne Administration bleiben verfügbar.
 
 ## Wissenschaftliche Ehrlichkeit
 
 - **Validiert**: die zugrunde liegenden Kriterien (Frequenz-/Amplitudenbereiche,
   Montage-Verhalten, Differenzialdiagnosen) folgen etablierter Fachliteratur (siehe
   Quellenangaben je Entität in der Datenbank).
-- **Vereinfacht**: die Wizard-Scoring-Logik ist eine didaktische Annäherung, kein
-  validiertes klinisches Scoring-System. Montage-/Vigilanz-Gewichtung ist heuristisch.
+- **Experimentell und deaktiviert**: Der Klassifikations-Wizard ist nicht über die Website
+  erreichbar. Sein Entwicklungsstand liegt unter `components/wizard/WizardPage.tsx`.
+  Die Scoring-Logik ist eine didaktische Annäherung und kein validiertes klinisches System.
 - **Nicht validiert**: es liegt keine formale klinische Validierungsstudie (Sensitivität/
   Spezifität gegen Facharzt-Konsens) für das Gesamtsystem vor.
 
@@ -94,6 +96,21 @@ Alle EDF-Beispielaufnahmen sind patientenseitig anonymisiert (kein Name, keine
 Patienten-ID im Dateiheader). Es liegt keine Verarbeitung personenbezogener Nutzerdaten
 über das für den Login notwendige Maß hinaus vor.
 
+## Feedback und EDF-Beiträge
+
+Hinweise auf Fehler, fachliche Ergänzungen und Verbesserungsvorschläge sind willkommen:
+[maximilian.habs@googlemail.com](mailto:maximilian.habs@googlemail.com?subject=Feedback%20zum%20EEG%20Navigator).
+Bitte die betroffene Seite oder Entitäts-ID angeben und keine personenbezogenen
+Patientendaten mitsenden, auch nicht in Screenshots.
+
+Eigene EDF-Beispiele können per E-Mail vorgeschlagen werden. Voraussetzung sind
+vollständige Anonymisierung und die Berechtigung zur Weitergabe und Veröffentlichung.
+Insbesondere Dateinamen, Patienten-/Aufzeichnungsfelder, Datumsangaben und Annotationen
+prüfen; bloßes Umbenennen reicht nicht. Bei Unsicherheit zunächst ohne Anhang anfragen.
+Bitte eine kurze fachliche Beschreibung und Herkunft ohne Personenbezug ergänzen.
+Maximilian Habs prüft jeden Beitrag. Aufnahme in die Website, Veröffentlichungsumfang,
+Namensnennung und Lizenz werden vorab abgestimmt; es erfolgt keine automatische Veröffentlichung.
+
 ## Maintainer
 
 Maximilian Habs — [maximilian.habs@googlemail.com](mailto:maximilian.habs@googlemail.com)
@@ -108,6 +125,7 @@ der eingesetzten KI.
 
 ## Weiterführende Dokumentation
 
+- [Road to Public](docs/ROAD_TO_PUBLIC.md) — Fahrplan zur deutschsprachigen Veröffentlichung
 - [docs/BETRIEB.md](docs/BETRIEB.md) — Server, Domains, DNS, Deployment, Persistenz
 - [docs/FALLSTRICKE.md](docs/FALLSTRICKE.md) — bekannte technische Fallen mit Prüfbefehlen
 

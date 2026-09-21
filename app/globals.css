@@ -186,3 +186,9 @@ body {
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 9px; }
+
+/* ─── Trennlinien: Dark-Mode ─────────────────────────────────────────────────── */
+/* divide-slate-100 / border-slate-100/200 bleiben ohne dark:-Variante zu hell. */
+.dark .divide-slate-100 > * + * { border-color: rgba(148, 163, 184, 0.12) !important; }
+.dark .border-slate-100 { border-color: rgba(148, 163, 184, 0.12) !important; }
+.dark .border-slate-200 { border-color: rgba(148, 163, 184, 0.18) !important; }

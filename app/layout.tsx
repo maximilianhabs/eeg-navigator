@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     default: 'EEG Navigator',
     template: '%s | EEG Navigator',
   },
-  description: 'Regelbasiertes EEG-Lehr- und Entscheidungssystem',
+  description: 'EEG-Atlas und Nachschlagewerk mit interaktivem EDF-Viewer',
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -49,8 +49,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   { href: '/',          label: 'Atlas' },
                   { href: '/eeg-viewer',label: 'EEG-Viewer' },
                   { href: '/schlaf',    label: 'Schlaf' },
-                  { href: '/intensiv',  label: 'Intensiv' },
-                  { href: '/wizard',    label: 'Wizard' },
                 ].map(({ href, label }) => (
                   <a key={href} href={href}
                     className="rounded-md px-3 py-1.5 font-medium transition-colors hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-100">
@@ -84,7 +82,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <strong style={{ color: 'var(--text-secondary)' }}>Kein Medizinprodukt.</strong>{' '}
                 Ausschließlich zu Lehr- und Informationszwecken.
               </span>
-              <div className="flex items-center gap-3 ml-4">
+              <div className="flex flex-wrap items-center gap-3 ml-4">
+                <a href="/impressum#feedback" className="hover:underline"
+                  style={{ color: 'var(--text-secondary)' }}>
+                  Feedback &amp; Mitmachen
+                </a>
                 <a href="/impressum"
                   className="transition-opacity hover:opacity-100 opacity-50 hover:text-current"
                   style={{ color: 'var(--text-tertiary)' }}>
