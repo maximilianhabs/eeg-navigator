@@ -5457,43 +5457,48 @@
       "id": "EEG_0040",
       "name": "Breach-Rhythmus",
       "aliases": [
+        "Breach-Phänomen",
+        "Breach-Effekt",
+        "breach effect",
         "Breach Phenomenon",
         "Knochenlückenrhythmus"
       ],
       "main_category": "Schädeldefekt- und Strukturphänomene",
       "subcategory": "Knochenlücken-assoziiertes Muster",
       "frequency": {
-        "label": "Beta",
-        "min_hz": 14,
+        "label": "variabel (Alpha, Beta, Mu)",
+        "min_hz": 6,
         "max_hz": 30,
-        "typical_hz": 20
+        "typical_hz": null,
+        "note": "Nicht auf Beta beschränkt; verstärkte Alpha-, Beta- und Mu-Aktivität möglich"
       },
       "amplitude": {
-        "label": "sehr groß",
-        "min_uv": 100,
-        "max_uv": 500,
-        "typical_uv": 200
+        "label": "fokal erhöht",
+        "min_uv": null,
+        "max_uv": null,
+        "typical_uv": null,
+        "note": "Relative fokale Verstärkung durch fehlende Knochendämpfung; absolute Zahlen (100–500 µV) nicht als allgemeines diagnostisches Kriterium"
       },
       "duration": {
-        "label": "kontinuierlich",
+        "label": "variabel",
         "min_ms": null,
         "max_ms": null,
         "typical_ms": null,
-        "note": "Persistiert solange Knochenlücke besteht"
+        "note": "Persistiert typischerweise über der Knochenlücke; nicht zwingend dauerrhythmisch; kann nach Knochenersatz fortbestehen"
       },
       "polarity": "alternierend",
       "localization": [
         "fokal_variabel"
       ],
-      "laterality": "links",
+      "laterality": "vom Defekt abhängig",
       "field_distribution": {
         "description": "Fokal über der Knochenlücke; scharfe Kontur durch fehlende Knochendämpfung",
         "phase_reversal": "möglich",
         "field_plausibility": "streng_fokal",
         "reference_contamination_risk": "niedrig"
       },
-      "morphology": "Scharf, hochamplitudig, schnell; augmentierter µ- oder Alpha-Rhythmus; scheinbar spitz",
-      "potential_course": "Kontinuierlich über der Knochenlücke, scharfe scheinbar epileptiforme Morphologie",
+      "morphology": "Fokal erhöhte Amplitude und scharfe Kontur durch veränderte Übertragungseigenschaften über der Knochenlücke; verstärkte Alpha-, Beta- und Mu-Komponenten; scheinbar spitz oder epileptiform",
+      "potential_course": "Persistiert typischerweise über der Knochenlücke; nicht zwingend rhythmisch; kann nach Knochenersatz fortbestehen; zugrunde liegende kortikale Aktivität unverändert, nur deren Darstellung verändert",
       "rhythmicity": "rhythmisch",
       "periodicity": "nicht_periodisch",
       "montage_behavior": {
@@ -5504,7 +5509,7 @@
         "referential_mastoid": "Fokal über dem Defekt deutlich",
         "best_montage": "bipolare Längsreihe für Feldnachweis",
         "typical_montage": "bipolare Längsreihe",
-        "pitfalls": "Klinischer Kontext (Z.n. Trepanation) ist entscheidend – ohne diese Information leicht als fokale Epilepsie fehlgedeutet"
+        "pitfalls": "Klinischer Kontext (Z.n. Trepanation) ist entscheidend. Hohe Amplitude und spitze Konturen allein begründen keine epileptiforme Einordnung. Umgekehrt können echte epileptiforme Entladungen über einem Defekt ungewöhnlich klein wirken – ‚kein klares Feld' ist kein zuverlässiges Ausschlusskriterium."
       },
       "classification": "kontextabhaengig",
       "disease_value": "kontextabhaengig",
@@ -5518,18 +5523,19 @@
       "dialog_logic": {
         "key_features": [
           "Knochenlücke in der Anamnese",
-          "fokal erhöhte Amplitude",
-          "scharf konturiert",
-          "keine epileptiforme Feldlogik im engeren Sinne"
+          "fokal erhöhte Amplitude über dem Defekt",
+          "scharf konturiert durch veränderte Übertragung",
+          "nicht auf Beta beschränkt (auch Alpha, Mu möglich)"
         ],
         "criteria_for": [
           "Anamnese: Z.n. Trepanation/Kraniotomie/Schädeldefekt",
-          "Fokal erhöhte Amplitude und Schärfe genau über dem Defekt",
-          "Augmentierter µ- oder Alpha-Rhythmus"
+          "Fokal erhöhte Amplitude und Schärfe über dem Defekt",
+          "Verstärkte Alpha-, Beta- oder Mu-Aktivität",
+          "Abgleich mit Bildgebung (CT Knochenfenster): Seite und Ausdehnung des Defekts passen zur auffälligen Region?"
         ],
         "criteria_against": [
-          "Keine Knochenlücke in der Anamnese",
-          "Plausibles epileptiformes Feld mit Slow Wave"
+          "Keine Knochenlücke in der Anamnese (schließt Breach nicht sicher aus, wenn Anamnese unbekannt)",
+          "Plausibles epileptiformes Feld mit Slow Wave – Breach und echte Epilepsie schließen einander nicht aus"
         ],
         "mimics": [
           "EEG_0042",
@@ -5537,9 +5543,11 @@
           "EEG_0014"
         ],
         "discriminating_questions": [
-          "Hat der Patient eine Knochenlücke (Z.n. Kraniotomie, Trepanation)?",
+          "Hat der Patient eine Knochenlücke (Z.n. Kraniotomie, Trepanation, Bohrloch)?",
           "Ist das Muster fokal genau über dem Schädeldefekt?",
-          "Gibt es eine Slow Wave oder epileptiformes Feld?"
+          "Passt ein vorhandenes CT (Knochenfenster) topografisch zur auffälligen Region?",
+          "Gibt es eine begleitende Slow Wave oder ein klares epileptiformes Feld?",
+          "Könnte gleichzeitig eine echte epileptiforme Aktivität vorliegen?"
         ]
       },
       "differential_diagnoses": [
@@ -5548,15 +5556,21 @@
         "EEG_0014"
       ],
       "common_misinterpretations": [
-        "Ohne Kenntnis der Knochenlücke häufige Verwechslung mit fokalen Spikes oder Beta-Aktivität"
+        "Ohne Kenntnis der Knochenlücke Verwechslung mit fokalen Spikes oder fokaler Beta-Aktivität (Überdiagnose Epilepsie)",
+        "Echte epileptiforme Entladungen über einem Defekt können ungewöhnlich klein wirken und wie Elektrodenartefakte erscheinen – pauschale Breach-Zuschreibung kann Pathologie übersehen (Unterdiagnose)",
+        "Rückbildung nach Knochenersatz ist keine sichere Erwartung"
       ],
       "images": [],
-      "teaching_pearl": "Breach-Rhythmus ohne Kenntnis der Kraniotomie = Falle. Immer Anamnese fragen: Schädeloperationen?",
-      "warning": "Kann zu Überdiagnose fokaler Epilepsie führen. Klinischer Kontext (Knochenlücke) ist essenziell.",
-      "notes": "Kein hirneigener Rhythmus, kein Epilepsiehinweis per se. Anatomischer Kontext entscheidend.",
+      "teaching_pearl": "Bei fokal hoher, scharf konturierter Aktivität nach Schädeloperation: vorhandenes CT im Knochenfenster mit dem EEG abgleichen. Der Defekt erklärt die Verstärkung – aber nicht automatisch jeden auffälligen Transienten. Breach und echte Epilepsie schließen einander nicht aus.",
+      "warning": "Überdiagnose durch spitze Konturen UND Unterdiagnose durch pauschale Breach-Zuschreibung gleichermaßen vermeiden. Breach ist ein Übertragungsphänomen, kein Freifahrtschein gegen Epilepsie.",
+      "notes": "Kein eigenständiger hirneigener Rhythmus – kortikale Aktivität ist unverändert, ihre Darstellung ist durch die verminderte Knochendämpfung verändert. Als 'schädeldefektbedingter Übertragungs- bzw. Filtereffekt' präziser beschrieben als 'neuer Rhythmus'.",
       "data_status": "complete",
       "priority_for_mvp": "mittel",
       "source_notes": [
+        "Brigo F et al. The breach rhythm. Clin Neurophysiol. 2011;122:2116–2120. DOI: 10.1016/j.clinph.2011.07.024.",
+        "Cobb WA, Guiloff RJ, Cast J. Breach rhythm: the EEG related to skull defects. Electroencephalogr Clin Neurophysiol. 1979;47:251–271. DOI: 10.1016/0013-4694(79)90278-5.",
+        "Focal Epileptiform Discharges Can Mimic Electrode Artifacts When Recorded on the Scalp Near a Skull Defect. 2018. PMC6104203.",
+        "Mermi Dibek D, Öztura İ, Baklan B. The Importance of Epileptiform Activities in Breach Rhythms. Archives of Epilepsy. 2024.",
         "Lüders HO, Noachtar S, Rémi J. Electroencephalography: Textbook and Atlas. Oxford University Press; 2024. ISBN 978-0-19-750233-4"
       ],
       "cross_references": {
